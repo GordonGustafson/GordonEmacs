@@ -1,94 +1,3 @@
-; ORG-MODE CUSTOMIZATIONS
-
-(add-to-list 'load-path (substitute-in-file-name "$ELISP_ROOT\\orgmode\\lisp"))
-(add-to-list 'load-path (substitute-in-file-name "$ELISP_ROOT\\orgmode\\contrib\\lisp"))
-
-;; (require 'org-mobile)
-(require 'evil)
-
-(setq org-support-shift-select t)
-
-(setq default-major-mode 'org-mode)
-(add-to-list 'auto-mode-alist '("\\.txt$" . org-mode)) ;open txt files in org-mode instead of text-mode
-
-
-(setq org-startup-folded 'showall) ;show everything on startup 
-(setq org-startup-truncated nil)   ;don't wrap lines
-(setq org-log-done t)              ;insert a timestamp when a task is marked as finished
-(setq org-M-RET-may-split-line nil)
-(define-key global-map "\C-cl" 'org-store-link)
-(define-key global-map "\C-ca" 'org-agenda)
-(add-hook 'org-mode-hook (lambda ()
-			   (org-indent-mode t)) t)
-
-(setq org-directory "~\\org")       ;not used often by org
-
-(setq org-agenda-file-regexp ".*\\.org")    ;include all org files in listed directories
-(setq org-agenda-files (list "~\\org"        
-                             "~\\Dropbox\\orgmode"))
-
-
-(setq org-mobile-checksum-binary (or (executable-find "shasum")
-                                     (executable-find "sha1sum")
-                                     (executable-find "md5sum")
-                                     (executable-find "md5")))
-
-(setq org-mobile-inbox-for-pull "~\\org\\from-mobile.org")
-(setq org-mobile-directory "~\\Dropbox\\orgmode")
-
-
-
-
-; ORG LATEX CUSTOMIZATIONS
-
-(require 'ox-latex)
-
-(unless (boundp 'org-export-latex-classes)
-  (setq org-export-latex-classes nil))
-(add-to-list 'org-export-latex-classes
-             '("article"
-               "\\documentclass{article}"
-               ("\\section{%s}" . "\\section*{%s}")))
-
-(setq org-latex-default-packages-alist (delete '("" "wasysym" t) org-latex-default-packages-alist)) ;remove this font package because it provides a definition for iint that conflicts with amsmath (causes error)
-
-;(setcdr (assoc "\\.pdf\\'" org-file-apps) "C:\\\"Program Files (x86)\"\\SumatraPDF\\SumatraPDF.exe %s")
-(setq org-latex-to-pdf-process (list "latexmk -f -pvc -pdf %f"))
-
-;I put a batch file that calls SumatraPDF.exe in emacs/bin, which is on %PATH%
-(setq TeX-view-program-list '(("sumatra" "sumatra -zoom 100% %o")))
-
-(setq TeX-view-program-selection '(((output-dvi style-pstricks)
-                                        "dvips and start")
-                                       (output-dvi "Yap")
-                                       (output-pdf "sumatra")
-                                       (output-html "start")))
-
-(add-hook 'org-mode-hook 
-  (lambda () 
-    (add-hook 'after-save-hook
-      (lambda () 
-        (if (file-exists-p (concat (file-name-sans-extension buffer-file-name) ".tex"))
-          (org-latex-export-to-latex 1))
-    ) nil t)))
-
-
-
-(defvar *latexmk-process* nil)
-
-(setq org-export-async-debug t)
-
-(defun latexmk ()
-  (interactive "")
-  (org-latex-export-to-latex 1)
-  (setq *latexmk-process* (start-process-shell-command "latexmk process" nil (concat "latexmk -f -pvc -pdf \"" (concat (file-name-sans-extension buffer-file-name) ".tex") "\""))))
-
-(defun latexmk-cleanup ()
-  (interactive "")
-  (shell-command "latexmk cleanup process" nil "latexmk -c"))
-  
-
-
 ; LATEX CUSTOMIZATIONS
 
 (load (substitute-in-file-name "$ELISP_ROOT/auctex/site-lisp/site-start.el")) 
@@ -113,6 +22,8 @@
 (setq TeX-command-default "latexmk")
 
 (define-key evil-normal-state-map "S" 'prepare-for-export-to-latex)
+
+(define-key LaTeX-mode-map (kbd "C-c e") 'LaTeX-environment)
 
 (defface font-latex-verbatim-face
   (let ((font (if (and (assq :inherit custom-face-attributes))
@@ -160,6 +71,112 @@
 
 ;(add-hook 'LaTeX-mode-hook 'turn-on-reftex)
 ;(setq reftex-plug-into-AUCTeX t)
+
+
+
+
+
+
+
+; ORG-MODE CUSTOMIZATIONS
+
+(add-to-list 'load-path (substitute-in-file-name "$ELISP_ROOT\\orgmode\\lisp"))
+(add-to-list 'load-path (substitute-in-file-name "$ELISP_ROOT\\orgmode\\contrib\\lisp"))
+
+;; (require 'org-mobile)
+(require 'evil)
+
+(setq org-support-shift-select t)
+
+(setq default-major-mode 'org-mode)
+(add-to-list 'auto-mode-alist '("\\.txt$" . org-mode)) ;open txt files in org-mode instead of text-mode
+
+
+(setq org-startup-folded 'showall) ;show everything on startup 
+(setq org-startup-truncated nil)   ;don't wrap lines
+(setq org-log-done t)              ;insert a timestamp when a task is marked as finished
+(setq org-M-RET-may-split-line nil)
+(define-key global-map "\C-cl" 'org-store-link)
+(define-key global-map "\C-ca" 'org-agenda)
+(add-hook 'org-mode-hook (lambda ()
+			   (org-indent-mode t)) t)
+
+(setq org-directory "~\\org")       ;not used often by org
+
+(setq org-agenda-file-regexp ".*\\.org")    ;include all org files in listed directories
+(setq org-agenda-files (list "~\\org"        
+                             "~\\Dropbox\\orgmode"))
+
+
+(setq org-mobile-checksum-binary (or (executable-find "shasum")
+                                     (executable-find "sha1sum")
+                                     (executable-find "md5sum")
+                                     (executable-find "md5")))
+
+(setq org-mobile-inbox-for-pull "~\\org\\from-mobile.org")
+(setq org-mobile-directory "~\\Dropbox\\orgmode")
+
+
+
+
+
+
+; ORG LATEX CUSTOMIZATIONS
+
+; require latex so we can bind keys in org mode to latex commands
+(require 'latex)
+
+; required so we can set org-latex-default-packages-alist
+(require 'ox-latex)
+
+(define-key org-mode-map (kbd "C-c e") 'LaTeX-environment)
+
+(unless (boundp 'org-export-latex-classes)
+  (setq org-export-latex-classes nil))
+(add-to-list 'org-export-latex-classes
+             '("article"
+               "\\documentclass{article}"
+               ("\\section{%s}" . "\\section*{%s}")))
+
+;remove this font package because it provides a definition for iint that conflicts with amsmath (causes error)
+(setq org-latex-default-packages-alist (delete '("" "wasysym" t) org-latex-default-packages-alist)) 
+
+;(setcdr (assoc "\\.pdf\\'" org-file-apps) "C:\\\"Program Files (x86)\"\\SumatraPDF\\SumatraPDF.exe %s")
+(setq org-latex-to-pdf-process (list "latexmk -f -pvc -pdf %f"))
+
+;I put a batch file that calls SumatraPDF.exe in emacs/bin, which is on %PATH%
+(setq TeX-view-program-list '(("sumatra" "sumatra -zoom 100% %o")))
+
+(setq TeX-view-program-selection '(((output-dvi style-pstricks)
+                                        "dvips and start")
+                                       (output-dvi "Yap")
+                                       (output-pdf "sumatra")
+                                       (output-html "start")))
+
+(add-hook 'org-mode-hook 
+  (lambda () 
+    (add-hook 'after-save-hook
+      (lambda () 
+        (if (file-exists-p (concat (file-name-sans-extension buffer-file-name) ".tex"))
+          (org-latex-export-to-latex 1))
+    ) nil t)))
+
+
+
+(defvar *latexmk-process* nil)
+
+(setq org-export-async-debug t)
+
+(defun latexmk ()
+  (interactive "")
+  (org-latex-export-to-latex 1)
+  (setq *latexmk-process* (start-process-shell-command "latexmk process" nil (concat "latexmk -f -pvc -pdf \"" (concat (file-name-sans-extension buffer-file-name) ".tex") "\""))))
+
+(defun latexmk-cleanup ()
+  (interactive "")
+  (shell-command "latexmk cleanup process" nil "latexmk -c"))
+  
+
 
 ; W3M CUSTOMIZATIONS
 
