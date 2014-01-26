@@ -40,6 +40,7 @@
   "Face used to highlight TeX verbatim environments."
   :group 'font-latex-highlighting-faces)
 
+
 (defun prepare-for-export-to-latex ()
   "Adds basic latex math markup to all regions between @@@ and @@"
   (interactive "")
@@ -53,15 +54,13 @@
           (goto-char (point-min))
           (re-search-forward start-delimiter)
           (replace-match "\\1\\\\begin{align*}\\2") ;leave point at end of replacement text
-          (forward-line 1)
           (let ((start-of-equations (point-marker)))
             (re-search-forward end-delimiter)
             (replace-match "\\1\\\\end{align*}\\2")
             (previous-line)     ;replacing the match moves us to the end of the NEXT line
             (beginning-of-line)
             (let ((end-of-equations (point-marker))
-                    ; gawk "! /begin|end/ && /[^ \][^ \][ \t]*$/ {printf $0, \"  \\\\\"}" 
-                   (command "gawk \"! /begin|end/ && /[^ \\][^ \\][ \t]*$/ {print $0, \\\"  \\\\\\\\\\\\\\\\\\\"}\""))
+                   (command (substitute-in-file-name "gawk -f %HOME%/.emacs.d/format_latex_math.awk")))
               (goto-char start-of-equations)
               (shell-command-on-region start-of-equations end-of-equations command nil t)
               ; reindent the file since shell-command-on-region inserts its output directly
