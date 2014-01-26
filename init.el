@@ -1,8 +1,6 @@
 (load "~/.emacs.d/evil_customizations.el")
 (load "~/.emacs.d/mode_customizations.el")
 (load "~/.emacs.d/bugfixes.el")
-(load "~/.emacs.d/festival.el")
-(load "~/.emacs.d/csharp-mode.el")
 (require 'server)
 
 (setq auto-mode-alist (cons '( "\\.cs\\'" . csharp-mode ) auto-mode-alist ))
