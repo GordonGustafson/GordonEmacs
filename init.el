@@ -1,7 +1,3 @@
-(load "~/.emacs.d/evil_customizations.el")
-(load "~/.emacs.d/mode_customizations.el")
-(load "~/.emacs.d/bugfixes.el")
-(require 'server)
 
 (setq auto-mode-alist (cons '( "\\.cs\\'" . csharp-mode ) auto-mode-alist ))
 (setq c-basic-offset 4)
@@ -14,12 +10,6 @@
 ;	'("bash -i"))
 
 (make-frame-visible)
-
-;called with command line argumnts to emacs
-(defun start-a-server ()
-  (interactive)
-  (server-edit)
-  (make-frame-invisible nil t))
 
 (setq frame-title-format "%b - emacs") 
 
@@ -148,9 +138,6 @@ middle"
 
 
 
-
-
-
 ;(setq initial-buffer-choice t) ;buffer to view when not opening a certain file
 (setq inhibit-splash-screen t)
 (setq initial-scratch-message "")
@@ -161,10 +148,6 @@ middle"
 (let ((default-directory "~/.emacs.d/elpa/"))
   (normal-top-level-add-subdirs-to-load-path))
 
-(require 'color-theme)
-(color-theme-initialize)
-(color-theme-dark-blue) ;find a way to get brighter highlighting of mismatched delimiters in dark-blue like gnome2 has!
-;(color-theme-gnome2)  
 
 (add-to-list 'default-frame-alist '(top . 0))
 (add-to-list 'default-frame-alist '(left . 0))
@@ -193,10 +176,6 @@ middle"
 ; only applies when the paragraph being filled starts as one line.
 (setq adaptive-fill-first-line-regexp "\\`[ \\t*]*\\'")
 
-(add-to-list 'exec-path "~/.emacs.d/misc/aspell/bin")
-(setq ispell-program-name "aspell")
-;(setq ispell-personal-dictionary "C:/path/to/your/.ispell")
-(require 'ispell)
 
 ;; Make sure that the bash executable can be found
 ;; (setq explicit-shell-file-name "C:/cygwin64/bin/bash.exe")
@@ -239,15 +218,37 @@ if [ $1 = .. ]; then shift; fi; exec \"$@\""
 		   term-height term-width)
 	   ".."
 	   command switches)))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(org-agenda-files (quote ("~/Desktop/2800/homework/homework 0.txt" "c:/Users/GGustafson/org/from-mobile.org" "c:/Users/GGustafson/org/master.org" "c:/Users/GGustafson/Dropbox/orgmode/agendas.org" "c:/Users/GGustafson/Dropbox/orgmode/from-mobile.org" "c:/Users/GGustafson/Dropbox/orgmode/index.org" "c:/Users/GGustafson/Dropbox/orgmode/master.org"))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+
+
+
+; settings loaded last because they could cause problems
+(require 'package)
+
+;; Be conscious of which archive the packages come from! Some have higher quality packages than others...
+(add-to-list 'package-archives
+             '("elpa" . "http://tromey.com/elpa/"))
+(add-to-list 'package-archives
+             '("marmalade" . "http://marmalade-repo.org/packages/"))
+(add-to-list 'package-archives
+             '("melpa" . "http://melpa.milkbox.net/packages/") t)
+
+(require 'ispell)
+(add-to-list 'exec-path "~/.emacs.d/misc/aspell/bin")
+(setq ispell-program-name "aspell")
+
+(require 'color-theme)
+(color-theme-initialize)
+(color-theme-dark-blue) ;find a way to get brighter highlighting of mismatched delimiters in dark-blue like gnome2 has!
+;(color-theme-gnome2)  
+
+(require 'server)
+
+;called with command line argumnts to emacs
+(defun start-a-server ()
+  (interactive)
+  (server-edit)
+  (make-frame-invisible nil t))
+
+(load "~/.emacs.d/evil_customizations.el")
+(load "~/.emacs.d/mode_customizations.el")
+(load "~/.emacs.d/bugfixes.el")

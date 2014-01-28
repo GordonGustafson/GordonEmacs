@@ -401,20 +401,6 @@
 
 
 
-; PACKAGE CUSTOMIZATIONS
-
-(require 'package)
-
-;; Be conscious of which archive the packages come from!
-;; Some have higher quality packages than others...
-
-(add-to-list 'package-archives
-             '("elpa" . "http://tromey.com/elpa/"))
-(add-to-list 'package-archives
-             '("marmalade" . "http://marmalade-repo.org/packages/"))
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.milkbox.net/packages/") t)
-
 
 ; SCALA CUSTOMIZATIONS
 
