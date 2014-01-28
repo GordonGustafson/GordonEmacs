@@ -273,3 +273,7 @@ if [ $1 = .. ]; then shift; fi; exec \"$@\""
 (load "~/.emacs.d/evil_customizations.el")
 (load "~/.emacs.d/mode_customizations.el")
 (load "~/.emacs.d/bugfixes.el")
+
+(activate-input-method "english-dvorak")
+(setq default-input-method "english-dvorak")
+(add-hook 'minibuffer-setup-hook (lambda () (set-input-method "english-dvorak")))
