@@ -1,4 +1,5 @@
 *.elc
 */
+!/evil
 .org-id-locations
 
