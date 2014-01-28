@@ -284,7 +284,7 @@
                    (assoc "sshx" tramp-methods)))
      (setq tramp-default-method "cygssh")))
 
-(add-to-list 'load-path "$ELISP_ROOT/tramp-2.2.7/lisp")
+(add-to-list 'load-path (substitute-in-file-name "$ELISP_ROOT/tramp-2.2.7/lisp"))
 
 ; HELP MODE CUSTOMIZATIONS
 
