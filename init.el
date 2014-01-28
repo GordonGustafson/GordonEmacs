@@ -145,8 +145,8 @@ middle"
 ; add all installed packages to load path. Installing the packgage with ELPA does this itself somehow,
 ; but packages installed in NTEmacs don't seem to be put on the load path for Cygwin Emacs.
 ; Should probably find a better solution than just throwing the whole package directory in the load path
-(let ((default-directory "~/.emacs.d/elpa/"))
-  (normal-top-level-add-subdirs-to-load-path))
+; (let ((default-directory "~/.emacs.d/elpa/"))
+;   (normal-top-level-add-subdirs-to-load-path))
 
 
 (add-to-list 'default-frame-alist '(top . 0))
@@ -222,9 +222,10 @@ if [ $1 = .. ]; then shift; fi; exec \"$@\""
 
 
 ; settings loaded last because they could cause problems
+(require 'cl)
 (require 'package)
+(package-initialize)
 
-;; Be conscious of which archive the packages come from! Some have higher quality packages than others...
 (add-to-list 'package-archives
              '("elpa" . "http://tromey.com/elpa/"))
 (add-to-list 'package-archives
@@ -232,14 +233,34 @@ if [ $1 = .. ]; then shift; fi; exec \"$@\""
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.milkbox.net/packages/") t)
 
-(require 'ispell)
-(add-to-list 'exec-path "~/.emacs.d/misc/aspell/bin")
-(setq ispell-program-name "aspell")
+(defvar prelude-packages
+  '(color-theme)
+  "A list of packages to ensure are installed at launch.")
+
+(defun prelude-packages-installed-p ()
+  (loop for p in prelude-packages
+        when (not (package-installed-p p)) do (return nil)
+        finally (return t)))
+
+(unless (prelude-packages-installed-p)
+  ;; check for new packages (package versions)
+  (message "%s" "Emacs Prelude is now refreshing its package database...")
+  (package-refresh-contents)
+  (message "%s" " done.")
+  ;; install the missing packages
+  (dolist (package prelude-packages)
+    (when (not (package-installed-p package))
+      (package-install package))))
+
 
 (require 'color-theme)
 (color-theme-initialize)
 (color-theme-dark-blue) ;find a way to get brighter highlighting of mismatched delimiters in dark-blue like gnome2 has!
 ;(color-theme-gnome2)  
+
+(require 'ispell)
+(add-to-list 'exec-path "~/.emacs.d/misc/aspell/bin")
+(setq ispell-program-name "aspell")
 
 (require 'server)
 
