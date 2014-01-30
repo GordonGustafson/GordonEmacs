@@ -269,4 +269,4 @@ Do not save it in any register."
     (calc-embedded 0)
     (calc-embedded nil)) ;quit calc-embedded mode
 
-(define-key evil-visual-state-map "e" 'gordon-evil-calc-evaluate)
+(define-key evil-visual-state-map "m" 'gordon-evil-calc-evaluate)
