@@ -1,7 +1,11 @@
 ; LATEX CUSTOMIZATIONS
 
 (load (substitute-in-file-name "$ELISP_ROOT/auctex/site-lisp/site-start.el")) 
-(setq TeX-PDF-mode t)  ;use .pdf for previews instead of .dvi
+
+(require 'latex)
+
+;use .pdf for previews instead of .dvi
+(setq-default TeX-PDF-mode t)
 
 (setq preview-image-type 'pnm) ;solves error: preview-image-type setting 'png unsupported by this Emacs
 (setq preview-gs-options '("-q" "-dNOSAFER" "-dNOPAUSE" "-DNOPLATFONTS" "-dPrinted" "-dTextAlphaBits=4" "-dGraphicsAlphaBits=4")) ;switch to NOSAFER is need to make preview work????
