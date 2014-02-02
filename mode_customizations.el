@@ -149,7 +149,7 @@
 ;(setcdr (assoc "\\.pdf\\'" org-file-apps) "C:\\\"Program Files (x86)\"\\SumatraPDF\\SumatraPDF.exe %s")
 (setq org-latex-to-pdf-process (list "latexmk -f -pvc -pdf %f"))
 
-;I put a batch file that calls SumatraPDF.exe in emacs/bin, which is on %PATH%
+;assumes batch file sumatra is somewhere on $PATH
 (setq TeX-view-program-list '(("sumatra" "sumatra -zoom 100% %o")))
 
 (setq TeX-view-program-selection '(((output-dvi style-pstricks)
