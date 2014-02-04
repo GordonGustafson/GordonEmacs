@@ -311,6 +311,7 @@
        "H" 'evil-window-top                   
        "M" 'evil-window-middle                   
        "L" 'evil-window-bottom                
+       "n" 'evil-search-next
        (kbd "<return>") 'dired-find-file
        ";" (lookup-key dired-mode-map ":")))) ; ":d", ":v", ":s", ":e"
 
