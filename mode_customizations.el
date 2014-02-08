@@ -25,7 +25,7 @@
 
 (setq TeX-command-default "latexmk")
 
-(define-key evil-normal-state-map "S" 'prepare-for-export-to-latex)
+(define-key evil-normal-state-map "S" 'format-latex-align)
 
 (define-key LaTeX-mode-map (kbd "C-c e") 'LaTeX-environment)
 
@@ -45,42 +45,30 @@
   :group 'font-latex-highlighting-faces)
 
 
-(defun prepare-for-export-to-latex ()
+(defun shell-command-on-delimited-region (start-regex end-regex shell-command)
+  "Runs command on region delimited by start and end regexes"
+  (interactive "")
+  (save-excursion
+    (goto-char (point-min))
+    (while (re-search-forward start-regex) ;while start-regex exists in buffer
+      (goto-char (match-beginning 0))
+      (let ((start (point-marker)))
+        (next-line)                  ;skip over match of start-regex since it might contain end-regex
+        (re-search-forward end-regex)
+        (goto-char (match-end 0))
+        (let ((end (point-marker)))
+          (shell-command-on-region start end shell-command nil t))))))
+
+
+(defun format-latex-align ()
   "Adds basic latex math markup to all regions between @@@ and @@"
   (interactive "")
-  (message (buffer-name))
-  ;(evil-with-single-undo
-    (save-excursion
-      (goto-char (point-min))
-      (let ((start-delimiter "\\([^@]?\\)@@@\\([^@]?\\)") 
-            (end-delimiter   "\\([^@]?\\)@@\\([^@]?\\)"))
-        (while (re-search-forward start-delimiter) ;while start-delimiter exists in buffer
-          (goto-char (point-min))
-          (re-search-forward start-delimiter)
-          (replace-match "\\1\\\\begin{align*}\\2") ;leave point at end of replacement text
-          (let ((start-of-equations (point-marker)))
-            (re-search-forward end-delimiter)
-            (replace-match "\\1\\\\end{align*}\\2")
-            (previous-line)     ;replacing the match moves us to the end of the NEXT line
-            (beginning-of-line)
-            (let ((end-of-equations (point-marker))
-                   (command (substitute-in-file-name "gawk -f %HOME%/.emacs.d/format_latex_math.awk")))
-              (goto-char start-of-equations)
-              (shell-command-on-region start-of-equations end-of-equations command nil t)
-              ; reindent the file since shell-command-on-region inserts its output directly
-              (org-indent-mode t)
-              (while (< (point) end-of-equations) ;run this loop once per line
-                (when (not (search-forward "&=" (line-end-position) t))
-                  (progn
-                    (beginning-of-line)
-                    (when (re-search-forward "\\([^&=]\\)=\\|^=" (line-end-position) t)
-                      (replace-match "\\1&="))
-                      (forward-line 1))))))))) ;leaves point at beginning of next line 
-  nil) ;return nil to tell write-contents-functions that we didn't save the file ourselves
+  (shell-command-on-delimited-region "^@@@" "^@@[^@]?" "bash %HOME%/.emacs.d/format_latex_math.sh"))
+
+
 
 ;(add-hook 'LaTeX-mode-hook 'turn-on-reftex)
 ;(setq reftex-plug-into-AUCTeX t)
-
 
 
 
