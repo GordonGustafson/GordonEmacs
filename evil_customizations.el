@@ -70,6 +70,9 @@
 (evil-ex-define-cmd "W[rite]" 'evil-write)   ; add CAPITAL versions of commonly used ex commands
 (evil-ex-define-cmd "S[ubstitute]" 'evil-ex-substitute)
 
+(define-key evil-ex-completion-map (kbd "M-p") 'previous-complete-history-element)
+(define-key evil-ex-completion-map (kbd "M-n")     'next-complete-history-element)
+
 ; Ensure that ESC will exit just about anything. Otherwise you need to press it three times.
 (defun minibuffer-keyboard-quit ()
   "Abort recursive edit.
