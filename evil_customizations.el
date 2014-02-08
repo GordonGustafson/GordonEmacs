@@ -6,7 +6,10 @@
 
 (require 'cl)
 
-(setq evil-cross-lines t) ;allow f and t commands to find characters beyond the current line
+; when point on foo in foo-bar, make */# search for foo-bar instead of just foo
+(setq-default evil-symbol-word-search t)
+;allow f and t commands to find characters beyond the current line
+(setq evil-cross-lines t)
 
 (evil-define-motion evil-insert-from-normal-mode (count)
   "inserts the last character typed from normal mode."
