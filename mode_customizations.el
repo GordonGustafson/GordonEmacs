@@ -278,7 +278,12 @@
        (kbd "<return>") 'dired-find-file
        ";" (lookup-key dired-mode-map ":")))) ; ":d", ":v", ":s", ":e"
 
+
+
 ; SHELL MODE CUSTOMIZATIONS
+
+(defadvice shell (after switch-to-dvorak activate)
+  (activate-input-method "english-dvorak"))
 
 ; shells has its own autocomplete, so use it by letting the tab key go through: 
 ;; (add-hook 'shell-mode-hook 
@@ -296,12 +301,23 @@
 ;; (add-hook 'shell-command-complete-functions
 ;;   'bash-completion-dynamic-complete)
 
+
+
+; ESHELL CUSTOMIZATIONS
+
+(defadvice eshell (after switch-to-dvorak activate)
+  (activate-input-method "english-dvorak"))
+
+
+
 ; ARTIST MODE CUSTOMIZATIONS
 
 (defadvice artist-mode (after deactive-evil-for-artist-mode activate)
   (if artist-mode
     (turn-off-evil-mode)
     (turn-on-evil-mode)))
+
+
 
 ; PYTHON MODE CUSTOMIZATIONS
 
