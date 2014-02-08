@@ -52,10 +52,10 @@ middle"
     ('left  (window-resize (get-buffer-window) delta t))
     ('right (window-resize (get-buffer-window) (- delta) t))))
 
-(global-set-key (kbd "M-J") (lambda () (interactive) (move-horizontal-inner-edge-vertically 1)))
-(global-set-key (kbd "M-K") (lambda () (interactive) (move-horizontal-inner-edge-vertically -1)))
-(global-set-key (kbd "M-L") (lambda () (interactive) (move-vertical-inner-edge-horizontally 1)))
-(global-set-key (kbd "M-H") (lambda () (interactive) (move-vertical-inner-edge-horizontally -1)))
+(global-set-key (kbd "M-J") (lambda (prefix-arg) (interactive "p") (move-horizontal-inner-edge-vertically    prefix-arg)))
+(global-set-key (kbd "M-K") (lambda (prefix-arg) (interactive "p") (move-horizontal-inner-edge-vertically (- prefix-arg))))
+(global-set-key (kbd "M-L") (lambda (prefix-arg) (interactive "p") (move-vertical-inner-edge-horizontally    prefix-arg)))
+(global-set-key (kbd "M-H") (lambda (prefix-arg) (interactive "p") (move-vertical-inner-edge-horizontally (- prefix-arg))))
 
    
 (setq ctags-extensions "*.h *.c*")                                ;variable only used in this file
