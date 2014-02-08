@@ -141,17 +141,11 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
   ad-do-it
   (evil-normal-state))
 
-(defadvice self-insert-command (before foo)
-  "This advice is activated by execute-kbd-macro-no-input-method in order to disable the use of any input methods."
-  (deactivate-input-method))
-
 (defun execute-kbd-macro-no-input-method (rep)
   (add-hook 'evil-insert-state-entry-hook 'deactivate-input-method)
-  (ad-activate 'self-insert-command)
   (deactivate-input-method)
   (execute-kbd-macro rep)
-  (remove-hook 'evil-insert-state-entry-hook 'deactivate-input-method)
-  (ad-deactivate 'self-insert-command))
+  (remove-hook 'evil-insert-state-entry-hook 'deactivate-input-method))
 
 
 (evil-define-text-object evil-inner-dollar (count &optional beg end type)
