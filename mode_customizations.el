@@ -1,8 +1,7 @@
+
+(require 'evil)
+
 ; LATEX CUSTOMIZATIONS
-
-(load (substitute-in-file-name "$ELISP_ROOT/auctex/site-lisp/site-start.el")) 
-
-(require 'latex)
 
 ;use .pdf for previews instead of .dvi
 (setq-default TeX-PDF-mode t)
@@ -16,6 +15,9 @@
 (setq TeX-parse-self t)
 (setq-default TeX-master nil)
 
+;(add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+;(setq reftex-plug-into-AUCTeX t)
+
 (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
 (add-hook 'LaTeX-mode-hook (lambda ()
   (push 
@@ -25,25 +27,23 @@
 
 (setq TeX-command-default "latexmk")
 
-(define-key evil-normal-state-map "S" 'format-latex-align)
-
-(define-key LaTeX-mode-map (kbd "C-c e") 'LaTeX-environment)
-
 (defface font-latex-verbatim-face
   (let ((font (if (and (assq :inherit custom-face-attributes))
-		'(:family "consolas"))))
-    `((((class grayscale) (background light))
-	 (:foreground "DimGray" ,@font))
-	(((class grayscale) (background dark))
-	 (:foreground "LightGray" ,@font))
-	(((class color) (background light))
-	 (:foreground "SaddleBrown" ,@font))
-	(((class color) (background dark))
-	 (:foreground "burlywood" ,@font))
-	(t (,@font))))
+	             '(:family "consolas"))))
+ `((((class grayscale) (background light))
+   (:foreground "DimGray" ,@font))
+  (((class grayscale) (background dark))
+   (:foreground "LightGray" ,@font))
+  (((class color) (background light))
+   (:foreground "SaddleBrown" ,@font))
+  (((class color) (background dark))
+   (:foreground "burlywood" ,@font))
+  (t (,@font))))
   "Face used to highlight TeX verbatim environments."
   :group 'font-latex-highlighting-faces)
 
+(eval-after-load 'latex
+  '(define-key LaTeX-mode-map (kbd "C-c e") 'LaTeX-environment))
 
 (defun shell-command-on-delimited-region (start-regex end-regex shell-command)
   "Runs command on region delimited by start and end regexes"
@@ -53,41 +53,26 @@
     (while (re-search-forward start-regex) ;while start-regex exists in buffer
       (goto-char (match-beginning 0))
       (let ((start (point-marker)))
-        (next-line)                  ;skip over match of start-regex since it might contain end-regex
+        (next-line) ;skip over match of start-regex since it might contain end-regex
         (re-search-forward end-regex)
         (goto-char (match-end 0))
         (let ((end (point-marker)))
           (shell-command-on-region start end shell-command nil t))))))
-
 
 (defun format-latex-align ()
   "Adds basic latex math markup to all regions between @@@ and @@"
   (interactive "")
   (shell-command-on-delimited-region "^@@@" "^@@[^@]?" "bash %HOME%/.emacs.d/format_latex_math.sh"))
 
-
-
-;(add-hook 'LaTeX-mode-hook 'turn-on-reftex)
-;(setq reftex-plug-into-AUCTeX t)
-
-
-
-
+(define-key evil-normal-state-map "S" 'format-latex-align)
 
 
 ; ORG-MODE CUSTOMIZATIONS
 
-(add-to-list 'load-path (substitute-in-file-name "$ELISP_ROOT\\orgmode\\lisp"))
-(add-to-list 'load-path (substitute-in-file-name "$ELISP_ROOT\\orgmode\\contrib\\lisp"))
-
-;; (require 'org-mobile)
-(require 'evil)
+(setq default-major-mode 'org-mode)
+(add-to-list 'auto-mode-alist '("\\.txt$" . org-mode)) ;open txt files in org-mode
 
 (setq org-support-shift-select t)
-
-(setq default-major-mode 'org-mode)
-(add-to-list 'auto-mode-alist '("\\.txt$" . org-mode)) ;open txt files in org-mode instead of text-mode
-
 
 (setq org-startup-folded 'showall) ;show everything on startup 
 (setq org-startup-truncated nil)   ;don't wrap lines
@@ -96,14 +81,13 @@
 (define-key global-map "\C-cl" 'org-store-link)
 (define-key global-map "\C-ca" 'org-agenda)
 (add-hook 'org-mode-hook (lambda ()
-			   (org-indent-mode t)) t)
+		     (org-indent-mode t)) t)
 
 (setq org-directory "~\\org")       ;not used often by org
 
 (setq org-agenda-file-regexp ".*\\.org")    ;include all org files in listed directories
 (setq org-agenda-files (list "~\\org"        
                              "~\\Dropbox\\orgmode"))
-
 
 (setq org-mobile-checksum-binary (or (executable-find "shasum")
                                      (executable-find "sha1sum")
@@ -115,16 +99,9 @@
 
 
 
-
-
-
 ; ORG LATEX CUSTOMIZATIONS
 
-; require latex so we can bind keys in org mode to latex commands
-(require 'latex)
-
-; required so we can set org-latex-default-packages-alist
-(require 'ox-latex)
+(require 'ox-latex) ; required so we can set org-latex-default-packages-alist
 
 (define-key org-mode-map (kbd "C-c e") 'LaTeX-environment)
 
@@ -159,10 +136,8 @@
     ) nil t)))
 
 
-
-(defvar *latexmk-process* nil)
-
 (setq org-export-async-debug t)
+(defvar *latexmk-process* nil)
 
 (defun latexmk ()
   (interactive "")
@@ -172,7 +147,7 @@
 (defun latexmk-cleanup ()
   (interactive "")
   (shell-command "latexmk cleanup process" nil "latexmk -c"))
-  
+
 
 
 ; W3M CUSTOMIZATIONS

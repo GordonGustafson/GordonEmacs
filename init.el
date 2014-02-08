@@ -234,7 +234,7 @@ if [ $1 = .. ]; then shift; fi; exec \"$@\""
              '("melpa" . "http://melpa.milkbox.net/packages/") t)
 
 (defvar prelude-packages
-  '(color-theme)
+  '(color-theme org auctex)
   "A list of packages to ensure are installed at launch.")
 
 (defun prelude-packages-installed-p ()
