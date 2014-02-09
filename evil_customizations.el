@@ -276,11 +276,26 @@ Do not save it in any register."
 
 (define-key evil-normal-state-map "X" 'evil-delete-into-null-register)
 
-
-
 (evil-define-operator gordon-evil-calc-evaluate (beg end type)
-  "Use calc package to evaluate current region as a formula"
-    (calc-embedded 0)
-    (calc-embedded nil)) ;quit calc-embedded mode
+  "Use calc package to evaluate a formula in an evil region."
+  (when (eq evil-visual-selection 'line)
+    (evil-visual-expand-region t))    ;move point and mark to ends of selected region, excluding newline
+
+  (let ((original-beg (region-beginning)))
+    (goto-char (region-end))   ; insert $ after end of region
+    (if (eolp)
+      (end-of-line)
+      (forward-char))
+    (insert "$")
+
+    (goto-char original-beg)   ; ...and before beginning of region
+    (insert "$"))
+
+  (calc-embedded nil)    ; perform calculation on $ delimited region
+  (calc-embedded nil)    ; quit calc-embedded mode
+  (delete-char -1)       ; delete starting $
+  (evil-find-char 1 ?$)
+  (delete-char 1)        ; delete ending $
+  (setq buffer-undo-list (remove* nil buffer-undo-list :count 2))) ; remove excess undo markers we created
 
 (define-key evil-visual-state-map "m" 'gordon-evil-calc-evaluate)
