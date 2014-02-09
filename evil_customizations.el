@@ -53,17 +53,17 @@
 (define-key evil-normal-state-map (kbd "<backspace>") 'evil-delete-backward-char)
 (define-key evil-normal-state-map (kbd "<return>") (lambda (count) (interactive "p") (evil-open-below count) (evil-normal-state)))
 
-; making a decision based on the major mode is kind of hacky, but calc mode
-; should be the only time I'll want to modify the behavior of tab in insert mode
 (define-key evil-insert-state-map (kbd "<tab>")
   (lambda (count)
     (interactive "p")
-    (if (eq major-mode 'calc-mode)
-      (calc-roll-down 2))
-      (let ((bol-to-point (buffer-substring-no-properties (line-beginning-position) (point))))
-        (if (string-match "^[ \t]*$" bol-to-point)
-          (insert-char ?\s tab-width)
-          (evil-complete-next)))))
+    (case major-mode
+      ('calc-mode (calc-roll-down 2))
+      ('shell-mode (completion-at-point))
+      (otherwise
+        (let ((bol-to-point (buffer-substring-no-properties (line-beginning-position) (point))))
+          (if (string-match "^[ \t]*$" bol-to-point)
+            (insert-char ?\s tab-width)
+            (evil-complete-next)))))))
 
 (define-key evil-insert-state-map (kbd "C-p") 'previous-line) 
 (define-key evil-insert-state-map (kbd "C-n") 'next-line) 
