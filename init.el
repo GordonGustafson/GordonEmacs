@@ -233,25 +233,26 @@ if [ $1 = .. ]; then shift; fi; exec \"$@\""
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.milkbox.net/packages/") t)
 
-(defvar prelude-packages
-  '(color-theme org auctex)
-  "A list of packages to ensure are installed at launch.")
+(defun package-installed-and-up-to-date-p (package)
+  ;assumes that package-refresh-contents has already been called
+  ;also assume all built-in packages are out of date, which is usually true.
+  (if (not (package-installed-p package)) 
+    nil
+    (let* ((newest-desc  (cdr (assq package package-archive-contents)))
+           (installed-desc (cdr (or (assq package package-alist) (assq package package--builtins))))
+           (newest-version  (package-desc-vers newest-desc))
+           (installed-version (package-desc-vers installed-desc)))
+             (or (equal installed-version newest-version) (version-list-< newest-version installed-version)))))
 
-(defun prelude-packages-installed-p ()
-  (loop for p in prelude-packages
-        when (not (package-installed-p p)) do (return nil)
-        finally (return t)))
+(message "%s" "Emacs Prelude is now refreshing its package database...")
+(package-refresh-contents)
+(message "%s" " done.")
+(dolist (package '(color-theme org auctex))
+  (when (not (package-installed-and-up-to-date-p package))
+    (package-install package)))
 
-(unless (prelude-packages-installed-p)
-  ;; check for new packages (package versions)
-  (message "%s" "Emacs Prelude is now refreshing its package database...")
-  (package-refresh-contents)
-  (message "%s" " done.")
-  ;; install the missing packages
-  (dolist (package prelude-packages)
-    (when (not (package-installed-p package))
-      (package-install package))))
-
+(dolist (upgradeable-packgage (package-menu--find-upgrades))
+  (package-install upgradeable-packgage))
 
 (require 'color-theme)
 (color-theme-initialize)
