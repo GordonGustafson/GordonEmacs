@@ -271,12 +271,15 @@
        "J" 'dired-goto-file
        "K" 'other-window  
        "r" 'dired-do-redisplay 
-       "H" 'evil-window-top                   
-       "M" 'evil-window-middle                   
-       "L" 'evil-window-bottom                
+       ; move to the first real thing in the folder:
+       "H" (lambda () (interactive) (evil-window-top) (evil-next-line 4) (evil-end-of-line))
+       "M" (lambda () (interactive) (evil-window-middle) (evil-end-of-line))
+       "L" (lambda () (interactive) (evil-window-bottom) (evil-previous-line) (evil-end-of-line))
        "n" 'evil-search-next
+       "N" 'evil-search-previous
+       "?" 'evil-search-backward
        (kbd "<return>") 'dired-find-file
-       ";" (lookup-key dired-mode-map ":")))) ; ":d", ":v", ":s", ":e"
+       ";" (lookup-key dired-mode-map ":"))))
 
 
 
