@@ -112,23 +112,6 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
 	(cdr (assoc char translation-map))
 	char)))
 
-(defmacro def-dvorak-find-motion (name function-to-wrap)
-  `(evil-define-motion ,name (count char)
-     :jump t
-     :type inclusive
-     (interactive "<c><C>")
-     (,function-to-wrap count (qwerty-to-dvorak char))))
-
-(def-dvorak-find-motion evil-find-char-dvorak evil-find-char)
-(def-dvorak-find-motion evil-find-char-backward-dvorak evil-find-char-backward)
-(def-dvorak-find-motion evil-find-char-to-dvorak evil-find-char-to)
-(def-dvorak-find-motion evil-find-char-to-backward-dvorak evil-find-char-to-backward)
-
-(define-key evil-normal-state-map "f" 'evil-find-char-dvorak)
-(define-key evil-normal-state-map "F" 'evil-find-char-backward-dvorak)
-(define-key evil-normal-state-map "t" 'evil-find-char-to-dvorak)
-(define-key evil-normal-state-map "T" 'evil-find-char-to-backward-dvorak)
-
 (defadvice evil-replace (before use-current-input-method activate)
   (ad-set-arg 3 (qwerty-to-dvorak (ad-get-arg 3)))) 
 

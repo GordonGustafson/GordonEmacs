@@ -570,3 +570,24 @@ Global `ispell-quit' set to start location to continue spell session."
         (apply (car rep) (cdr rep)))
        (t
         (error "Unexpected repeat-info: %S" rep))))))
+
+
+(evil-define-motion evil-find-char (count char)
+  "Move to the next COUNT'th occurrence of CHAR."
+  :jump t
+  :type inclusive
+  (interactive "<c><C>")
+  (setq count (or count 1))
+  (let ((fwd (> count 0)))
+    (setq evil-last-find (list #'evil-find-char char fwd))
+    (when fwd (forward-char))
+    (let ((case-fold-search nil))
+      (unless (prog1
+                  (search-forward (char-to-string (qwerty-to-dvorak char))
+                                  (unless evil-cross-lines
+                                    (if fwd
+                                        (line-end-position)
+                                      (line-beginning-position)))
+                                  t count)
+                (when fwd (backward-char)))
+        (error "Can't find %c" (qwerty-to-dvorak char))))))
