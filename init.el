@@ -83,15 +83,6 @@ middle"
 (defun toggle-full-screen () (interactive) (shell-command "%HOMEPATH%\\.emacs.d\\misc\\fullscreen\\emacs_fullscreen.exe"))
 (global-set-key [f11] 'toggle-full-screen)
 
-
-(activate-input-method "english-dvorak")
-(setq default-input-method "english-dvorak")
-(add-hook 'minibuffer-setup-hook (lambda () (set-input-method "english-dvorak")))
-
-(defadvice switch-to-buffer (after activate-input-method-after-switch activate)
-  "Activate the dvorak input-method after switching to any buffer"
-  (activate-input-method "english-dvorak")) 
-
 (defadvice switch-to-buffer (before existing-buffer-only activate)
   "When interactive, switch to existing buffers only."
   (interactive "b"))  ;only allow buffer names as input
@@ -273,8 +264,5 @@ if [ $1 = .. ]; then shift; fi; exec \"$@\""
 
 (load "~/.emacs.d/evil_customizations.el")
 (load "~/.emacs.d/mode_customizations.el")
+(load "~/.emacs.d/dvorak_customizations.el")
 (load "~/.emacs.d/bugfixes.el")
-
-(activate-input-method "english-dvorak")
-(setq default-input-method "english-dvorak")
-(add-hook 'minibuffer-setup-hook (lambda () (set-input-method "english-dvorak")))

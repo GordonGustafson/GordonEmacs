@@ -285,9 +285,6 @@
 
 ; SHELL MODE CUSTOMIZATIONS
 
-(defadvice shell (after switch-to-dvorak activate)
-  (activate-input-method "english-dvorak"))
-
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 
 ; shells has its own autocomplete, so use it by letting the tab key go through: 
@@ -309,9 +306,6 @@
 
 
 ; ESHELL CUSTOMIZATIONS
-
-(defadvice eshell (after switch-to-dvorak activate)
-  (activate-input-method "english-dvorak"))
 
 
 

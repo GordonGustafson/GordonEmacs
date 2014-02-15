@@ -97,41 +97,6 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
 
 
 
-; use dvorak when you press R in command mode
-(add-hook 'evil-replace-state-entry-hook (lambda () (activate-input-method "english-dvorak")))
-
-(defun convert-second-element-to-integer (pair)
-  (cons (nth 0 pair) 
-    (if (vectorp (nth 1 pair))
-      (string-to-char (elt (nth 1 pair) 0))
-      (nth 1 pair))))
-
-(defun qwerty-to-dvorak (char)
-  (let ((translation-map (mapcar `convert-second-element-to-integer (cdr (quail-map)))))
-    (if (assoc char translation-map)
-	(cdr (assoc char translation-map))
-	char)))
-
-(defadvice evil-replace (before use-current-input-method activate)
-  (ad-set-arg 3 (qwerty-to-dvorak (ad-get-arg 3)))) 
-
-(defadvice evil-search-forward (around use-dvorak-input-method activate)
-  (evil-insert-state)
-  (activate-input-method "english-dvorak") 
-  ad-do-it
-  (evil-normal-state))
-
-(defadvice evil-search-backward (around use-dvorak-input-method activate)
-  (evil-insert-state)
-  (activate-input-method "english-dvorak")
-  ad-do-it
-  (evil-normal-state))
-
-(defun execute-kbd-macro-no-input-method (rep)
-  (add-hook 'evil-insert-state-entry-hook 'deactivate-input-method)
-  (deactivate-input-method)
-  (execute-kbd-macro rep)
-  (remove-hook 'evil-insert-state-entry-hook 'deactivate-input-method))
 
 
 (evil-define-text-object evil-inner-dollar (count &optional beg end type)
