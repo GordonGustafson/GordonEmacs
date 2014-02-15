@@ -45,10 +45,13 @@
 (defun execute-kbd-macro-no-input-method (rep)
   (add-hook 'evil-insert-state-entry-hook 'deactivate-input-method)
   (deactivate-input-method)
-  (setq default-input-method nil)
-  (execute-kbd-macro rep)
-  (setq default-input-method "english-dvorak")
-  (remove-hook 'evil-insert-state-entry-hook 'deactivate-input-method))
+  (let ((old-default-input-method default-input-method))
+    (setq default-input-method nil)
+    (unwind-protect
+      (execute-kbd-macro rep)
+      (progn
+        (setq default-input-method old-default-input-method)
+        (remove-hook 'evil-insert-state-entry-hook 'deactivate-input-method)))))
 
 (require 'evil-repeat)
 
