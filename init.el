@@ -80,7 +80,7 @@ middle"
 (set-face-attribute 'default nil
                     :family "Consolas" :height 100)
 
-(defun toggle-full-screen () (interactive) (shell-command "%HOMEPATH%\\.emacs.d\\misc\\fullscreen\\emacs_fullscreen.exe"))
+(defun toggle-full-screen () (interactive) (shell-command "emacs_fullscreen.exe"))
 (global-set-key [f11] 'toggle-full-screen)
 
 (defadvice switch-to-buffer (before existing-buffer-only activate)
