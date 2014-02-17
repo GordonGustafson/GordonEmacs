@@ -29,10 +29,13 @@
      (evil-insert-state)
      (evil-normal-state))) 
 
-(defun other-window-backward (&optional n)
-  "Select Nth previous window."
+(defun gordon-other-window (&optional n)
+  "Select next window. Numeric prefix arg of 4 (C-u) selects previous window, but all other prefixes work normally."
   (interactive "P")
-  (other-window (- (prefix-numeric-value n))))
+  (let ((numeric-prefix-arg (prefix-numeric-value n)))
+    (if (equal numeric-prefix-arg 4)
+      (other-window (- 1))
+      (other-window numeric-prefix-arg))))
 
 (evil-define-operator evil-yank-end-of-line (beg end type register)
   "Saves until end of line into the kill-ring."
@@ -44,10 +47,9 @@
 (define-key evil-normal-state-map " " 'evil-insert-from-normal-mode)
 ;(define-key evil-normal-state-map "K" 'other-window)
 ;hack to stop ever calling evil-lookup (it still gets called sometimes even after K is remapped)
-(substitute-key-definition 'evil-lookup 'other-window evil-motion-state-map)
+(substitute-key-definition 'evil-lookup 'gordon-other-window evil-motion-state-map)
  
 (global-set-key (kbd "<f5>") 'evil-local-mode)
-(define-key evil-normal-state-map (kbd "C-S-K") 'other-window-backward)
 (define-key evil-normal-state-map "Y" 'evil-yank-end-of-line)
 (define-key evil-normal-state-map "gm" 'evil-middle-of-visual-line)
 (define-key evil-normal-state-map (kbd "<backspace>") 'evil-delete-backward-char)
