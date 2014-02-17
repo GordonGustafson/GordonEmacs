@@ -251,7 +251,6 @@ if [ $1 = .. ]; then shift; fi; exec \"$@\""
 ;(color-theme-gnome2)  
 
 (require 'ispell)
-(add-to-list 'exec-path "~/.emacs.d/misc/aspell/bin")
 (setq ispell-program-name "aspell")
 
 (require 'server)
