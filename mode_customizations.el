@@ -45,26 +45,69 @@
 (eval-after-load 'latex
   '(define-key LaTeX-mode-map (kbd "C-c e") 'LaTeX-environment))
 
-(defun shell-command-on-delimited-region (start-regex end-regex shell-command)
-  "Runs command on region delimited by start and end regexes"
+(defmacro save-excursion-by-preceding-text (&rest body)
+  "Like save-excursion, but restores point based on line number and the text preceding it, ignoring any whitespace changes.
+Necessary because save-excursion doesn't work when text is replaced by shell-command-on-region."
   (interactive "")
-  (save-excursion
+  `(let* ((original-line (line-number-at-pos))
+         (point-to-bol-string (buffer-substring-no-properties (line-beginning-position) (point)))
+         (point-to-bol-regex (replace-regexp-in-string " *" " *" point-to-bol-string)))
+    ,@body
+    (goto-line original-line)
+    (re-search-forward point-to-bol-regex)))
+
+(defmacro shell-command-on-current-delimited-region (move-to-start-form move-to-end-form shell-command)
+  "Runs shell-command on region between the result of move-to-start-form and move-to-end-form"
+  `(save-excursion
+    ,move-to-start-form
+    (let ((start (point-marker)))
+      ,move-to-end-form
+      (let ((end (point-marker)))
+        (shell-command-on-region start end ,shell-command nil t)))))
+
+(defmacro shell-command-on-all-delimited-regions (move-to-start-form move-to-end-form shell-command)
+  "Runs shell-command on all regions between the result of move-to-start-form and move-to-end-form.
+   point will be moved to beginning of buffer before each 'call' to move-to-start-form."
+  (interactive "")
+  `(save-excursion
+    (while t          ;until one of the searches fails
     (goto-char (point-min))
-    (while (re-search-forward start-regex) ;while start-regex exists in buffer
-      (goto-char (match-beginning 0))
+    ,move-to-start-form
       (let ((start (point-marker)))
-        (next-line) ;skip over match of start-regex since it might contain end-regex
-        (re-search-forward end-regex)
-        (goto-char (match-end 0))
+        ,move-to-end-form
         (let ((end (point-marker)))
-          (shell-command-on-region start end shell-command nil t))))))
+          (shell-command-on-region start end ,shell-command nil t))))))
 
 (defun format-latex-align ()
   "Adds basic latex math markup to all regions between @@@ and @@"
   (interactive "")
-  (shell-command-on-delimited-region "^@@@" "^@@[^@]?" "bash %HOME%/.emacs.d/format_latex_math.sh"))
+  (shell-command-on-all-delimited-regions
+    (progn
+      (re-search-forward "^@@@")
+      (goto-char (match-beginning 0)))
+    (progn
+      (next-line)           ;skip over @@@ since it contains @@
+      (re-search-forward "^@@[^@]?")
+      (goto-char (match-end 0)))
+    "bash %HOME%/.emacs.d/format_latex_math.sh"))
 
 (define-key evil-normal-state-map "S" 'format-latex-align)
+
+(defun format-latex-table ()
+  "Aligns all &'s in the environment enclosing point"
+  (interactive "")
+  (save-excursion-by-preceding-text          ;since shell-command-on-region messes up save-excursion, use this instead
+    (shell-command-on-current-delimited-region
+      (progn
+        (re-search-backward "\\\\begin{\\(.*\\)}")
+        (next-line))
+      (progn
+        (re-search-forward (format "\\\\end{%s}" (match-string 1))) ;go to end of same environment
+        (goto-char (match-beginning 0)))
+      "bash %HOME%/.emacs.d/format_latex_table.sh")))
+
+(define-key evil-normal-state-map "gt" 'format-latex-table)
+
 
 
 ; ORG-MODE CUSTOMIZATIONS
