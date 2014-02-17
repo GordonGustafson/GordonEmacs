@@ -238,7 +238,7 @@ if [ $1 = .. ]; then shift; fi; exec \"$@\""
 (message "%s" "Emacs Prelude is now refreshing its package database...")
 (package-refresh-contents)
 (message "%s" " done.")
-(dolist (package '(color-theme org auctex))
+(dolist (package '(color-theme org auctex frame-cmds frame-fns bash-completion csharp-mode))
   (when (not (package-installed-and-up-to-date-p package))
     (package-install package)))
 
@@ -252,6 +252,12 @@ if [ $1 = .. ]; then shift; fi; exec \"$@\""
 
 (require 'ispell)
 (setq ispell-program-name "aspell")
+
+(require 'frame-cmds)
+(global-set-key (kbd "C-S-J") 'enlarge-frame)
+(global-set-key (kbd "C-S-K") 'shrink-frame)
+(global-set-key (kbd "C-S-L") 'enlarge-frame-horizontally)
+(global-set-key (kbd "C-S-H") 'shrink-frame-horizontally)
 
 (require 'server)
 
