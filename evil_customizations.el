@@ -53,7 +53,8 @@
 (define-key evil-normal-state-map "Y" 'evil-yank-end-of-line)
 (define-key evil-normal-state-map "gm" 'evil-middle-of-visual-line)
 (define-key evil-normal-state-map (kbd "<backspace>") 'evil-delete-backward-char)
-(define-key evil-normal-state-map (kbd "<return>") (lambda (count) (interactive "p") (evil-open-below count) (evil-normal-state)))
+(define-key evil-normal-state-map (kbd   "<return>") (lambda (count) (interactive "p") (evil-open-below count) (evil-normal-state)))
+(define-key evil-normal-state-map (kbd "S-<return>") (lambda (count) (interactive "p") (evil-open-above count) (evil-normal-state) (previous-line (- count 1))))
 
 (define-key evil-insert-state-map (kbd "<tab>")
   (lambda (count)
