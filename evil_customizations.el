@@ -4,6 +4,7 @@
 (require 'evil)
 (evil-mode 1)
 
+(require 'org)
 (require 'cl)
 
 ; when point on foo in foo-bar, make */# search for foo-bar instead of just foo
@@ -56,9 +57,12 @@
 (define-key evil-normal-state-map (kbd   "<return>") (lambda (count) (interactive "p") (evil-open-below count) (evil-normal-state)))
 (define-key evil-normal-state-map (kbd "S-<return>") (lambda (count) (interactive "p") (evil-open-above count) (evil-normal-state) (previous-line (- count 1))))
 
-(define-key evil-insert-state-map (kbd "<tab>")
-  (lambda (count)
-    (interactive "p")
+(defun evil-tab (count)
+  "Performs the most appropriate of the following:
+move to next table cell, calc-roll-down, shell completion, indent, or evil-complete"
+  (interactive "p")
+  (if (org-at-table-p 'any)
+    (org-cycle)
     (case major-mode
       ('calc-mode (calc-roll-down 2))
       ('shell-mode (completion-at-point))
@@ -67,6 +71,8 @@
           (if (string-match "^[ \t]*$" bol-to-point)
             (insert-char ?\s tab-width)
             (evil-complete-next)))))))
+
+(define-key evil-insert-state-map (kbd "<tab>") 'evil-tab)
 
 (define-key evil-insert-state-map (kbd "C-p") 'previous-line) 
 (define-key evil-insert-state-map (kbd "C-n") 'next-line) 
