@@ -115,6 +115,8 @@ Necessary because save-excursion doesn't work when text is replaced by shell-com
 (setq default-major-mode 'org-mode)
 (add-to-list 'auto-mode-alist '("\\.txt$" . org-mode)) ;open txt files in org-mode
 
+(add-hook 'after-change-major-mode-hook 'turn-on-orgtbl)
+
 (setq org-support-shift-select t)
 
 (setq org-startup-folded 'showall) ;show everything on startup 
