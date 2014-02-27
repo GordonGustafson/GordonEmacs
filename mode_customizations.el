@@ -117,6 +117,8 @@ Necessary because save-excursion doesn't work when text is replaced by shell-com
 
 (add-hook 'after-change-major-mode-hook 'turn-on-orgtbl)
 
+(global-set-key (kbd "C-|") 'org-table-create-or-convert-from-region)
+
 (setq org-support-shift-select t)
 
 (setq org-startup-folded 'showall) ;show everything on startup 
