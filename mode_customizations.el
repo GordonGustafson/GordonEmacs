@@ -56,32 +56,25 @@ Necessary because save-excursion doesn't work when text is replaced by shell-com
     (goto-line original-line)
     (re-search-forward point-to-bol-regex)))
 
-(defmacro shell-command-on-current-delimited-region (move-to-start-form move-to-end-form shell-command)
-  "Runs shell-command on region between the result of move-to-start-form and move-to-end-form"
-  `(save-excursion
-    ,move-to-start-form
-    (let ((start (point-marker)))
-      ,move-to-end-form
-      (let ((end (point-marker)))
-        (shell-command-on-region start end ,shell-command nil t)))))
+(defmacro command-on-all-delimited-regions (move-to-start-form move-to-end-form command)
+  "Runs command on every region delimited by the results of move-to-start-form and move-to-end-form.
 
-(defmacro shell-command-on-all-delimited-regions (move-to-start-form move-to-end-form shell-command)
-  "Runs shell-command on all regions between the result of move-to-start-form and move-to-end-form.
-   point will be moved to beginning of buffer before each 'call' to move-to-start-form."
+To determine bounds of a region, move to (point-min), invoke move-to-start-form, then invoke move-to-end-form.
+Inside command, start and end will be bound to the results of those forms."
   (interactive "")
   `(save-excursion
-    (while t          ;until one of the searches fails
+    (while t          ;until one of the forms tries a failed search
     (goto-char (point-min))
     ,move-to-start-form
       (let ((start (point-marker)))
         ,move-to-end-form
         (let ((end (point-marker)))
-          (shell-command-on-region start end ,shell-command nil t))))))
+          ,command)))))
 
 (defun format-latex-align ()
   "Adds basic latex math markup to all regions between @@@ and @@"
   (interactive "")
-  (shell-command-on-all-delimited-regions
+  (command-on-all-delimited-regions
     (progn
       (re-search-forward "^@@@")
       (goto-char (match-beginning 0)))
@@ -89,24 +82,32 @@ Necessary because save-excursion doesn't work when text is replaced by shell-com
       (next-line)           ;skip over @@@ since it contains @@
       (re-search-forward "^@@[^@]?")
       (goto-char (match-end 0)))
-    "bash %HOME%/.emacs.d/format_latex_math.sh"))
+    (progn
+      (shell-command-on-region start end "bash %HOME%/.emacs.d/format_latex_math.sh" nil t))))
 
 (define-key evil-normal-state-map "S" 'format-latex-align)
 
-(defun format-latex-table ()
-  "Aligns all &'s in the environment enclosing point"
+(defun orgtbl-export-all-tables-to-matrices ()
   (interactive "")
-  (save-excursion-by-preceding-text          ;since shell-command-on-region messes up save-excursion, use this instead
-    (shell-command-on-current-delimited-region
-      (progn
-        (re-search-backward "\\\\begin{\\(.*\\)}")
-        (next-line))
-      (progn
-        (re-search-forward (format "\\\\end{%s}" (match-string 1))) ;go to end of same environment
-        (goto-char (match-beginning 0)))
-      "bash %HOME%/.emacs.d/format_latex_table.sh")))
-
-(define-key evil-normal-state-map "gt" 'format-latex-table)
+  (command-on-all-delimited-regions
+    (progn
+      (re-search-forward "^[ \t]*|")   ;go to the next line of a table in buffer
+      (goto-char (match-beginning 0)))
+    (progn
+      (while (string-match "^[ \t]*|" (thing-at-point 'line)) ;while we are on a table line
+        (next-line))                                          ;move forward one line
+      (search-backward "|")
+      (forward-char))                                         ;then move after the last | in the table
+    (progn
+      (goto-char start)
+      (insert "\\begin{bmatrix}\n")
+      (previous-line)
+      (delete-indentation) ;merge this one with the previous line
+      (goto-char end)
+      (insert "\n\\end{bmatrix}")
+      (replace-regexp "^[ \t]*| " "" nil start end)
+      (replace-regexp "|[^|]*$" "\\\\\\\\" nil start end)
+      (replace-regexp "|" "&" nil start end))))
 
 
 
