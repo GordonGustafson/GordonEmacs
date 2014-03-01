@@ -120,8 +120,9 @@ Inside command, start and end will be bound to the results of those forms."
 
 (global-set-key (kbd "C-|") 'org-table-create-or-convert-from-region)
 
-(setq org-support-shift-select t)
+(set-face-attribute 'org-level-3 nil ':foreground "PaleGreen")
 
+(setq org-support-shift-select t)
 (setq org-startup-folded 'showall) ;show everything on startup 
 (setq org-startup-truncated nil)   ;don't wrap lines
 (setq org-log-done t)              ;insert a timestamp when a task is marked as finished
