@@ -2,22 +2,6 @@
 (require 'evil)
 (require 'cl)
 
-; EZ-SHELL CUSTOMIZATIONS
-
-(defun ez-shell ()
-  (interactive)
-  (with-current-buffer (get-buffer-create "*ez-shell*")
-    (let ((shell-commands-to-run (buffer-substring-no-properties (point-min) (point-max))))
-      (if (string= shell-commands-to-run "")
-        (message "*ez-shell* buffer is empty")
-        (let ((commands (split-string shell-commands-to-run "\n" t)))
-          (loop for command in commands
-          do (message (eshell-command-result command))))))))
-
-(define-key evil-normal-state-map "S" 'ez-shell)
-
-
-
 ; LATEX CUSTOMIZATIONS
 
 ;use .pdf for previews instead of .dvi
@@ -371,6 +355,27 @@ Inside command, start and end will be bound to the results of those forms."
 
 
 ; ESHELL CUSTOMIZATIONS
+
+
+
+; EZ-SHELL CUSTOMIZATIONS
+
+(defun ez-shell ()
+  (interactive)
+  (with-current-buffer (get-buffer-create "*ez-shell*")
+    (let ((shell-commands-to-run (buffer-substring-no-properties (point-min) (point-max))))
+      (if (string= shell-commands-to-run "")
+        (message "*ez-shell* buffer is empty")
+        (let* ((commands (split-string shell-commands-to-run "\n" t))
+               (results (loop for command in commands collect (eshell-command-result command)))
+               (report (mapconcat 'identity results "\n")))
+          (with-current-buffer (get-buffer-create "*report*")
+            (erase-buffer)
+            (insert report)
+            (when (not (get-buffer-window (current-buffer)))
+              (message report))))))))
+
+(define-key evil-normal-state-map "S" 'ez-shell)
 
 
 
