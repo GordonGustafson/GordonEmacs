@@ -1,15 +1,18 @@
 
 (require 'evil)
+(require 'cl)
 
 ; EZ-SHELL CUSTOMIZATIONS
 
 (defun ez-shell ()
   (interactive)
   (with-current-buffer (get-buffer-create "*ez-shell*")
-    (let ((shell-command-to-run (buffer-substring-no-properties (point-min) (point-max))))
-      (if (string= shell-command-to-run "")
+    (let ((shell-commands-to-run (buffer-substring-no-properties (point-min) (point-max))))
+      (if (string= shell-commands-to-run "")
         (message "*ez-shell* buffer is empty")
-        (message (eshell-command-result shell-command-to-run))))))
+        (let ((commands (split-string shell-commands-to-run "\n" t)))
+          (loop for command in commands
+          do (message (eshell-command-result command))))))))
 
 (define-key evil-normal-state-map "S" 'ez-shell)
 
