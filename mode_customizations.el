@@ -1,6 +1,20 @@
 
 (require 'evil)
 
+; EZ-SHELL CUSTOMIZATIONS
+
+(defun ez-shell ()
+  (interactive)
+  (with-current-buffer (get-buffer-create "*ez-shell*")
+    (let ((shell-command-to-run (buffer-substring-no-properties (point-min) (point-max))))
+      (if (string= shell-command-to-run "")
+        (message "*ez-shell* buffer is empty")
+        (message (eshell-command-result shell-command-to-run))))))
+
+(define-key evil-normal-state-map "S" 'ez-shell)
+
+
+
 ; LATEX CUSTOMIZATIONS
 
 ;use .pdf for previews instead of .dvi
@@ -85,7 +99,6 @@ Inside command, start and end will be bound to the results of those forms."
     (progn
       (shell-command-on-region start end "bash %HOME%/.emacs.d/format_latex_math.sh" nil t))))
 
-(define-key evil-normal-state-map "S" 'format-latex-align)
 
 (defun orgtbl-export-all-tables-to-matrices ()
   (interactive "")
