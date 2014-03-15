@@ -86,6 +86,17 @@ Inside command, start and end will be bound to the results of those forms."
     (progn
       (shell-command-on-region start end "bash %HOME%/.emacs.d/format_latex_math.sh" nil t))))
 
+(defun orgtbl-export-table-to-matrix (start end)
+  (interactive "r")
+  (goto-char start)
+  (insert "\\begin{bmatrix}\n")
+  (previous-line)
+  (delete-indentation) ;merge this one with the previous line
+  (goto-char end)
+  (insert "\n\\end{bmatrix}")
+  (replace-regexp "^[ \t]*| " "" nil start end)
+  (replace-regexp "|[^|]*$" "\\\\\\\\" nil start end)
+  (replace-regexp "|" "&" nil start end))
 
 (defun orgtbl-export-all-tables-to-matrices ()
   (interactive "")
@@ -99,15 +110,7 @@ Inside command, start and end will be bound to the results of those forms."
       (search-backward "|")
       (forward-char))                                         ;then move after the last | in the table
     (progn
-      (goto-char start)
-      (insert "\\begin{bmatrix}\n")
-      (previous-line)
-      (delete-indentation) ;merge this one with the previous line
-      (goto-char end)
-      (insert "\n\\end{bmatrix}")
-      (replace-regexp "^[ \t]*| " "" nil start end)
-      (replace-regexp "|[^|]*$" "\\\\\\\\" nil start end)
-      (replace-regexp "|" "&" nil start end))))
+      (orgtbl-export-table-to-matrix start end))))
 
 
 
