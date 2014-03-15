@@ -104,22 +104,19 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
 (global-set-key [escape] 'evil-exit-emacs-state)
 
 
+(defmacro gordon-define-text-object (key start-regex end-regex)
+  (let ((inner-name (make-symbol "inner-name"))
+        (outer-name (make-symbol "outer-name")))
+    `(progn
+      (evil-define-text-object ,inner-name (count &optional beg end type)
+        (evil-regexp-range count beg end type ,start-regex ,end-regex t))
+      (evil-define-text-object ,outer-name (count &optional beg end type)
+        (evil-regexp-range count beg end type ,start-regex ,end-regex nil))
+      (define-key evil-inner-text-objects-map ,key (quote ,inner-name))
+      (define-key evil-outer-text-objects-map ,key (quote ,outer-name)))))
 
-
-
-(evil-define-text-object evil-inner-dollar (count &optional beg end type)
-  (evil-inner-object-range count beg end type
-    (lambda (&optional arg) (re-search-forward "\\$" nil t 1) (backward-char))
-    (lambda (&optional arg) (re-search-backward "\\$" nil t 1) (forward-char))))
-
-(define-key evil-inner-text-objects-map "$" 'evil-inner-dollar)
-
-(evil-define-text-object evil-outer-dollar (count &optional beg end type)
-  (evil-inner-object-range count beg end type
-    (lambda (&optional arg) (re-search-forward "\\$" nil t 1))
-    (lambda (&optional arg) (re-search-backward "\\$" nil t 2))))
-
-(define-key evil-outer-text-objects-map "$" 'evil-outer-dollar)
+(gordon-define-text-object "$" "\\$" "\\$")
+(gordon-define-text-object "|" "|" "|")
  
 (defun distance-to-next-match (regex)
   "Returns the next position of regex in buffer without moving point.
