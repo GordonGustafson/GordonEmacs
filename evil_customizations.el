@@ -12,18 +12,6 @@
 ;allow f and t commands to find characters beyond the current line
 (setq evil-cross-lines t)
 
-(evil-define-motion evil-insert-from-normal-mode (count)
-  "inserts the last character typed from normal mode."
-  (interactive "p") ;make count the numerical prefix argument
-  (if (not (looking-at "\n"))
-    (forward-char))
-  (self-insert-command count)
-  (backward-char))
-
-;; (defadvice other-window (after switch-to-normal-state activate)
-;;   (evil-normal-state))
-
-
 (defadvice other-window (after switch-to-normal-state-in-non-calc-buffers activate)
   "Switch evil to normal state in the new buffer unless it is in calc-mode"
   (if (eq major-mode 'calc-mode)
@@ -45,7 +33,6 @@
   (interactive "<R><x>")
   (evil-yank (point) (line-end-position) nil register))
 
-(define-key evil-normal-state-map " " 'evil-insert-from-normal-mode)
 ;(define-key evil-normal-state-map "K" 'other-window)
 ;hack to stop ever calling evil-lookup (it still gets called sometimes even after K is remapped)
 (substitute-key-definition 'evil-lookup 'gordon-other-window evil-motion-state-map)
@@ -54,8 +41,15 @@
 (define-key evil-normal-state-map "Y" 'evil-yank-end-of-line)
 (define-key evil-normal-state-map "gm" 'evil-middle-of-visual-line)
 (define-key evil-normal-state-map (kbd "<backspace>") 'evil-delete-backward-char)
-(define-key evil-normal-state-map (kbd   "<return>") (lambda (count) (interactive "p") (evil-open-below count) (evil-normal-state)))
-(define-key evil-normal-state-map (kbd "S-<return>") (lambda (count) (interactive "p") (evil-open-above count) (evil-normal-state) (previous-line (- count 1))))
+(define-key evil-normal-state-map " " (lambda (count) (interactive "p") (evil-without-repeat
+  (when (not (looking-at "\n")) (forward-char)) (self-insert-command count) (backward-char))))
+(define-key evil-normal-state-map (kbd "S-<SPC>")    (lambda (count) (interactive "p") (evil-without-repeat
+  (self-insert-command count) (backward-char count))))
+(define-key evil-normal-state-map (kbd   "<return>") (lambda (count) (interactive "p") (evil-without-repeat
+  (loop repeat count do (evil-insert-newline-below)))))
+(define-key evil-normal-state-map (kbd "S-<return>") (lambda (count) (interactive "p") (evil-without-repeat
+  (loop repeat count do (evil-insert-newline-above)))))
+
 
 (defun evil-tab ()
   "Performs the most appropriate tab function for the current mode and cursor position"
