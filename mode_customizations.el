@@ -119,8 +119,6 @@ Inside command, start and end will be bound to the results of those forms."
 (setq default-major-mode 'org-mode)
 (add-to-list 'auto-mode-alist '("\\.txt$" . org-mode)) ;open txt files in org-mode
 
-(add-hook 'after-change-major-mode-hook 'turn-on-orgtbl)
-
 (global-set-key (kbd "C-|") 'org-table-create-or-convert-from-region)
 
 (set-face-attribute 'org-level-3 nil ':foreground "PaleGreen")
