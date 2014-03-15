@@ -5,7 +5,7 @@ read -r -d '' awk_add_newlines <<"EOF"
     RS = "\n"
     if ( $0 ~ /^[ \t]*$/ ) {
         print "\\\\";
-    } else if ( $0 ~ /\\begin{/ || $0 ~ /\\\\[ \t]*$/ || $0 ~ /\\end{align/ || $0 ~ /\\end{.*?} *[^ \t]/ ) {
+    } else if ( $0 ~ /\\begin{/ || $0 ~ /\\\\[ \t]*$/ || $0 ~ /\\end{align/ || $0 ~ /\\end{.*}/ ) {
         print $0
     } else {
         print $0, " \\\\";
