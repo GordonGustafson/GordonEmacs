@@ -308,6 +308,19 @@ Inside command, start and end will be bound to the results of those forms."
 ; '(progn
 ;    (define-key help-mode-map "K" 'other-window)))
 
+
+
+; OPENWITH CUSTOMIZATIONS
+(when (require 'openwith nil 'noerror)
+  (setq openwith-associations (list
+         (list (openwith-make-extension-regexp '("mpg" "mpeg" "mp3" "flac" "m4a"
+            "mp4" "avi" "wmv" "wav" "mov" "flv" "ogm" "ogg" "mkv")) "vlc" '(file))
+         (list (openwith-make-extension-regexp '("png" "gif" "jpeg" "jpg"))  "firefox" '(file))
+         (list (openwith-make-extension-regexp '("pdf")) "sumatra" '(file))))
+  (openwith-mode t))
+
+
+
 ; DIRED MODE CUSTOMIZATIONS
 
 ; evil-integration contains a similar version of this.

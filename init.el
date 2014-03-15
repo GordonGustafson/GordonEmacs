@@ -238,7 +238,11 @@ if [ $1 = .. ]; then shift; fi; exec \"$@\""
 (message "%s" "Emacs Prelude is now refreshing its package database...")
 (package-refresh-contents)
 (message "%s" " done.")
-(dolist (package '(color-theme org auctex frame-cmds frame-fns bash-completion csharp-mode))
+
+(defvar gordon-packages '(color-theme org auctex frame-cmds frame-fns bash-completion csharp-mode openwith)
+  "List of packages that will be installed/updated to the latest version of startup")
+
+(dolist (package gordon-packages)
   (when (not (package-installed-and-up-to-date-p package))
     (package-install package)))
 
