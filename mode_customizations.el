@@ -4,13 +4,10 @@
 
 ; LATEX CUSTOMIZATIONS
 
-;use .pdf for previews instead of .dvi
-(setq-default TeX-PDF-mode t)
+(setq-default TeX-PDF-mode t)  ;use .pdf for previews instead of .dvi
 
 (setq preview-image-type 'pnm) ;solves error: preview-image-type setting 'png unsupported by this Emacs
 (setq preview-gs-options '("-q" "-dNOSAFER" "-dNOPAUSE" "-DNOPLATFONTS" "-dPrinted" "-dTextAlphaBits=4" "-dGraphicsAlphaBits=4")) ;switch to NOSAFER is need to make preview work????
-; (setq preview-gs-command "C:\\\"Program Files\"\\gs\\gs8.71\\bin\\gswin32c.exe")
-; "C:\\Program Files\\gs\\gs9.10\\bin\\gswin64c.exe"
 
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
@@ -252,7 +249,6 @@ Inside command, start and end will be bound to the results of those forms."
     "F" 'w3m-follow-hint-new-tab
     "b" 'evil-backward-word-begin
     (kbd "<backspace>") 'w3m-view-previous-page 
-
     "gg" 'evil-goto-first-line
     "G" 'evil-goto-line
     "d" 'w3m-delete-buffer
@@ -260,30 +256,11 @@ Inside command, start and end will be bound to the results of those forms."
     "j" 'w3m-scroll-up
     "k" 'w3m-scroll-down
     "l" 'w3m-next-buffer
+    "H" 'w3m-view-previous-page
     "K" 'other-window
-
+    "L" 'w3m-view-next-page
     (kbd "C-e") 'w3m-scroll-up
     (kbd "C-y") 'w3m-scroll-down)))
- 
-(defun setup-my-w3m-keymap
-  "Use my customized map."
-  (interactive)
-  (define-key w3m-mode-map "h" 'w3m-history)
-  (define-key w3m-mode-map "t" 'w3m-scroll-down-or-previous-url)
-  (define-key w3m-mode-map "n" 'w3m-scroll-up-or-next-url)
-  ;; I don't often w3m to edit pages, so I'm borrowing o and e (right
-  ;; below , / . for tab navigation) for page navigation instead.
-  (define-key w3m-mode-map "o" 'w3m-view-previous-page)
-  (define-key w3m-mode-map "e" 'w3m-view-next-page)
-  ;; Browse in new sessions by default
-  (define-key w3m-mode-map (kbd "RET") 'w3m-view-this-url-new-session)
-  (define-key w3m-mode-map [(shift return)] 'w3m-view-this-url)
-  (define-key w3m-mode-map "g" 'w3m-goto-url)
-  (define-key w3m-mode-map "G" 'w3m-goto-url-new-session)
-  )
-
-;(autoload 'w3m-browse-url "w3m" "Ask a WWW browser to show a URL." t)
-;(global-set-key "\C-xm" 'browse-url-at-point)
 
 
 
@@ -312,6 +289,7 @@ Inside command, start and end will be bound to the results of those forms."
 
 
 ; OPENWITH CUSTOMIZATIONS
+
 (when (require 'openwith nil 'noerror)
   (setq openwith-associations (list
          (list (openwith-make-extension-regexp '("mpg" "mpeg" "mp3" "flac" "m4a"
@@ -433,49 +411,9 @@ Inside command, start and end will be bound to the results of those forms."
 ;that evil switches to insert state after entering a calc buffer (see evil_customizations)
 (define-key calc-mode-map "K" 'other-window)
 
-;; (defadvice calc-dispatch (after calc-go-into-insert-state activate)
-;;   (evil-insert-state))
-
 ;use the latex calc language when the buffer is in org-mode (calc embedded)
 (add-to-list 'calc-language-alist '(org-mode . latex))
 
-(define-key evil-normal-state-map "gh" (kbd "M-0 C-x * e C-x * x"))
-  ;; (lambda ()
-  ;;   (interactive)
-  ;;   (calc-dispatch 0)))
-
-
-
-;; (eval-after-load 'calc
-;;   '(progn
-;;     ;; (let ((overriding-calc-map (make-sparse-keymap)))
-;;     ;;   (define-key overriding-calc-map (kbd "<tab>") 'calc-roll-up)
-;;     ;;   (define-key overriding-calc-map (kbd "S-<tab>") 'calc-roll-down)
-;;       (evil-make-overriding-map calc-mode-map 'insert t)))
-      ;; (define-key calc-mode-map "j" 'next-line)
-      ;; (define-key calc-mode-map "k" 'previous-line)
-      ;; (define-key calc-mode-map "K" 'other-window)))
-
-  ;; (define-key calc-mode-map "_" 'calc-auto-algebraic-entry)
-  ;; (define-key calc-mode-map "d" 'calcDigit-start)
-  ;; (define-key calc-mode-map "g" 'calc-info)
-  ;; (define-key calc-mode-map "l" 'calc-change-sign)
-  ;; (define-key calc-mode-map "x" 'calc-quit)
-  ;; (define-key calc-mode-map "T" 'nil)
-  ;; (define-key calc-mode-map "T?" 'calc-shift-Y-prefix-help)
-  ;; (define-key calc-mode-map "{" 'calc-help)
-
-
-
-
-
-; SCALA CUSTOMIZATIONS
-
-;(add-to-list 'load-path "~/.emacs.d/scala/scala-mode2")
-;(require 'scala-mode2)
-;(add-to-list 'load-path "~/.emacs.d/scala/ensime/elisp")
-;(require 'ensime)
-;(add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
 
 
 ; MAIL CUSTOMIZATIONS
@@ -529,18 +467,6 @@ Inside command, start and end will be bound to the results of those forms."
 
 (eval-after-load 'gnus-msg
   '(progn
-     ;; use the standard gnus-group-mode bindings as a base
-     (evil-make-overriding-map gnus-group-mode-map 'normal t)
-     (evil-add-hjkl-bindings gnus-group-mode-map  'normal
-      ;"h" overrides gnus-summary-select-article-buffer
-      ;"j" overrides gnus-group-jump-to-group
-      ;"k" overrides nothing
-      ;"l" overrides gnus-group-jump-to-group
-       "K" 'other-window                 ;overrides nothing
-       "H" 'evil-window-top              ;overrides gnus-group-help-map  
-       "M" 'evil-window-middle           ;overrides gnus-group-mark-map  
-       "L" 'evil-window-bottom)
-
      ;; use the standard gnus-summary-mode bindings as a base
      (evil-make-overriding-map gnus-summary-mode-map 'normal t)
      (evil-add-hjkl-bindings gnus-summary-mode-map  'normal
