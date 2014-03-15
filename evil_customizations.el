@@ -57,20 +57,19 @@
 (define-key evil-normal-state-map (kbd   "<return>") (lambda (count) (interactive "p") (evil-open-below count) (evil-normal-state)))
 (define-key evil-normal-state-map (kbd "S-<return>") (lambda (count) (interactive "p") (evil-open-above count) (evil-normal-state) (previous-line (- count 1))))
 
-(defun evil-tab (count)
-  "Performs the most appropriate of the following:
-move to next table cell, calc-roll-down, shell completion, indent, or evil-complete"
-  (interactive "p")
-  (if (org-at-table-p 'any)
-    (org-cycle)
-    (case major-mode
-      ('calc-mode (calc-roll-down 2))
-      ('shell-mode (completion-at-point))
-      (otherwise
-        (let ((bol-to-point (buffer-substring-no-properties (line-beginning-position) (point))))
+(defun evil-tab ()
+  "Performs the most appropriate tab function for the current mode and cursor position"
+  (interactive)
+  (cond
+    ((and (org-at-table-p 'any) (symbol-value 'orgtbl-mode))
+      (org-cycle))
+    ((memq major-mode '(org-mode calc-mode shell-mode eshell-mode))
+      (call-interactively (local-key-binding "\t")))
+    (t
+      (let ((bol-to-point (buffer-substring-no-properties (line-beginning-position) (point))))
           (if (string-match "^[ \t]*$" bol-to-point)
             (insert-char ?\s tab-width)
-            (evil-complete-next)))))))
+            (call-interactively 'dabbrev-expand))))))
 
 (define-key evil-insert-state-map (kbd "<tab>") 'evil-tab)
 
