@@ -54,7 +54,7 @@
   "Performs the most appropriate tab function for the current mode and cursor position"
   (interactive)
   (cond
-    ((and (org-at-table-p 'any) (symbol-value 'orgtbl-mode))
+    ((and (org-at-table-p 'any) (boundp 'orgtbl-mode) (symbol-value 'orgtbl-mode))
       (org-cycle))
     ((memq major-mode '(org-mode calc-mode shell-mode eshell-mode))
       (call-interactively (local-key-binding "\t")))
