@@ -22,8 +22,7 @@
 (global-set-key (kbd "C-h a") 'apropos)
 
 (defun window-top-or-bottom ()
-  "Figure out if the current window is on top, bottom or in the
-middle"
+  "Figure out if the current window is on top, bottom or in the middle"
   (let* ((this-window-y-min (nth 1 (window-edges)))
 	     (this-window-y-max (nth 3 (window-edges))))
     (cond
@@ -32,8 +31,7 @@ middle"
      (t 'mid)))) 
 
 (defun window-left-or-right ()
-  "Figure out if the current window is to the left, right or in the
-middle"
+  "Figure out if the current window is to the left, right or in the middle"
   (interactive)
   (let* ((this-window-x-min (nth 0 (window-edges)))
 	     (this-window-x-max (nth 2 (window-edges))))
@@ -42,20 +40,28 @@ middle"
      ((eq (+ (frame-width) 3) this-window-x-max) 'right)
      (t 'mid))))
 
-(defun move-horizontal-inner-edge-vertically (delta)
+(defun move-horizontal-edge-vertically (delta)
   (case (window-top-or-bottom) 
-    ('top    (window-resize (get-buffer-window) delta nil))
-    ('bottom (window-resize (get-buffer-window) (- delta) nil))))
+    ('top    (window-resize (get-buffer-window) (- delta) nil))
+    ('bottom (window-resize (get-buffer-window)    delta  nil))
+    ('mid
+      (if (> delta 0)
+        (window-resize (window-in-direction 'above) (- delta) nil)
+        (window-resize (window-in-direction 'below)    delta  nil)))))
 
-(defun move-vertical-inner-edge-horizontally (delta)
+(defun move-vertical-edge-horizontally (delta)
   (case (window-left-or-right)
-    ('left  (window-resize (get-buffer-window) delta t))
-    ('right (window-resize (get-buffer-window) (- delta) t))))
+    ('right (window-resize (get-buffer-window) (- delta) t))
+    ('left  (window-resize (get-buffer-window)    delta  t))
+    ('mid
+      (if (> delta 0)
+        (window-resize (window-in-direction 'right) (- delta) t)
+        (window-resize (window-in-direction 'left )    delta  t)))))
 
-(global-set-key (kbd "M-J") (lambda (prefix-arg) (interactive "p") (move-horizontal-inner-edge-vertically    prefix-arg)))
-(global-set-key (kbd "M-K") (lambda (prefix-arg) (interactive "p") (move-horizontal-inner-edge-vertically (- prefix-arg))))
-(global-set-key (kbd "M-L") (lambda (prefix-arg) (interactive "p") (move-vertical-inner-edge-horizontally    prefix-arg)))
-(global-set-key (kbd "M-H") (lambda (prefix-arg) (interactive "p") (move-vertical-inner-edge-horizontally (- prefix-arg))))
+(global-set-key (kbd "M-K") (lambda (prefix-arg) (interactive "p") (move-horizontal-edge-vertically    prefix-arg)))
+(global-set-key (kbd "M-J") (lambda (prefix-arg) (interactive "p") (move-horizontal-edge-vertically (- prefix-arg))))
+(global-set-key (kbd "M-L") (lambda (prefix-arg) (interactive "p") (move-vertical-edge-horizontally    prefix-arg)))
+(global-set-key (kbd "M-H") (lambda (prefix-arg) (interactive "p") (move-vertical-edge-horizontally (- prefix-arg))))
 
    
 (setq ctags-extensions "*.h *.c*")                                ;variable only used in this file
