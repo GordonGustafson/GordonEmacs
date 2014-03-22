@@ -39,7 +39,7 @@
  
 (global-set-key (kbd "<f5>") 'evil-local-mode)
 (define-key evil-normal-state-map "Y" 'evil-yank-end-of-line)
-(define-key evil-normal-state-map (kbd "<backspace>") 'evil-delete-backward-char)
+(define-key evil-normal-state-map (kbd "<backspace>") 'delete-backward-char)
 (define-key evil-normal-state-map " " (lambda (count) (interactive "p") (evil-without-repeat
   (when (not (looking-at "\n")) (forward-char)) (self-insert-command count) (backward-char))))
 (define-key evil-normal-state-map (kbd "S-<SPC>")    (lambda (count) (interactive "p") (evil-without-repeat
