@@ -33,21 +33,38 @@
   (interactive "<R><x>")
   (evil-yank (point) (line-end-position) nil register))
 
+(evil-define-operator evil-delete-char-no-repeat (beg end type register)
+  "Delete next character."
+  :motion evil-forward-char
+  (interactive "<R><x>")
+  (evil-without-repeat
+    (evil-delete beg end type register)))
+
+(defmacro evil-without-repeat-prefix-arg (&rest body)
+  "Wraps BODY in a evil-without-repeat inside lambda taking a numeric prefix argument COUNT."
+  `(lambda (count)
+     (interactive "p")
+     (evil-without-repeat
+       ,@body)))
+
 ;(define-key evil-normal-state-map "K" 'other-window)
 ;hack to stop ever calling evil-lookup (it still gets called sometimes even after K is remapped)
 (substitute-key-definition 'evil-lookup 'gordon-other-window evil-motion-state-map)
  
 (global-set-key (kbd "<f5>") 'evil-local-mode)
 (define-key evil-normal-state-map "Y" 'evil-yank-end-of-line)
-(define-key evil-normal-state-map (kbd "<backspace>") 'delete-backward-char)
-(define-key evil-normal-state-map " " (lambda (count) (interactive "p") (evil-without-repeat
-  (when (not (looking-at "\n")) (forward-char)) (self-insert-command count) (backward-char))))
-(define-key evil-normal-state-map (kbd "S-<SPC>")    (lambda (count) (interactive "p") (evil-without-repeat
-  (self-insert-command count) (backward-char count))))
-(define-key evil-normal-state-map (kbd   "<return>") (lambda (count) (interactive "p") (evil-without-repeat
-  (loop repeat count do (evil-insert-newline-below)))))
-(define-key evil-normal-state-map (kbd "S-<return>") (lambda (count) (interactive "p") (evil-without-repeat
-  (loop repeat count do (evil-insert-newline-above)))))
+(define-key evil-normal-state-map "x" 'evil-delete-char-no-repeat)
+(define-key evil-normal-state-map (kbd "<backspace>")
+  (evil-without-repeat-prefix-arg (delete-backward-char count)))
+(define-key evil-normal-state-map " "
+  (evil-without-repeat-prefix-arg (when (not (looking-at "\n")) (forward-char))
+                                  (self-insert-command count) (backward-char)))
+(define-key evil-normal-state-map (kbd "S-<SPC>")
+  (evil-without-repeat-prefix-arg (self-insert-command count) (backward-char count)))
+(define-key evil-normal-state-map (kbd "<return>")
+  (evil-without-repeat-prefix-arg (loop repeat count do (evil-insert-newline-below))))
+(define-key evil-normal-state-map (kbd "S-<return>")
+  (evil-without-repeat-prefix-arg (loop repeat count do (evil-insert-newline-above))))
 
 
 (defun evil-tab ()
