@@ -11,6 +11,8 @@
 (setq-default evil-symbol-word-search t)
 ;allow f and t commands to find characters beyond the current line
 (setq evil-cross-lines t)
+;evil window commands shouldn't auto-equalize window sizes
+(setq evil-auto-balance-windows nil)
 
 (defadvice other-window (after switch-to-normal-state-in-non-calc-buffers activate)
   "Switch evil to normal state in the new buffer unless it is in calc-mode"
