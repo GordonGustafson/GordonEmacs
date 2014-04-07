@@ -35,29 +35,25 @@
   (interactive "<R><x>")
   (evil-yank (point) (line-end-position) nil register))
 
-(evil-define-operator evil-delete-char-no-repeat (beg end type register)
-  "Delete next character."
-  :motion evil-forward-char
-  (interactive "<R><x>")
-  (evil-without-repeat
-    (evil-delete beg end type register)))
-
 (defmacro evil-without-repeat-prefix-arg (&rest body)
-  "Wraps BODY in a evil-without-repeat inside lambda taking a numeric prefix argument COUNT."
-  `(lambda (count)
-     (interactive "p")
-     (evil-without-repeat
-       ,@body)))
+  "Defines an anonymous evil command that is not added to the repeat ring
+and takes a numeric prefix argument COUNT."
+  (let ((command-name (make-symbol "inner-name"))) ; use a throwaway name
+    `(evil-define-command ,command-name (count)
+       :repeat nil
+       (interactive "p")
+         ,@body)))
+
+(evil-declare-ignore-repeat 'evil-delete-char)
+(evil-declare-ignore-repeat 'evil-delete-backward-char)
 
 ;(define-key evil-normal-state-map "K" 'other-window)
 ;hack to stop ever calling evil-lookup (it still gets called sometimes even after K is remapped)
 (substitute-key-definition 'evil-lookup 'gordon-other-window evil-motion-state-map)
- 
+
 (global-set-key (kbd "<f5>") 'evil-local-mode)
 (define-key evil-normal-state-map "Y" 'evil-yank-end-of-line)
-(define-key evil-normal-state-map "x" 'evil-delete-char-no-repeat)
-(define-key evil-normal-state-map (kbd "<backspace>")
-  (evil-without-repeat-prefix-arg (delete-backward-char count)))
+(define-key evil-normal-state-map (kbd "<backspace>") 'evil-delete-backward-char)
 (define-key evil-normal-state-map " "
   (evil-without-repeat-prefix-arg (when (not (looking-at "\n")) (forward-char))
                                   (self-insert-command count) (backward-char)))
@@ -69,8 +65,9 @@
   (evil-without-repeat-prefix-arg (loop repeat count do (evil-insert-newline-above))))
 
 
-(defun evil-tab ()
-  "Performs the most appropriate tab function for the current mode and cursor position"
+(evil-define-command evil-tab ()
+  "Calls the most appropriate tab function for current mode and cursor position"
+  :repeat nil
   (interactive)
   (cond
     ((and (org-at-table-p 'any) (boundp 'orgtbl-mode) (symbol-value 'orgtbl-mode))
