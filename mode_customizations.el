@@ -300,6 +300,13 @@ Inside command, start and end will be bound to the results of those forms."
 
 
 
+; IDO CUSTOMIZATIONS
+
+(require 'ido)
+(ido-mode t)
+
+
+
 ; DIRED MODE CUSTOMIZATIONS
 
 ; evil-integration contains a similar version of this.
