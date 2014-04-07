@@ -364,7 +364,7 @@ Inside command, start and end will be bound to the results of those forms."
   (with-current-buffer (get-buffer-create "*ez-shell*")
     (let ((shell-commands-to-run (buffer-substring-no-properties (point-min) (point-max))))
       (if (string= shell-commands-to-run "")
-        (message "*ez-shell* buffer is empty")
+        (pop-to-buffer "*ez-shell*")
         (let* ((commands (split-string shell-commands-to-run "\n" t))
                (results (loop for command in commands collect (eshell-command-result command)))
                (report (mapconcat 'identity results "\n")))
