@@ -273,11 +273,17 @@ if [ $1 = .. ]; then shift; fi; exec \"$@\""
 
 (require 'server)
 
-;called with command line argumnts to emacs
+;; called with -funcall argument to emacs
 (defun start-a-server ()
   (interactive)
   (server-edit)
-  (make-frame-invisible nil t))
+  (make-frame-invisible nil t)
+  ;; if we leave this frame on the *scratch* buffer, things like ido-mode
+  ;; will consider it visible and may try to switch to this invisible frame
+  ;; when asked to view *scratch*. Since not all platforms support --daemon,
+  ;; just visit to a buffer we probably won't try to switch to:
+  (switch-to-buffer "*Quail Completions*"))
+
 
 (load "~/.emacs.d/evil_customizations.el")
 (load "~/.emacs.d/mode_customizations.el")
