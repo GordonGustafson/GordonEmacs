@@ -247,8 +247,9 @@ if [ $1 = .. ]; then shift; fi; exec \"$@\""
 (package-refresh-contents)
 (message "%s" " done.")
 
-(defvar gordon-packages '(color-theme org auctex frame-cmds frame-fns bash-completion csharp-mode openwith)
-  "List of packages that will be installed/updated to the latest version of startup")
+(defvar gordon-packages '(color-theme org auctex frame-cmds frame-fns
+                          bash-completion csharp-mode openwith git-commit-mode)
+  "Packages that will be installed/updated to the latest version on startup")
 
 (dolist (package gordon-packages)
   (when (not (package-installed-and-up-to-date-p package))

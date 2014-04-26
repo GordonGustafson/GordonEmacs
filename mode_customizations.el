@@ -412,6 +412,8 @@ Inside command, start and end will be bound to the results of those forms."
 ;(setq python-python-command "C:/Python31/python3.1.exe")
 ;(setq python-shell-interpreter "C:/Python31/python3.1.exe")
 
+
+
 ; CALC MODE CUSTOMIZATIONS
 
 (require 'calc)
