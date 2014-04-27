@@ -395,6 +395,7 @@ Inside command, start and end will be bound to the results of those forms."
 ;use the latex calc language when the buffer is in org-mode (calc embedded)
 (add-to-list 'calc-language-alist '(org-mode . latex))
 
+(add-to-list 'evil-insert-state-modes 'calc-mode)
 
 
 ; MAIL CUSTOMIZATIONS
