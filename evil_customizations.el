@@ -65,14 +65,20 @@ and takes a numeric prefix argument COUNT."
   (evil-without-repeat-prefix-arg (loop repeat count do (evil-insert-newline-above))))
 
 
+(defun in-org-or-orgtbl-mode ()
+  (or (and (boundp 'orgtbl-mode) (symbol-value 'orgtbl-mode))
+      (eq major-mode 'org-mode)))
+
 (evil-define-command evil-tab ()
   "Calls the most appropriate tab function for current mode and cursor position"
   :repeat nil
   (interactive)
   (cond
-    ((and (org-at-table-p 'any) (boundp 'orgtbl-mode) (symbol-value 'orgtbl-mode))
+    ((and (in-org-or-orgtbl-mode) (org-at-table-p 'any))
       (org-cycle))
-    ((memq major-mode '(org-mode calc-mode shell-mode eshell-mode))
+    ((memq major-mode '(calc-mode shell-mode eshell-mode))
+      (call-interactively (local-key-binding "\t")))
+    ((and (memq major-mode '(org-mode)) (not (eq evil-state 'insert)))
       (call-interactively (local-key-binding "\t")))
     (t
       (let ((bol-to-point (buffer-substring-no-properties (line-beginning-position) (point))))
@@ -81,6 +87,10 @@ and takes a numeric prefix argument COUNT."
             (call-interactively 'dabbrev-expand))))))
 
 (define-key evil-insert-state-map (kbd "<tab>") 'evil-tab)
+(define-key evil-normal-state-map (kbd "<tab>") 'evil-tab)
+(add-hook 'org-mode-hook (lambda ()
+                           (define-key org-mode-map (kbd "<tab>") 'evil-tab)))
+
 
 (define-key evil-insert-state-map (kbd "C-p") 'previous-line) 
 (define-key evil-insert-state-map (kbd "C-n") 'next-line) 
