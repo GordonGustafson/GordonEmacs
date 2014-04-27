@@ -83,7 +83,7 @@ and takes a numeric prefix argument COUNT."
     (t
       (let ((bol-to-point (buffer-substring-no-properties (line-beginning-position) (point))))
           (if (string-match "^[ \t]*$" bol-to-point)
-            (insert-char ?\s tab-width)
+            (indent-for-tab-command)
             (call-interactively 'dabbrev-expand))))))
 
 (define-key evil-insert-state-map (kbd "<tab>") 'evil-tab)
