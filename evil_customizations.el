@@ -1,6 +1,7 @@
 ;this file contains Gordon's customizations for EVIL
 
 (add-to-list 'load-path "~/.emacs.d/evil")
+(add-to-list 'load-path "~/.emacs.d/evil/lib")
 (require 'evil)
 (evil-mode 1)
 
