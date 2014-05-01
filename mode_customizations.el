@@ -164,15 +164,6 @@ Inside command, start and end will be bound to the results of those forms."
                                        (output-pdf "sumatra")
                                        (output-html "start")))
 
-(add-hook 'org-mode-hook 
-  (lambda () 
-    (add-hook 'after-save-hook
-      (lambda () 
-        (if (file-exists-p (concat (file-name-sans-extension buffer-file-name) ".tex"))
-          (org-latex-export-to-latex 1))
-    ) nil t)))
-
-
 (setq org-export-async-debug t)
 (defvar *latexmk-process* nil)
 
