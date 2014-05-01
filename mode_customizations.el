@@ -152,18 +152,8 @@ Inside command, start and end will be bound to the results of those forms."
 
 (define-key org-mode-map (kbd "C-c e") 'LaTeX-environment)
 
-(unless (boundp 'org-export-latex-classes)
-  (setq org-export-latex-classes nil))
-(add-to-list 'org-export-latex-classes
-             '("article"
-               "\\documentclass{article}"
-               ("\\section{%s}" . "\\section*{%s}")))
-
 ;remove this font package because it provides a definition for iint that conflicts with amsmath (causes error)
 (setq org-latex-default-packages-alist (delete '("" "wasysym" t) org-latex-default-packages-alist)) 
-
-;(setcdr (assoc "\\.pdf\\'" org-file-apps) "C:\\\"Program Files (x86)\"\\SumatraPDF\\SumatraPDF.exe %s")
-(setq org-latex-to-pdf-process (list "latexmk -f -pvc -pdf %f"))
 
 ;assumes batch file sumatra is somewhere on $PATH
 (setq TeX-view-program-list '(("sumatra" "sumatra -zoom 100% %o")))
