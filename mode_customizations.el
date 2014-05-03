@@ -317,9 +317,15 @@ Inside command, start and end will be bound to the results of those forms."
 
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 
+(setq comint-prompt-read-only t)
+(setq comint-scroll-to-bottom-on-input 'this) ; move to prompt when typing
+(setq comint-input-ignoredups t)              ; no duplicates in command history
+
 
 
 ; ESHELL CUSTOMIZATIONS
+
+(setq eshell-scroll-to-bottom-on-input 'this) ; move to prompt when typing
 
 
 
