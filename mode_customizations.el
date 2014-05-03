@@ -9,9 +9,9 @@
 (setq preview-image-type 'pnm) ;solves error: preview-image-type setting 'png unsupported by this Emacs
 (setq preview-gs-options '("-q" "-dNOSAFER" "-dNOPAUSE" "-DNOPLATFONTS" "-dPrinted" "-dTextAlphaBits=4" "-dGraphicsAlphaBits=4")) ;switch to NOSAFER is need to make preview work????
 
-(setq TeX-auto-save t)
-(setq TeX-parse-self t)
-(setq-default TeX-master nil)
+(setq TeX-parse-self t) ; parse file on load in order to apply style hooks
+(setq TeX-auto-save t)  ; save that parsed data in 'auto' folder when saving
+(setq-default TeX-master nil) ; ask for master file if needed
 
 ;(add-hook 'LaTeX-mode-hook 'turn-on-reftex)
 ;(setq reftex-plug-into-AUCTeX t)
