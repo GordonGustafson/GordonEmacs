@@ -317,22 +317,6 @@ Inside command, start and end will be bound to the results of those forms."
 
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 
-; shells has its own autocomplete, so use it by letting the tab key go through: 
-;; (add-hook 'shell-mode-hook 
-;;   (lambda 
-;;     (define-key evil-insert-state-map (kbd "<tab>") 'self-insert-command)))
-
-;; (setq explicit-shell-file-name "fakecygpty")
-;; (setq explicit-fakecgypty-args "cmd")
-
-;; (autoload 'bash-completion-dynamic-complete 
-;;   "bash-completion"
-;;   "BASH completion hook")
-;; (add-hook 'shell-dynamic-complete-functions
-;;   'bash-completion-dynamic-complete)
-;; (add-hook 'shell-command-complete-functions
-;;   'bash-completion-dynamic-complete)
-
 
 
 ; ESHELL CUSTOMIZATIONS
