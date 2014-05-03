@@ -9,9 +9,9 @@
 (setq preview-image-type 'pnm) ;solves error: preview-image-type setting 'png unsupported by this Emacs
 (setq preview-gs-options '("-q" "-dNOSAFER" "-dNOPAUSE" "-DNOPLATFONTS" "-dPrinted" "-dTextAlphaBits=4" "-dGraphicsAlphaBits=4")) ;switch to NOSAFER is need to make preview work????
 
-(setq TeX-auto-save t)
-(setq TeX-parse-self t)
-(setq-default TeX-master nil)
+(setq TeX-parse-self t) ; parse file on load in order to apply style hooks
+(setq TeX-auto-save t)  ; save that parsed data in 'auto' folder when saving
+(setq-default TeX-master nil) ; ask for master file if needed
 
 ;(add-hook 'LaTeX-mode-hook 'turn-on-reftex)
 ;(setq reftex-plug-into-AUCTeX t)
@@ -152,18 +152,8 @@ Inside command, start and end will be bound to the results of those forms."
 
 (define-key org-mode-map (kbd "C-c e") 'LaTeX-environment)
 
-(unless (boundp 'org-export-latex-classes)
-  (setq org-export-latex-classes nil))
-(add-to-list 'org-export-latex-classes
-             '("article"
-               "\\documentclass{article}"
-               ("\\section{%s}" . "\\section*{%s}")))
-
 ;remove this font package because it provides a definition for iint that conflicts with amsmath (causes error)
 (setq org-latex-default-packages-alist (delete '("" "wasysym" t) org-latex-default-packages-alist)) 
-
-;(setcdr (assoc "\\.pdf\\'" org-file-apps) "C:\\\"Program Files (x86)\"\\SumatraPDF\\SumatraPDF.exe %s")
-(setq org-latex-to-pdf-process (list "latexmk -f -pvc -pdf %f"))
 
 ;assumes batch file sumatra is somewhere on $PATH
 (setq TeX-view-program-list '(("sumatra" "sumatra -zoom 100% %o")))
@@ -174,26 +164,7 @@ Inside command, start and end will be bound to the results of those forms."
                                        (output-pdf "sumatra")
                                        (output-html "start")))
 
-(add-hook 'org-mode-hook 
-  (lambda () 
-    (add-hook 'after-save-hook
-      (lambda () 
-        (if (file-exists-p (concat (file-name-sans-extension buffer-file-name) ".tex"))
-          (org-latex-export-to-latex 1))
-    ) nil t)))
-
-
 (setq org-export-async-debug t)
-(defvar *latexmk-process* nil)
-
-(defun latexmk ()
-  (interactive "")
-  (org-latex-export-to-latex 1)
-  (setq *latexmk-process* (start-process-shell-command "latexmk process" nil (concat "latexmk -f -pvc -pdf \"" (concat (file-name-sans-extension buffer-file-name) ".tex") "\""))))
-
-(defun latexmk-cleanup ()
-  (interactive "")
-  (shell-command "latexmk cleanup process" nil "latexmk -c"))
 
 
 
@@ -345,22 +316,6 @@ Inside command, start and end will be bound to the results of those forms."
 ; SHELL MODE CUSTOMIZATIONS
 
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
-
-; shells has its own autocomplete, so use it by letting the tab key go through: 
-;; (add-hook 'shell-mode-hook 
-;;   (lambda 
-;;     (define-key evil-insert-state-map (kbd "<tab>") 'self-insert-command)))
-
-;; (setq explicit-shell-file-name "fakecygpty")
-;; (setq explicit-fakecgypty-args "cmd")
-
-;; (autoload 'bash-completion-dynamic-complete 
-;;   "bash-completion"
-;;   "BASH completion hook")
-;; (add-hook 'shell-dynamic-complete-functions
-;;   'bash-completion-dynamic-complete)
-;; (add-hook 'shell-command-complete-functions
-;;   'bash-completion-dynamic-complete)
 
 
 
