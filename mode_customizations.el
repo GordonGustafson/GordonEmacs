@@ -165,16 +165,6 @@ Inside command, start and end will be bound to the results of those forms."
                                        (output-html "start")))
 
 (setq org-export-async-debug t)
-(defvar *latexmk-process* nil)
-
-(defun latexmk ()
-  (interactive "")
-  (org-latex-export-to-latex 1)
-  (setq *latexmk-process* (start-process-shell-command "latexmk process" nil (concat "latexmk -f -pvc -pdf \"" (concat (file-name-sans-extension buffer-file-name) ".tex") "\""))))
-
-(defun latexmk-cleanup ()
-  (interactive "")
-  (shell-command "latexmk cleanup process" nil "latexmk -c"))
 
 
 
