@@ -1,4 +1,4 @@
-#!/bin/evn bash
+#!/bin/env bash
 
 read -r -d '' awk_add_newlines <<"EOF"
 {
