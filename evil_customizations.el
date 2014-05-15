@@ -19,7 +19,7 @@
   "Switch evil to normal state in the new buffer unless it is in calc-mode"
   (if (eq major-mode 'calc-mode)
      (evil-insert-state)
-     (evil-normal-state))) 
+     (evil-normal-state)))
 
 (defun gordon-other-window (&optional n)
   "Select next window. Numeric prefix arg of 4 (C-u) selects previous window, but all other prefixes work normally."
@@ -99,11 +99,11 @@ and takes a numeric prefix argument COUNT."
       ad-do-it)))
 
 
-(define-key evil-insert-state-map (kbd "C-p") 'previous-line) 
-(define-key evil-insert-state-map (kbd "C-n") 'next-line) 
-(define-key evil-insert-state-map (kbd "C-e") 'end-of-line) 
+(define-key evil-insert-state-map (kbd "C-p") 'previous-line)
+(define-key evil-insert-state-map (kbd "C-n") 'next-line)
+(define-key evil-insert-state-map (kbd "C-e") 'end-of-line)
 (define-key evil-insert-state-map (kbd "RET") 'newline-and-indent)
- 
+
 (evil-ex-define-cmd "W[rite]" 'evil-write)   ; add CAPITAL versions of commonly used ex commands
 (evil-ex-define-cmd "S[ubstitute]" 'evil-ex-substitute)
 
@@ -143,7 +143,7 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
 
 (gordon-define-text-object "$" "\\$" "\\$")
 (gordon-define-text-object "|" "|" "|")
- 
+
 (defun distance-to-next-match (regex)
   "Returns the next position of regex in buffer without moving point.
    Returns nil if regex does not appear in buffer."
@@ -161,7 +161,7 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
           (reduce (lambda (old-closest-match delim-regex)
                   (let ((current-match (distance-to-next-match delim-regex)))
                     (if (null current-match)
-                      (progn 
+                      (progn
                         (delq delim-regex delims)
                         old-closest-match)
                       (if (< current-match old-closest-match)
@@ -190,7 +190,7 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
       (destructuring-bind (current-delim . current-delim-position) (get-next-delimiter all-delims)
       (when (null current-delim) ;we've searched the whole buffer
         (if (null delim-stack)   ;if there are no unmatched delimeters
-          (return)               
+          (return)
           (progn
             (message "File ended before all delimiters were matched")
             (goto-char last-position))))
@@ -201,16 +201,16 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
         (if (member current-delim close-delims)
           (if (equal (position (car delim-stack) open-delims) (position current-delim close-delims))
             (setq delim-stack (cdr delim-stack))
-            (progn 
+            (progn
               (message (format "Unmatched delimiters %s and %s" (car delim-stack) (current-delim)))
               (goto-char current-delim-position)))
           (message "Error is check-matching-delimiters: got a delimeter that does not match any known opening or closing delimeters"))))
     (message "All delimiters match. YAY!"))))
-          
+
 
   ;;   (Let ((next-delim-location (point-max))
   ;;         (next-delim))
-  ;;   (save-excursion 
+  ;;   (save-excursion
   ;;     (loop for (start-delim . end-delim) in gordon-matching-delimiters do
   ;;       (let ((next-open-delim-location (re-search-forward start-delim))
   ;;            (next-close-delim-location (re-search-forward end-delim)))
@@ -218,7 +218,7 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
   ;;         (when (< (next-open-delim-location) (next-delim-location))
   ;;           (setq next-delim-location next-open-delim-location)
   ;;           (setq next-delim-location next-open-delim-location)
-            
+
   ;;       )
   ;; )))))
   ;;       minimizing (min (re-search-forward start-delim) (re-search-forward end-delim)) into next-delim

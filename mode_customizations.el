@@ -18,7 +18,7 @@
 
 (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
 (add-hook 'LaTeX-mode-hook (lambda ()
-  (push 
+  (push
     '("latexmk" "latexmk -pvc -pdf -f %s" TeX-run-TeX nil t
       :help "Run Latexmk on file")
     TeX-command-list)))
@@ -27,7 +27,7 @@
 
 (defface font-latex-verbatim-face
   (let ((font (if (and (assq :inherit custom-face-attributes))
-	             '(:family "consolas"))))
+                 '(:family "consolas"))))
  `((((class grayscale) (background light))
    (:foreground "DimGray" ,@font))
   (((class grayscale) (background dark))
@@ -121,19 +121,19 @@ Inside command, start and end will be bound to the results of those forms."
 (set-face-attribute 'org-level-3 nil ':foreground "PaleGreen")
 
 (setq org-support-shift-select t)
-(setq org-startup-folded 'showall) ;show everything on startup 
+(setq org-startup-folded 'showall) ;show everything on startup
 (setq org-startup-truncated nil)   ;don't wrap lines
 (setq org-log-done t)              ;insert a timestamp when a task is marked as finished
 (setq org-M-RET-may-split-line nil)
 (define-key global-map "\C-cl" 'org-store-link)
 (define-key global-map "\C-ca" 'org-agenda)
 (add-hook 'org-mode-hook (lambda ()
-		     (org-indent-mode t)) t)
+             (org-indent-mode t)) t)
 
 (setq org-directory "~\\org")       ;not used often by org
 
 (setq org-agenda-file-regexp ".*\\.org")    ;include all org files in listed directories
-(setq org-agenda-files (list "~\\org"        
+(setq org-agenda-files (list "~\\org"
                              "~\\Dropbox\\orgmode"))
 
 (setq org-mobile-checksum-binary (or (executable-find "shasum")
@@ -153,7 +153,7 @@ Inside command, start and end will be bound to the results of those forms."
 (define-key org-mode-map (kbd "C-c e") 'LaTeX-environment)
 
 ;remove this font package because it provides a definition for iint that conflicts with amsmath (causes error)
-(setq org-latex-default-packages-alist (delete '("" "wasysym" t) org-latex-default-packages-alist)) 
+(setq org-latex-default-packages-alist (delete '("" "wasysym" t) org-latex-default-packages-alist))
 
 ;assumes batch file sumatra is somewhere on $PATH
 (setq TeX-view-program-list '(("sumatra" "sumatra -zoom 100% %o")))
@@ -224,13 +224,13 @@ Inside command, start and end will be bound to the results of those forms."
   (defvar w3m-mode-map)
   (evil-make-overriding-map w3m-lnum-mode-map 'normal t)
   (evil-make-overriding-map w3m-mode-map 'normal t)
-  (evil-define-key 'normal w3m-mode-map 
+  (evil-define-key 'normal w3m-mode-map
     "o" 'w3m-search
     "t" 'w3m-search-new-tab
 ;   "f" 'w3m-view-this-url  w3m-lnum handles this
     "F" 'w3m-follow-hint-new-tab
     "b" 'evil-backward-word-begin
-    (kbd "<backspace>") 'w3m-view-previous-page 
+    (kbd "<backspace>") 'w3m-view-previous-page
     "gg" 'evil-goto-first-line
     "G" 'evil-goto-line
     "d" 'w3m-delete-buffer
@@ -293,8 +293,8 @@ Inside command, start and end will be bound to the results of those forms."
      (evil-make-overriding-map dired-mode-map 'normal t)
      (evil-add-hjkl-bindings dired-mode-map 'normal
        "J" 'dired-goto-file
-       "K" 'other-window  
-       "r" 'dired-do-redisplay 
+       "K" 'other-window
+       "r" 'dired-do-redisplay
        ; move to the first real thing in the folder:
        "H" (lambda () (interactive) (evil-window-top) (evil-next-line 4) (evil-end-of-line))
        "M" (lambda () (interactive) (evil-window-middle) (evil-end-of-line))
@@ -389,7 +389,7 @@ Inside command, start and end will be bound to the results of those forms."
   (evil-normal-state))
 
 (setq gnus-select-method '(nnimap "gmail"
-  (nnimap-address "imap.gmail.com")  
+  (nnimap-address "imap.gmail.com")
   (nnimap-server-port 993)
   (nnimap-stream ssl)
   (nnimap-authinfo-file "~/.authinfo")))
@@ -435,6 +435,6 @@ Inside command, start and end will be bound to the results of those forms."
       ;"k"                           ;overrides gnus-summary-kill-same-subject-and-select
       ;"l"                           ;overrides gnus-summary-goto-last-article
        "K" 'other-window             ;overrides gnus-summary-mime-map
-       "H" 'evil-window-top          ;overrides gnus-summary-help-map   
-       "M" 'evil-window-middle       ;overrides gnus-summary-mark-map   
+       "H" 'evil-window-top          ;overrides gnus-summary-help-map
+       "M" 'evil-window-middle       ;overrides gnus-summary-mark-map
        "L" 'evil-window-bottom)))    ;overrides gnus-summary-lower-score

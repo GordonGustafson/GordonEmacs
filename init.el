@@ -4,7 +4,7 @@
 
 (make-frame-visible)
 
-(setq frame-title-format "%b - emacs") 
+(setq frame-title-format "%b - emacs")
 
 (global-set-key (kbd "C-<delete>") 'kill-word)
 (global-set-key (kbd "C-x p") 'fill-paragraph)
@@ -13,24 +13,24 @@
 (defun window-top-or-bottom ()
   "Figure out if the current window is on top, bottom or in the middle"
   (let* ((this-window-y-min (nth 1 (window-edges)))
-	     (this-window-y-max (nth 3 (window-edges))))
+         (this-window-y-max (nth 3 (window-edges))))
     (cond
      ((eq 0 this-window-y-min) 'top)
      ((eq (- (frame-height) 1) this-window-y-max) 'bottom)
-     (t 'mid)))) 
+     (t 'mid))))
 
 (defun window-left-or-right ()
   "Figure out if the current window is to the left, right or in the middle"
   (interactive)
   (let* ((this-window-x-min (nth 0 (window-edges)))
-	     (this-window-x-max (nth 2 (window-edges))))
+         (this-window-x-max (nth 2 (window-edges))))
     (cond
      ((eq 0 this-window-x-min) 'left)
      ((eq (+ (frame-width) 3) this-window-x-max) 'right)
      (t 'mid))))
 
 (defun move-horizontal-edge-vertically (delta)
-  (case (window-top-or-bottom) 
+  (case (window-top-or-bottom)
     ('top    (window-resize (get-buffer-window) (- delta) nil))
     ('bottom (window-resize (get-buffer-window)    delta  nil))
     ('mid
@@ -52,7 +52,7 @@
 (global-set-key (kbd "M-L") (lambda (prefix-arg) (interactive "p") (move-vertical-edge-horizontally    prefix-arg)))
 (global-set-key (kbd "M-H") (lambda (prefix-arg) (interactive "p") (move-vertical-edge-horizontally (- prefix-arg))))
 
-   
+
 (setq ctags-extensions "*.h *.c*")                                ;variable only used in this file
 (setq ctags-path "C:\\Users\\GGustafson\\Desktop\\ctags58\\ctags.exe") ;only used in this file
 (setq tags-file-path "")                                          ;only used in this file
@@ -65,7 +65,7 @@
   ;(setq tags-file-path (concat directory-name "TAGS"))
   (let ((directory-name (replace-regexp-in-string "/" "\\\\" (file-name-as-directory raw-directory-name))))
   (message (format "\"%s\" -f \"%sTAGS\" -eR \"%s\" %s" ctags-path directory-name directory-name ctags-extensions))))
-  
+
 ;(defadvice find-tag (before update-tags-before-search activate)
 ;  "Automatically create tags file."
 ;  (unless (file-exists-p tags-file-path)
@@ -142,7 +142,7 @@
 (show-paren-mode 1)
 
 (setq-default indent-tabs-mode nil)
-(setq sentence-end-double-space nil)  
+(setq sentence-end-double-space nil)
 (setq blink-matching-delay .500)
 
 (setq-default tab-width 4)
@@ -175,7 +175,7 @@
 (defun package-installed-and-up-to-date-p (package)
   ;assumes that package-refresh-contents has already been called
   ;also assume all built-in packages are out of date, which is usually true.
-  (if (not (package-installed-p package)) 
+  (if (not (package-installed-p package))
     nil
     (let* ((newest-desc  (cdr (assq package package-archive-contents)))
            (installed-desc (cdr (or (assq package package-alist) (assq package package--builtins))))
