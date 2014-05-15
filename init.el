@@ -55,25 +55,6 @@
 (global-set-key (kbd "M-H") (lambda (prefix-arg) (interactive "p") (move-vertical-edge-horizontally (- prefix-arg))))
 
 
-(setq ctags-extensions "*.h *.c*")                                ;variable only used in this file
-(setq ctags-path "C:\\Users\\GGustafson\\Desktop\\ctags58\\ctags.exe") ;only used in this file
-(setq tags-file-path "")                                          ;only used in this file
-
-(setq tags-revert-without-query t)                                ;revisit TAGS file if it changes on disk
-
-(defun create-tags (raw-directory-name)
-  "create a tags file in the chosen directory for all files in the directory."
-  (interactive "DProject Root Directory: ")
-  ;(setq tags-file-path (concat directory-name "TAGS"))
-  (let ((directory-name (replace-regexp-in-string "/" "\\\\" (file-name-as-directory raw-directory-name))))
-  (message (format "\"%s\" -f \"%sTAGS\" -eR \"%s\" %s" ctags-path directory-name directory-name ctags-extensions))))
-
-;(defadvice find-tag (before update-tags-before-search activate)
-;  "Automatically create tags file."
-;  (unless (file-exists-p tags-file-path)
-;    (shell-command "etags *.[ch] -o TAGS 2>/dev/null"))
-;  (visit-tags-table tag-file)))
-
 (set-face-attribute 'default nil
                     :family "Consolas" :height 100)
 
