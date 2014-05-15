@@ -1,11 +1,7 @@
 ; The init file that loads the other .el files in this directory
 ; It should have path $HOME/.emacs.d/init.el for Emacs to find it automatically
 
-(setq auto-mode-alist (cons '( "\\.cs\\'" . csharp-mode ) auto-mode-alist ))
-(setq c-basic-offset 4)
-
 (make-frame-visible)
-
 (setq frame-title-format "%b - emacs")
 
 (global-set-key (kbd "C-<delete>") 'kill-word)
@@ -65,6 +61,8 @@
   "When interactive, switch to existing buffers only."
   (interactive "b"))  ;only allow buffer names as input
 
+(setq read-buffer-completion-ignore-case t)
+
 
 
 (defun replace-garbage-chars ()
@@ -117,8 +115,6 @@
 (add-to-list 'default-frame-alist '(height . 57))
 (add-to-list 'default-frame-alist '(width . 107))
 
-(setq read-buffer-completion-ignore-case t)
-
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 (menu-bar-mode -1)
@@ -128,18 +124,11 @@
 (setq sentence-end-double-space nil)
 (setq blink-matching-delay .500)
 
-(setq-default tab-width 4)
-
 (setq auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
 (setq backup-directory-alist `(("." . "~/backups")))
 (setq backup-by-copying t)
 
 (put 'narrow-to-region 'disabled nil)
-
-; consider whitespace or * to be valid line prefixes when filling
-; paragraphs. * can be a line prefix in javadoc comments. This variable
-; only applies when the paragraph being filled starts as one line.
-(setq adaptive-fill-first-line-regexp "\\`[ \\t*]*\\'")
 
 
 

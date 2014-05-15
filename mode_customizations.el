@@ -345,6 +345,24 @@ Inside command, start and end will be bound to the results of those forms."
 
 
 
+; GENERAL PROGRAMMING CUSTOMIZATIONS
+
+(setq-default c-basic-offset 4)
+(setq-default tab-width 4)
+
+; consider whitespace or * to be valid line prefixes when filling
+; paragraphs. * can be a line prefix in javadoc comments. This variable
+; only applies when the paragraph being filled starts as one line.
+(setq adaptive-fill-first-line-regexp "\\`[ \\t*]*\\'")
+
+
+
+; C-SHARP (C#) MODE CUSTOMIZATIONS
+
+(setq auto-mode-alist (cons '( "\\.cs\\'" . csharp-mode) auto-mode-alist) )
+
+
+
 ; ARTIST MODE CUSTOMIZATIONS
 
 (defadvice artist-mode (after deactive-evil-for-artist-mode activate)
