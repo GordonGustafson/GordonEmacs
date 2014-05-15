@@ -1,7 +1,6 @@
-;;; This file is for fixing bugs in other Emacs packages.
-;;; It's much easier to keep track of a few massive redefinitions here that may only change a few lines
-;;; rather than have to keep track of small changes directly in the package sources
-
+; Not necessarily bug fixes per se, but 'patches' so things work the way I want.
+; A few massive redifinitions here are easier to keep track of than
+; small tweaks spread across the entire lisp directory.
 
 (require 'ispell)
 

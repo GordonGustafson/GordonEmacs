@@ -1,3 +1,4 @@
+; Gordon's customizations for various Emacs modes
 
 (require 'evil)
 (require 'cl)

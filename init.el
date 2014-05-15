@@ -1,3 +1,5 @@
+; The init file that loads the other .el files in this directory
+; It should have path $HOME/.emacs.d/init.el for Emacs to find it automatically
 
 (setq auto-mode-alist (cons '( "\\.cs\\'" . csharp-mode ) auto-mode-alist ))
 (setq c-basic-offset 4)

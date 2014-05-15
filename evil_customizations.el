@@ -1,4 +1,4 @@
-;this file contains Gordon's customizations for EVIL
+; Gordon's customizations for evil, a Vim emulation layer for Emacs
 
 (add-to-list 'load-path "~/.emacs.d/evil")
 (add-to-list 'load-path "~/.emacs.d/evil/lib")

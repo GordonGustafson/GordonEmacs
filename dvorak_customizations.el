@@ -1,3 +1,4 @@
+; Gordon's customizations for using the dvorak keyboard layout with Emacs
 
 (activate-input-method "english-dvorak")
 (setq default-input-method "english-dvorak")
