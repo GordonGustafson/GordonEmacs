@@ -2,20 +2,9 @@
 (setq auto-mode-alist (cons '( "\\.cs\\'" . csharp-mode ) auto-mode-alist ))
 (setq c-basic-offset 4)
 
-;(setq tramp-default-method "ssh")
-;
-;(nconc (cadr (assq 'tramp-login-args (assoc "ssh" tramp-methods)))
-;       '(("bash" "-i")))
-;(setcdr (assq 'tramp-remote-shell (assoc "ssh" tramp-methods))
-;	'("bash -i"))
-
 (make-frame-visible)
 
 (setq frame-title-format "%b - emacs") 
-
-; mapping C-<backspace> to M-<delete> in Autohotkey sends C-M-<delete> when capslock is used instead of control:
-;(global-set-key (kbd "C-<backspace>") 'backward-kill-word)  
-(global-set-key (kbd "C-M-<delete>") 'backward-kill-word)  
 
 (global-set-key (kbd "C-<delete>") 'kill-word)
 (global-set-key (kbd "C-x p") 'fill-paragraph)
@@ -98,7 +87,7 @@
 (defun replace-garbage-chars ()
 "Replace goofy MS and other garbage characters with latin1 equivalents."
 (interactive)
-(save-excursion				;save the current point
+(save-excursion
   (replace-string "΄" "\"" nil (point-min) (point-max))
   (replace-string "“" "\"" nil (point-min) (point-max))
   (replace-string "’" "'" nil (point-min) (point-max))
@@ -139,12 +128,6 @@
 (setq inhibit-splash-screen t)
 (setq initial-scratch-message "")
 
-; add all installed packages to load path. Installing the packgage with ELPA does this itself somehow,
-; but packages installed in NTEmacs don't seem to be put on the load path for Cygwin Emacs.
-; Should probably find a better solution than just throwing the whole package directory in the load path
-; (let ((default-directory "~/.emacs.d/elpa/"))
-;   (normal-top-level-add-subdirs-to-load-path))
-
 
 (add-to-list 'default-frame-alist '(top . 0))
 (add-to-list 'default-frame-alist '(left . 0))
@@ -174,49 +157,6 @@
 ; paragraphs. * can be a line prefix in javadoc comments. This variable
 ; only applies when the paragraph being filled starts as one line.
 (setq adaptive-fill-first-line-regexp "\\`[ \\t*]*\\'")
-
-
-;; Make sure that the bash executable can be found
-;; (setq explicit-shell-file-name "C:/cygwin64/bin/bash.exe")
-;; (setq shell-file-name explicit-shell-file-name)
-;; (add-to-list 'exec-path "C:/cygwin64/bin")
-
-(defun term-exec-1 (name buffer command switches)
-  ;; We need to do an extra (fork-less) exec to run stty.
-  ;; (This would not be needed if we had suitable Emacs primitives.)
-  ;; The 'if ...; then shift; fi' hack is because Bourne shell
-  ;; loses one arg when called with -c, and newer shells (bash,  ksh) don't.
-  ;; Thus we add an extra dummy argument "..", and then remove it.
-  (let ((process-environment
-	 (nconc
-	  (list
-	   (format "TERM=%s" term-term-name)
-	   (format "TERMINFO=%s" data-directory)
-	   (format term-termcap-format "TERMCAP="
-		   term-term-name term-height term-width)
-	   ;; We are going to get rid of the binding for EMACS,
-	   ;; probably in Emacs 23, because it breaks
-	   ;; `./configure' of some packages that expect it to
-	   ;; say where to find EMACS.
-	   (format "EMACS=%s (term:%s)" emacs-version term-protocol-version)
-	   (format "INSIDE_EMACS=%s,term:%s" emacs-version term-protocol-version)
-	   (format "LINES=%d" term-height)
-	   (format "COLUMNS=%d" term-width))
-	  process-environment))
-	(process-connection-type t)
-	;; We should suppress conversion of end-of-line format.
-	(inhibit-eol-conversion t)
-	;; The process's output contains not just chars but also binary
-	;; escape codes, so we need to see the raw output.  We will have to
-	;; do the decoding by hand on the parts that are made of chars.
-	(coding-system-for-read 'binary))
-    (apply 'start-process name buffer
-	   "C:/cygwin64/bin/bash.exe -c"
-	   (format "stty -nl echo rows %d columns %d sane 2>/dev/null;\
-if [ $1 = .. ]; then shift; fi; exec \"$@\""
-		   term-height term-width)
-	   ".."
-	   command switches)))
 
 
 
@@ -260,8 +200,7 @@ if [ $1 = .. ]; then shift; fi; exec \"$@\""
 
 (require 'color-theme)
 (color-theme-initialize)
-(color-theme-dark-blue) ;find a way to get brighter highlighting of mismatched delimiters in dark-blue like gnome2 has!
-;(color-theme-gnome2)  
+(color-theme-dark-blue)
 
 (require 'ispell)
 (setq ispell-program-name "aspell")

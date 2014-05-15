@@ -39,7 +39,7 @@
 (defmacro evil-without-repeat-prefix-arg (&rest body)
   "Defines an anonymous evil command that is not added to the repeat ring
 and takes a numeric prefix argument COUNT."
-  (let ((command-name (make-symbol "inner-name"))) ; use a throwaway name
+  (let ((command-name (make-symbol "anonymous-command-name")))
     `(evil-define-command ,command-name (count)
        :repeat nil
        (interactive "p")

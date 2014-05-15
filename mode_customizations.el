@@ -262,12 +262,6 @@ Inside command, start and end will be bound to the results of those forms."
 
 (add-to-list 'load-path (substitute-in-file-name "$ELISP_ROOT/tramp-2.2.7/lisp"))
 
-; HELP MODE CUSTOMIZATIONS
-
-;(eval-after-load "help"
-; '(progn
-;    (define-key help-mode-map "K" 'other-window)))
-
 
 
 ; OPENWITH CUSTOMIZATIONS
