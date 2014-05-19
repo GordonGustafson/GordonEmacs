@@ -1,3 +1,4 @@
+; Gordon's customizations for using the dvorak keyboard layout with Emacs
 
 (activate-input-method "english-dvorak")
 (setq default-input-method "english-dvorak")
@@ -23,8 +24,8 @@
 (defun qwerty-to-dvorak (char)
   (let ((translation-map (mapcar `convert-second-element-to-integer (cdr (quail-map)))))
     (if (assoc char translation-map)
-	(cdr (assoc char translation-map))
-	char)))
+    (cdr (assoc char translation-map))
+    char)))
 
 (defadvice evil-replace (before use-current-input-method activate)
   (ad-set-arg 3 (qwerty-to-dvorak (ad-get-arg 3))))
