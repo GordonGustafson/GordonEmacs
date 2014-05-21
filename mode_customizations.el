@@ -275,7 +275,7 @@ Inside command, start and end will be bound to the results of those forms."
          (list (openwith-make-extension-regexp '("pdf")) "sumatra" '(file))))
   (openwith-mode t))
 
-
+(setq large-file-warning-threshold 250000000) ; confirm if larger than 250 Mb
 
 ; IDO CUSTOMIZATIONS
 
