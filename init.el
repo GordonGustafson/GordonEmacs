@@ -160,7 +160,8 @@
 (message "%s" " done.")
 
 (defvar gordon-packages '(color-theme org auctex frame-cmds frame-fns
-                          bash-completion csharp-mode openwith git-commit-mode)
+                          bash-completion csharp-mode openwith git-commit-mode
+                          magit)
   "Packages that will be installed/updated to the latest version on startup")
 
 (dolist (package gordon-packages)

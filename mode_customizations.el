@@ -1,5 +1,4 @@
 ; Gordon's customizations for various Emacs modes
-
 (require 'evil)
 (require 'cl)
 
@@ -342,6 +341,54 @@ Inside command, start and end will be bound to the results of those forms."
               (message report))))))))
 
 (define-key evil-normal-state-map "S" 'ez-shell)
+
+
+
+; MAGIT CUSTOMIZATIONS
+
+(require 'magit)
+
+(let ((evil-magit-mode-maps '(magit-mode-map magit-commit-mode-map
+                              magit-status-mode-map magit-log-mode-map
+                              magit-cherry-mode-map magit-reflog-mode-map
+                              magit-diff-mode-map magit-wazzup-mode-map
+                              magit-branch-manager-mode-map)))
+  (loop for mode-map in evil-magit-mode-maps do
+        (progn
+          (evil-define-key 'normal  (symbol-value mode-map)
+            (kbd "C-w") evil-window-map
+            (kbd "j")   (lookup-key evil-motion-state-map "j")
+            (kbd "k")   (lookup-key evil-motion-state-map "k"))
+          (evil-make-overriding-map (symbol-value mode-map) 'normal t))))
+
+(let ((evil-magit-modes '(magit-mode magit-commit-mode
+                          magit-status-mode magit-log-mode
+                          magit-cherry-mode magit-reflog-mode
+                          magit-diff-mode magit-wazzup-mode
+                          magit-branch-manager-mode)))
+  (setq evil-emacs-state-modes (remove-if (lambda (mode)
+                                            (memq mode evil-magit-modes))
+                                          evil-emacs-state-modes)))
+
+(evil-define-key 'normal magit-mode-map
+  (kbd "C-k") 'magit-discard-item)
+
+(evil-define-key 'normal magit-commit-mode-map
+  (kbd "n") 'evil-search-next)
+
+(evil-define-key 'normal magit-log-mode-map
+  (kbd "<return>") 'magit-visit-item)
+
+(global-set-key (kbd "C-x g") 'magit-status)
+
+; remove unnecessary bindings from git-rebase-mode:
+(setq git-rebase-mode-map
+      (let ((map (make-sparse-keymap)))
+        (define-key map (kbd "C-c C-c") 'server-edit)
+        (define-key map (kbd "C-c C-k") 'rebase-mode-abort)
+        map))
+
+(add-hook 'git-rebase-mode-hook (lambda () (read-only-mode -1)))
 
 
 

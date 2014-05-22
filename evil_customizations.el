@@ -77,7 +77,7 @@ and takes a numeric prefix argument COUNT."
   (cond
     ((and (in-org-or-orgtbl-mode) (org-at-table-p 'any))
       (org-cycle))
-    ((memq major-mode '(calc-mode shell-mode eshell-mode))
+    ((memq major-mode '(calc-mode shell-mode eshell-mode magit-status-mode))
       (call-interactively (local-key-binding "\t")))
     ((and (memq major-mode '(org-mode)) (not (eq evil-state 'insert)))
       (call-interactively (local-key-binding "\t")))

@@ -8,6 +8,9 @@
   "Activate the dvorak input-method after switching to any buffer"
   (activate-input-method "english-dvorak"))
 
+; magit doesn't use switch-to-buffer when it opens a commit buffer:
+(add-hook 'git-commit-mode-hook (lambda () (set-input-method "english-dvorak")))
+
 
 
 ; EVIL DVORAK CUSTOMIZATIONS
