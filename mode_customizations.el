@@ -392,6 +392,17 @@ Inside command, start and end will be bound to the results of those forms."
 
 
 
+; AUTO-COMPLETE CUSTOMIZATIONS
+
+; setup completion sources when entering appropriate major modes:
+(require 'auto-complete-config)
+(ac-config-default)
+
+(add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
+(global-auto-complete-mode)
+
+
+
 ; GENERAL PROGRAMMING CUSTOMIZATIONS
 
 (setq-default c-basic-offset 4)
