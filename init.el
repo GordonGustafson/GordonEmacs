@@ -4,6 +4,8 @@
 (make-frame-visible)
 (setq frame-title-format "%b - emacs")
 
+(setq user-emacs-directory "~/.emacs.d/user-emacs-directory/")
+
 (global-set-key (kbd "C-<delete>") 'kill-word)
 (global-set-key (kbd "C-x p") 'fill-paragraph)
 (global-set-key (kbd "C-h a") 'apropos)
