@@ -403,6 +403,14 @@ Inside command, start and end will be bound to the results of those forms."
 
 
 
+; SMEX CUSTOMIZATIONS
+
+(smex-initialize)
+(global-set-key (kbd "M-x") 'smex)
+(global-set-key (kbd "M-X") 'smex-major-mode-commands)
+
+
+
 ; GENERAL PROGRAMMING CUSTOMIZATIONS
 
 (setq-default c-basic-offset 4)
