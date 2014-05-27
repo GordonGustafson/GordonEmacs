@@ -155,13 +155,10 @@ Inside command, start and end will be bound to the results of those forms."
 ;remove this font package because it provides a definition for iint that conflicts with amsmath (causes error)
 (setq org-latex-default-packages-alist (delete '("" "wasysym" t) org-latex-default-packages-alist))
 
-;assumes batch file sumatra is somewhere on $PATH
-(setq TeX-view-program-list '(("sumatra" "sumatra -zoom 100% %o")))
-
 (setq TeX-view-program-selection '(((output-dvi style-pstricks)
                                         "dvips and start")
                                        (output-dvi "Yap")
-                                       (output-pdf "sumatra")
+                                       (output-pdf "evince")
                                        (output-html "start")))
 
 (setq org-export-async-debug t)
@@ -270,11 +267,13 @@ Inside command, start and end will be bound to the results of those forms."
   (setq openwith-associations (list
          (list (openwith-make-extension-regexp '("mpg" "mpeg" "mp3" "flac" "m4a"
             "mp4" "avi" "wmv" "wav" "mov" "flv" "ogm" "ogg" "mkv")) "vlc" '(file))
-         (list (openwith-make-extension-regexp '("png" "gif" "jpeg" "jpg"))  "firefox" '(file))
-         (list (openwith-make-extension-regexp '("pdf")) "sumatra" '(file))))
+         (list (openwith-make-extension-regexp '("png" "gif" "jpeg" "jpg"))  "iceweasel" '(file))
+         (list (openwith-make-extension-regexp '("pdf")) "evince" '(file))))
   (openwith-mode t))
 
 (setq large-file-warning-threshold 250000000) ; confirm if larger than 250 Mb
+
+
 
 ; IDO CUSTOMIZATIONS
 
