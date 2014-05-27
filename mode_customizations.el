@@ -245,18 +245,6 @@ Inside command, start and end will be bound to the results of those forms."
 
 ; TRAMP CUSTOMIZATIONS
 
-(eval-after-load "tramp"
-  '(progn
-     (add-to-list 'tramp-methods
-                  (mapcar
-                   (lambda (x)
-                     (cond
-                      ((equal x "sshx") "cygssh")
-                      ((eq (car x) 'tramp-login-program) (list 'tramp-login-program "fakecygpty ssh"))
-                      (t x)))
-                   (assoc "sshx" tramp-methods)))
-     (setq tramp-default-method "cygssh")))
-
 (add-to-list 'load-path (substitute-in-file-name "$ELISP_ROOT/tramp-2.2.7/lisp"))
 
 
