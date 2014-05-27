@@ -321,6 +321,8 @@ Inside command, start and end will be bound to the results of those forms."
 
 (setq eshell-scroll-to-bottom-on-input 'this) ; move to prompt when typing
 
+(eshell-command "alias sudo '*sudo $*'")      ; eshell's sudo often doesn't work
+
 
 
 ; EZ-SHELL CUSTOMIZATIONS
