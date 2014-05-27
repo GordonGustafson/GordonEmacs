@@ -81,7 +81,7 @@ Inside command, start and end will be bound to the results of those forms."
       (re-search-forward "^@@[^@]?")
       (goto-char (match-end 0)))
     (progn
-      (shell-command-on-region start end "bash %HOME%/.emacs.d/format_latex_math.sh" nil t))))
+      (shell-command-on-region start end "bash ~/.emacs.d/format_latex_math.sh" nil t))))
 
 (defun orgtbl-export-table-to-matrix (start end)
   (interactive "r")
