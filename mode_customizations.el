@@ -411,6 +411,12 @@ Inside command, start and end will be bound to the results of those forms."
 
 
 
+; RAINBOW-DELIMITERS CUSTOMIZATIONS
+
+(add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+
+
+
 ; GENERAL PROGRAMMING CUSTOMIZATIONS
 
 (setq-default c-basic-offset 4)

@@ -163,7 +163,7 @@
 
 (defvar gordon-packages '(color-theme org auctex frame-cmds frame-fns
                           bash-completion csharp-mode openwith git-commit-mode
-                          magit auto-complete smex)
+                          magit auto-complete smex rainbow-delimiters)
   "Packages that will be installed/updated to the latest version on startup")
 
 (dolist (package gordon-packages)
