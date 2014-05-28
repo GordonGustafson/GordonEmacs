@@ -56,9 +56,6 @@
 (set-face-attribute 'default nil
                     :family "Consolas" :height 100)
 
-(defun toggle-full-screen () (interactive) (shell-command "emacs_fullscreen.exe"))
-(global-set-key [f11] 'toggle-full-screen)
-
 (defadvice switch-to-buffer (before existing-buffer-only activate)
   "When interactive, switch to existing buffers only."
   (interactive "b"))  ;only allow buffer names as input

@@ -81,7 +81,7 @@ Inside command, start and end will be bound to the results of those forms."
       (re-search-forward "^@@[^@]?")
       (goto-char (match-end 0)))
     (progn
-      (shell-command-on-region start end "bash %HOME%/.emacs.d/format_latex_math.sh" nil t))))
+      (shell-command-on-region start end "bash ~/.emacs.d/format_latex_math.sh" nil t))))
 
 (defun orgtbl-export-table-to-matrix (start end)
   (interactive "r")
@@ -155,13 +155,10 @@ Inside command, start and end will be bound to the results of those forms."
 ;remove this font package because it provides a definition for iint that conflicts with amsmath (causes error)
 (setq org-latex-default-packages-alist (delete '("" "wasysym" t) org-latex-default-packages-alist))
 
-;assumes batch file sumatra is somewhere on $PATH
-(setq TeX-view-program-list '(("sumatra" "sumatra -zoom 100% %o")))
-
 (setq TeX-view-program-selection '(((output-dvi style-pstricks)
                                         "dvips and start")
                                        (output-dvi "Yap")
-                                       (output-pdf "sumatra")
+                                       (output-pdf "evince")
                                        (output-html "start")))
 
 (setq org-export-async-debug t)
@@ -248,18 +245,6 @@ Inside command, start and end will be bound to the results of those forms."
 
 ; TRAMP CUSTOMIZATIONS
 
-(eval-after-load "tramp"
-  '(progn
-     (add-to-list 'tramp-methods
-                  (mapcar
-                   (lambda (x)
-                     (cond
-                      ((equal x "sshx") "cygssh")
-                      ((eq (car x) 'tramp-login-program) (list 'tramp-login-program "fakecygpty ssh"))
-                      (t x)))
-                   (assoc "sshx" tramp-methods)))
-     (setq tramp-default-method "cygssh")))
-
 (add-to-list 'load-path (substitute-in-file-name "$ELISP_ROOT/tramp-2.2.7/lisp"))
 
 
@@ -270,11 +255,13 @@ Inside command, start and end will be bound to the results of those forms."
   (setq openwith-associations (list
          (list (openwith-make-extension-regexp '("mpg" "mpeg" "mp3" "flac" "m4a"
             "mp4" "avi" "wmv" "wav" "mov" "flv" "ogm" "ogg" "mkv")) "vlc" '(file))
-         (list (openwith-make-extension-regexp '("png" "gif" "jpeg" "jpg"))  "firefox" '(file))
-         (list (openwith-make-extension-regexp '("pdf")) "sumatra" '(file))))
+         (list (openwith-make-extension-regexp '("png" "gif" "jpeg" "jpg"))  "iceweasel" '(file))
+         (list (openwith-make-extension-regexp '("pdf")) "evince" '(file))))
   (openwith-mode t))
 
 (setq large-file-warning-threshold 250000000) ; confirm if larger than 250 Mb
+
+
 
 ; IDO CUSTOMIZATIONS
 
@@ -498,13 +485,6 @@ Inside command, start and end will be bound to the results of those forms."
   smtpmail-smtp-service 587)
 
 (setq send-mail-function 'message-send-mail-function)
-
-;CC myself on all sent emails because windows doesn't have the starttls.exe necessary
-;for GNUS to be able to retrieve sent emails from gmail.
-(setq gnus-posting-styles
-  '((".*"
-    ("CC" "gordon3.14@gmail.com")
-    (address "gordon3.14@gmail.com"))))
 
 (setq user-mail-address "gordon3.14@gmail.com")
 (setq user-full-name "Gordon Gustafson")
