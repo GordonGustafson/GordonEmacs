@@ -498,13 +498,6 @@ Inside command, start and end will be bound to the results of those forms."
 
 (setq send-mail-function 'message-send-mail-function)
 
-;CC myself on all sent emails because windows doesn't have the starttls.exe necessary
-;for GNUS to be able to retrieve sent emails from gmail.
-(setq gnus-posting-styles
-  '((".*"
-    ("CC" "gordon3.14@gmail.com")
-    (address "gordon3.14@gmail.com"))))
-
 (setq user-mail-address "gordon3.14@gmail.com")
 (setq user-full-name "Gordon Gustafson")
 (setq gnus-use-full-window nil)
