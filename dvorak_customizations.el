@@ -12,9 +12,6 @@
 
 ; EVIL DVORAK CUSTOMIZATIONS
 
-; use dvorak when you press R in command mode
-(add-hook 'evil-replace-state-entry-hook (lambda () (activate-input-method "english-dvorak")))
-
 (defun convert-second-element-to-integer (pair)
   (cons (nth 0 pair)
     (if (vectorp (nth 1 pair))
