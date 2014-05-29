@@ -40,32 +40,6 @@
   (evil-normal-state))
 
 
-(defun execute-kbd-macro-no-input-method (rep)
-  (add-hook 'evil-insert-state-entry-hook 'deactivate-input-method)
-  (deactivate-input-method)
-  (let ((old-default-input-method default-input-method))
-    (setq default-input-method nil)
-    (unwind-protect
-      (execute-kbd-macro rep)
-      (progn
-        (setq default-input-method old-default-input-method)
-        (remove-hook 'evil-insert-state-entry-hook 'deactivate-input-method)))))
-
-(require 'evil-repeat)
-
-(defun evil-execute-repeat-info (repeat-info)
-  "Executes a repeat-information REPEAT-INFO."
-  (evil-save-repeat-info
-    (dolist (rep repeat-info)
-      (cond
-       ((or (arrayp rep) (stringp rep))
-        (execute-kbd-macro-no-input-method rep))
-       ((consp rep)
-        (apply (car rep) (cdr rep)))
-       (t
-        (error "Unexpected repeat-info: %S" rep))))))
-
-
 (evil-define-motion evil-find-char (count char)
   "Move to the next COUNT'th occurrence of CHAR."
   :jump t
