@@ -27,18 +27,6 @@
 (defadvice evil-replace (before use-current-input-method activate)
   (ad-set-arg 3 (qwerty-to-dvorak (ad-get-arg 3))))
 
-(defadvice evil-search-forward (around use-dvorak-input-method activate)
-  (evil-insert-state)
-  (activate-input-method "english-dvorak")
-  ad-do-it
-  (evil-normal-state))
-
-(defadvice evil-search-backward (around use-dvorak-input-method activate)
-  (evil-insert-state)
-  (activate-input-method "english-dvorak")
-  ad-do-it
-  (evil-normal-state))
-
 
 (evil-define-motion evil-find-char (count char)
   "Move to the next COUNT'th occurrence of CHAR."
