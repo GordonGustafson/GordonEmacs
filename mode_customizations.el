@@ -272,6 +272,11 @@ Inside command, start and end will be bound to the results of those forms."
 
 ; DIRED MODE CUSTOMIZATIONS
 
+(require 'dired-x)
+(setq-default dired-omit-mode t)
+(setq dired-omit-files
+      (concat dired-omit-files "\\|^\\..+$"))   ; hide dot-files
+
 ; evil-integration contains a similar version of this.
 ; if you have any trouble rebinding things, see if that's what's causing it.
 (eval-after-load 'dired
@@ -282,10 +287,9 @@ Inside command, start and end will be bound to the results of those forms."
        "J" 'dired-goto-file
        "K" 'other-window
        "r" 'dired-do-redisplay
-       ; move to the first real thing in the folder:
-       "H" (lambda () (interactive) (evil-window-top) (evil-next-line 4) (evil-end-of-line))
-       "M" (lambda () (interactive) (evil-window-middle) (evil-end-of-line))
-       "L" (lambda () (interactive) (evil-window-bottom) (evil-previous-line) (evil-end-of-line))
+       "H" (lambda () (interactive) (evil-window-top 2)    (evil-end-of-line))
+       "M" (lambda () (interactive) (evil-window-middle)   (evil-end-of-line))
+       "L" (lambda () (interactive) (evil-window-bottom 2) (evil-end-of-line))
        "n" 'evil-search-next
        "N" 'evil-search-previous
        "?" 'evil-search-backward
