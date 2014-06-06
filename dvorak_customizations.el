@@ -4,12 +4,9 @@
 (setq default-input-method "english-dvorak")
 (add-hook 'minibuffer-setup-hook (lambda () (set-input-method "english-dvorak")))
 
-(defadvice switch-to-buffer (after activate-input-method-after-switch activate)
-  "Activate the dvorak input-method after switching to any buffer"
-  (activate-input-method "english-dvorak"))
-
-; magit doesn't use switch-to-buffer when it opens a commit buffer:
-(add-hook 'git-commit-mode-hook (lambda () (set-input-method "english-dvorak")))
+; this runs whenever a new buffer is created in non-fundamental mode
+(add-hook 'after-change-major-mode-hook (lambda ()
+                                          (set-input-method "english-dvorak")))
 
 
 
@@ -91,20 +88,6 @@
                                   t count)
                 (when fwd (backward-char)))
         (error "Can't find %c" (qwerty-to-dvorak char))))))
-
-
-
-; SHELL MODE DVORAK CUSTOMIZATIONS
-
-(defadvice shell (after switch-to-dvorak activate)
-  (activate-input-method "english-dvorak"))
-
-
-
-; ESHELL DVORAK CUSTOMIZATIONS
-
-(defadvice eshell (after switch-to-dvorak activate)
-  (activate-input-method "english-dvorak"))
 
 
 
