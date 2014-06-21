@@ -9,6 +9,7 @@
 (global-set-key (kbd "C-<delete>") 'kill-word)
 (global-set-key (kbd "C-x p") 'fill-paragraph)
 (global-set-key (kbd "C-h a") 'apropos)
+(global-set-key (kbd "C-x C-k") 'kill-buffer) ; I really meant "C-x k"
 
 (defun window-top-or-bottom ()
   "Figure out if the current window is on top, bottom or in the middle"
