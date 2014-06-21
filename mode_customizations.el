@@ -178,6 +178,8 @@ Inside command, start and end will be bound to the results of those forms."
 
 ; W3M CUSTOMIZATIONS
 
+(setq evil-emacs-state-modes (remove 'w3m-mode evil-emacs-state-modes))
+
 (setq browse-url-browser-function 'w3m-browse-url)
 (setq w3m-use-cookies t)
 (setq w3m-home-page "http://www.stackoverflow.com/questions")
