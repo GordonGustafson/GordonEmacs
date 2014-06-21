@@ -263,6 +263,17 @@ Inside command, start and end will be bound to the results of those forms."
 
 
 
+; OCCUR CUSTOMIZATIONS
+
+(setq evil-emacs-state-modes (remove 'occur-mode evil-emacs-state-modes))
+
+(evil-define-key 'normal occur-mode-map
+  (kbd "<return>") 'occur-mode-goto-occurrence
+  (kbd "C-o")      'occur-mode-display-occurrence
+  (kbd "C-x C-q")  'occur-edit-mode)
+
+
+
 ; IDO CUSTOMIZATIONS
 
 (require 'ido)
