@@ -65,6 +65,7 @@ and takes a numeric prefix argument COUNT."
 (define-key evil-normal-state-map (kbd "S-<return>")
   (evil-without-repeat-prefix-arg (loop repeat count do (evil-insert-newline-above))))
 
+(define-key evil-normal-state-map "gr" 'revert-buffer)
 
 (defun in-org-or-orgtbl-mode ()
   (or (and (boundp 'orgtbl-mode) (symbol-value 'orgtbl-mode))
