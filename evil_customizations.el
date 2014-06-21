@@ -67,6 +67,14 @@ and takes a numeric prefix argument COUNT."
 
 (define-key evil-normal-state-map "gr" 'revert-buffer)
 
+(defun multi-occur-in-all-buffers (regexp)
+  "Show all lines matching REGEXP in all buffers."
+  (interactive (occur-read-primary-args))
+  (multi-occur-in-matching-buffers ".*" regexp))
+
+(define-key evil-normal-state-map (kbd "g/") 'multi-occur-in-all-buffers)
+
+
 (defun in-org-or-orgtbl-mode ()
   (or (and (boundp 'orgtbl-mode) (symbol-value 'orgtbl-mode))
       (eq major-mode 'org-mode)))
