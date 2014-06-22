@@ -165,86 +165,6 @@ Inside command, start and end will be bound to the results of those forms."
 
 
 
-;; WHITESPACE MODE CUSTOMIZATIONS
-
-(require 'whitespace)
-
-(setq whitespace-style '(face trailing lines-tail indentation
-                           empty tabs space-before-tab space-after-tab))
-(setq whitespace-line-column 80)
-(add-hook 'prog-mode-hook (lambda () (whitespace-mode t)))
-
-
-
-; W3M CUSTOMIZATIONS
-
-(setq evil-emacs-state-modes (remove 'w3m-mode evil-emacs-state-modes))
-
-(setq browse-url-browser-function 'w3m-browse-url)
-(setq w3m-use-cookies t)
-(setq w3m-home-page "http://www.stackoverflow.com/questions")
-(setq w3m-search-default-engine "g")
-;don't use the word at point as the default search text
-;(you have to delete it if you want to search something else)
-(setq w3m-search-word-at-point nil)
-(add-hook 'w3m-mode-hook 'w3m-lnum-mode)
-
-;w3m-lnum's default hint color isn't great with dark-blue color theme
-(face-spec-set 'w3m-lnum '((t (:foreground "#FF9999"))) )
-
-(defun w3m-new-tab ()
-  (interactive)
-  (w3m-copy-buffer nil nil nil t))
-
-(defun w3m-browse-url-new-tab (url &optional new-session)
-  (interactive)
-  (w3m-new-tab)
-  (w3m-browse-url url))
-
-(defun w3m-follow-hint-new-tab ()
-  (interactive)
-  ;prefix argument opens a new session
-  ;how are sessions different from tabs????
-  ;should w3m-new-tab use sessions somehow????
-  (w3m-lnum-follow 4))
-
-(defun w3m-search-new-tab (search-engine query)
-  (interactive (w3m-search-read-variables))
-  (w3m-new-tab)
-  (w3m-search-do-search 'w3m-goto-url search-engine query))
-
-(eval-after-load "w3m-search" '(progn
-  ; C-u S g RET <search term> RET
-  (add-to-list 'w3m-search-engine-alist '("g" "http://www.google.com/search?q=%s" utf-8))
-  (add-to-list 'w3m-search-engine-alist '("q" "http://stackoverflow.com/search?q=%s" utf-8))
-  (add-to-list 'w3m-search-engine-alist '("w" "http://en.wikipedia.org/wiki/Special:Search?search=%s" utf-8))))
-
-(eval-after-load 'w3m-lnum '(progn
-  (defvar w3m-mode-map)
-  (evil-make-overriding-map w3m-lnum-mode-map 'normal t)
-  (evil-make-overriding-map w3m-mode-map 'normal t)
-  (evil-define-key 'normal w3m-mode-map
-    "o" 'w3m-search
-    "t" 'w3m-search-new-tab
-;   "f" 'w3m-view-this-url  w3m-lnum handles this
-    "F" 'w3m-follow-hint-new-tab
-    "b" 'evil-backward-word-begin
-    (kbd "<backspace>") 'w3m-view-previous-page
-    "gg" 'evil-goto-first-line
-    "G" 'evil-goto-line
-    "d" 'w3m-delete-buffer
-    "h" 'w3m-previous-buffer
-    "j" 'w3m-scroll-up
-    "k" 'w3m-scroll-down
-    "l" 'w3m-next-buffer
-    "H" 'w3m-view-previous-page
-    "K" 'other-window
-    "L" 'w3m-view-next-page
-    (kbd "C-e") 'w3m-scroll-up
-    (kbd "C-y") 'w3m-scroll-down)))
-
-
-
 ; OPENWITH CUSTOMIZATIONS
 
 (when (require 'openwith nil 'noerror)
@@ -256,24 +176,6 @@ Inside command, start and end will be bound to the results of those forms."
   (openwith-mode t))
 
 (setq large-file-warning-threshold 250000000) ; confirm if larger than 250 Mb
-
-
-
-; OCCUR CUSTOMIZATIONS
-
-(setq evil-emacs-state-modes (remove 'occur-mode evil-emacs-state-modes))
-
-(evil-define-key 'normal occur-mode-map
-  (kbd "<return>") 'occur-mode-goto-occurrence
-  (kbd "C-o")      'occur-mode-display-occurrence
-  (kbd "C-x C-q")  'occur-edit-mode)
-
-
-
-; IDO CUSTOMIZATIONS
-
-(require 'ido)
-(ido-mode t)
 
 
 
@@ -431,9 +333,38 @@ Inside command, start and end will be bound to the results of those forms."
 
 
 
+; IDO CUSTOMIZATIONS
+
+(require 'ido)
+(ido-mode t)
+
+
+
+; OCCUR CUSTOMIZATIONS
+
+(setq evil-emacs-state-modes (remove 'occur-mode evil-emacs-state-modes))
+
+(evil-define-key 'normal occur-mode-map
+  (kbd "<return>") 'occur-mode-goto-occurrence
+  (kbd "C-o")      'occur-mode-display-occurrence
+  (kbd "C-x C-q")  'occur-edit-mode)
+
+
+
 ; RAINBOW-DELIMITERS CUSTOMIZATIONS
 
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+
+
+
+; WHITESPACE MODE CUSTOMIZATIONS
+
+(require 'whitespace)
+
+(setq whitespace-style '(face trailing lines-tail indentation
+                           empty tabs space-before-tab space-after-tab))
+(setq whitespace-line-column 80)
+(add-hook 'prog-mode-hook (lambda () (whitespace-mode t)))
 
 
 
@@ -485,6 +416,76 @@ Inside command, start and end will be bound to the results of those forms."
 (add-to-list 'calc-language-alist '(org-mode . latex))
 
 (add-to-list 'evil-insert-state-modes 'calc-mode)
+
+
+
+; W3M CUSTOMIZATIONS
+
+(setq evil-emacs-state-modes (remove 'w3m-mode evil-emacs-state-modes))
+
+(setq browse-url-browser-function 'w3m-browse-url)
+(setq w3m-use-cookies t)
+(setq w3m-home-page "http://www.stackoverflow.com/questions")
+(setq w3m-search-default-engine "g")
+;don't use the word at point as the default search text
+;(you have to delete it if you want to search something else)
+(setq w3m-search-word-at-point nil)
+(add-hook 'w3m-mode-hook 'w3m-lnum-mode)
+
+;w3m-lnum's default hint color isn't great with dark-blue color theme
+(face-spec-set 'w3m-lnum '((t (:foreground "#FF9999"))) )
+
+(defun w3m-new-tab ()
+  (interactive)
+  (w3m-copy-buffer nil nil nil t))
+
+(defun w3m-browse-url-new-tab (url &optional new-session)
+  (interactive)
+  (w3m-new-tab)
+  (w3m-browse-url url))
+
+(defun w3m-follow-hint-new-tab ()
+  (interactive)
+  ;prefix argument opens a new session
+  ;how are sessions different from tabs????
+  ;should w3m-new-tab use sessions somehow????
+  (w3m-lnum-follow 4))
+
+(defun w3m-search-new-tab (search-engine query)
+  (interactive (w3m-search-read-variables))
+  (w3m-new-tab)
+  (w3m-search-do-search 'w3m-goto-url search-engine query))
+
+(eval-after-load "w3m-search" '(progn
+  ; C-u S g RET <search term> RET
+  (add-to-list 'w3m-search-engine-alist '("g" "http://www.google.com/search?q=%s" utf-8))
+  (add-to-list 'w3m-search-engine-alist '("q" "http://stackoverflow.com/search?q=%s" utf-8))
+  (add-to-list 'w3m-search-engine-alist '("w" "http://en.wikipedia.org/wiki/Special:Search?search=%s" utf-8))))
+
+(eval-after-load 'w3m-lnum '(progn
+  (defvar w3m-mode-map)
+  (evil-make-overriding-map w3m-lnum-mode-map 'normal t)
+  (evil-make-overriding-map w3m-mode-map 'normal t)
+  (evil-define-key 'normal w3m-mode-map
+    "o" 'w3m-search
+    "t" 'w3m-search-new-tab
+;   "f" 'w3m-view-this-url  w3m-lnum handles this
+    "F" 'w3m-follow-hint-new-tab
+    "b" 'evil-backward-word-begin
+    (kbd "<backspace>") 'w3m-view-previous-page
+    "gg" 'evil-goto-first-line
+    "G" 'evil-goto-line
+    "d" 'w3m-delete-buffer
+    "h" 'w3m-previous-buffer
+    "j" 'w3m-scroll-up
+    "k" 'w3m-scroll-down
+    "l" 'w3m-next-buffer
+    "H" 'w3m-view-previous-page
+    "K" 'other-window
+    "L" 'w3m-view-next-page
+    (kbd "C-e") 'w3m-scroll-up
+    (kbd "C-y") 'w3m-scroll-down)))
+
 
 
 ; MAIL CUSTOMIZATIONS
