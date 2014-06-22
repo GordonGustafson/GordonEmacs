@@ -245,12 +245,6 @@ Inside command, start and end will be bound to the results of those forms."
 
 
 
-; TRAMP CUSTOMIZATIONS
-
-(add-to-list 'load-path (substitute-in-file-name "$ELISP_ROOT/tramp-2.2.7/lisp"))
-
-
-
 ; OPENWITH CUSTOMIZATIONS
 
 (when (require 'openwith nil 'noerror)
