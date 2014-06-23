@@ -351,6 +351,33 @@ Inside command, start and end will be bound to the results of those forms."
 
 
 
+; GGTAGS (GNU GLOBAL) CUSTOMIZATIONS
+
+(require 'ggtags)
+(add-hook 'prog-mode-hook (lambda () (ggtags-mode 1)))
+
+; Finds the definition if point is on a reference and vice versa.
+; HOWEVER, gnu global doesn't know about references when using the
+; ctags backend, so finding all refences only works in C, C++, and Java.
+(define-key evil-motion-state-map "\C-]" 'ggtags-find-tag-dwim)
+(define-key evil-insert-state-map "\C-]" 'ggtags-find-tag-dwim)
+
+
+
+; COMPILATION-MODE CUSTOMIZATIONS
+
+(define-key compilation-mode-map "g" nil)
+
+; gnu-global-mode derives from compilation-mode
+(evil-define-key 'normal compilation-mode-map
+  "gr" 'recompile
+  "h" (lookup-key evil-motion-state-map "h")
+  "?" (lookup-key evil-motion-state-map "?")
+  "0" 'evil-digit-argument-or-evil-beginning-of-line (kbd "<tab>"))
+
+
+
+
 ; RAINBOW-DELIMITERS CUSTOMIZATIONS
 
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
