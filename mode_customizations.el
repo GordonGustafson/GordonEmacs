@@ -312,6 +312,8 @@ Inside command, start and end will be bound to the results of those forms."
 
 (evil-define-key 'normal svn-log-mode-map (kbd "<return>") 'svn-log-show-diff)
 
+(global-set-key (kbd "C-x s") 'svn-status) ; override save-some-buffers
+
 
 
 ; AUTO-COMPLETE CUSTOMIZATIONS
