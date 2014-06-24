@@ -316,6 +316,14 @@ Inside command, start and end will be bound to the results of those forms."
 
 
 
+; DIFF-MODE CUSTOMIZATIONS
+
+; restore binding from init.el that was overriden
+(define-key diff-mode-map (kbd "M-K") (lambda (count) (interactive "p")
+                                       (move-horizontal-edge-vertically count)))
+
+
+
 ; AUTO-COMPLETE CUSTOMIZATIONS
 
 ; setup completion sources when entering appropriate major modes:
