@@ -399,7 +399,7 @@ Inside command, start and end will be bound to the results of those forms."
 (require 'whitespace)
 
 (setq whitespace-style '(face trailing lines-tail indentation
-                           empty tabs space-before-tab space-after-tab))
+                           empty space-before-tab space-after-tab))
 (setq whitespace-line-column 80)
 (add-hook 'prog-mode-hook (lambda () (whitespace-mode t)))
 
