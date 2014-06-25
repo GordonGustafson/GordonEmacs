@@ -203,6 +203,7 @@ Inside command, start and end will be bound to the results of those forms."
        "N" 'evil-search-previous
        "?" 'evil-search-backward
        (kbd "<return>") 'dired-find-file
+       "." 'evil-repeat ;replace dired-clean-directory with easy window resizing
        ";" (lookup-key dired-mode-map ":"))))
 
 
