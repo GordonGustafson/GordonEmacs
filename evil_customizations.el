@@ -48,6 +48,11 @@ and takes a numeric prefix argument COUNT."
 (evil-declare-ignore-repeat 'evil-delete-char)
 (evil-declare-ignore-repeat 'evil-delete-backward-char)
 
+(evil-declare-repeat 'evil-scroll-column-left)
+(evil-declare-repeat 'evil-scroll-column-right)
+(evil-declare-repeat 'evil-scroll-left)
+(evil-declare-repeat 'evil-scroll-right)
+
 ;(define-key evil-normal-state-map "K" 'other-window)
 ;hack to stop ever calling evil-lookup (it still gets called sometimes even after K is remapped)
 (substitute-key-definition 'evil-lookup 'gordon-other-window evil-motion-state-map)
