@@ -255,7 +255,8 @@ Inside command, start and end will be bound to the results of those forms."
                               magit-status-mode-map magit-log-mode-map
                               magit-cherry-mode-map magit-reflog-mode-map
                               magit-diff-mode-map magit-wazzup-mode-map
-                              magit-branch-manager-mode-map)))
+                              magit-branch-manager-mode-map
+                              magit-process-mode-map)))
   (loop for mode-map in evil-magit-mode-maps do
         (progn
           (evil-define-key 'normal  (symbol-value mode-map)
@@ -268,7 +269,8 @@ Inside command, start and end will be bound to the results of those forms."
                           magit-status-mode magit-log-mode
                           magit-cherry-mode magit-reflog-mode
                           magit-diff-mode magit-wazzup-mode
-                          magit-branch-manager-mode)))
+                          magit-branch-manager-mode
+                          magit-process-mode)))
   (setq evil-emacs-state-modes (remove-if (lambda (mode)
                                             (memq mode evil-magit-modes))
                                           evil-emacs-state-modes)))
