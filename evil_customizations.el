@@ -1,7 +1,6 @@
 ; Gordon's customizations for evil, a Vim emulation layer for Emacs
 
 (add-to-list 'load-path "~/.emacs.d/evil")
-(add-to-list 'load-path "~/.emacs.d/evil/lib")
 (require 'evil)
 (evil-mode 1)
 

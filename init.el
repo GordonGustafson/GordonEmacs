@@ -163,7 +163,7 @@
 (defvar gordon-packages '(color-theme org auctex frame-cmds frame-fns
                           bash-completion csharp-mode openwith git-commit-mode
                           magit auto-complete smex rainbow-delimiters dsvn
-                          ggtags)
+                          ggtags goto-chg undo-tree)
   "Packages that will be installed/updated to the latest version on startup")
 
 (dolist (package gordon-packages)
