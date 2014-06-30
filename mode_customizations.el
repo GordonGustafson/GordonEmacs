@@ -260,7 +260,6 @@ Inside command, start and end will be bound to the results of those forms."
   (loop for mode-map in evil-magit-mode-maps do
         (progn
           (evil-define-key 'normal  (symbol-value mode-map)
-            (kbd "C-w") evil-window-map
             (kbd "j")   (lookup-key evil-motion-state-map "j")
             (kbd "k")   (lookup-key evil-motion-state-map "k"))
           (evil-make-overriding-map (symbol-value mode-map) 'normal t))))
@@ -309,7 +308,6 @@ Inside command, start and end will be bound to the results of those forms."
             '(progn
                (evil-make-overriding-map svn-status-mode-map 'normal t)
                (evil-define-key 'normal  svn-status-mode-map
-                 (kbd "C-w") evil-window-map
                  (kbd "j")   (lookup-key evil-motion-state-map "j")
                  (kbd "k")   (lookup-key evil-motion-state-map "k")))))))
 
@@ -321,9 +319,6 @@ Inside command, start and end will be bound to the results of those forms."
 
 ; DIFF-MODE CUSTOMIZATIONS
 
-; restore binding from init.el that was overriden
-(define-key diff-mode-map (kbd "M-K") (lambda (count) (interactive "p")
-                                       (move-horizontal-edge-vertically count)))
 
 
 

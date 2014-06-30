@@ -12,6 +12,15 @@
 (global-set-key (kbd "C-x C-k") 'kill-buffer)       ; I really meant "C-x k"
 (global-set-key (kbd "C-h C-f") 'describe-function) ; I really meant "C-h f"
 
+(defvar gordon-global-mode-map (make-keymap)
+  "As long as this is first in minor-mode-map-alist, these bindings will
+override all others.")
+
+(define-minor-mode gordon-global-mode
+  "A minor mode so that my key settings override annoying major modes."
+  t "" 'gordon-global-mode-map)
+
+
 (defun window-top-or-bottom ()
   "Figure out if the current window is on top, bottom or in the middle"
   (let* ((this-window-y-min (nth 1 (window-edges)))
@@ -49,10 +58,10 @@
         (window-resize (window-in-direction 'right) (- delta) t)
         (window-resize (window-in-direction 'left )    delta  t)))))
 
-(global-set-key (kbd "M-K") (lambda (prefix-arg) (interactive "p") (move-horizontal-edge-vertically    prefix-arg)))
-(global-set-key (kbd "M-J") (lambda (prefix-arg) (interactive "p") (move-horizontal-edge-vertically (- prefix-arg))))
-(global-set-key (kbd "M-L") (lambda (prefix-arg) (interactive "p") (move-vertical-edge-horizontally    prefix-arg)))
-(global-set-key (kbd "M-H") (lambda (prefix-arg) (interactive "p") (move-vertical-edge-horizontally (- prefix-arg))))
+(define-key gordon-global-mode-map (kbd "M-K") (lambda (prefix-arg) (interactive "p") (move-horizontal-edge-vertically    prefix-arg)))
+(define-key gordon-global-mode-map (kbd "M-J") (lambda (prefix-arg) (interactive "p") (move-horizontal-edge-vertically (- prefix-arg))))
+(define-key gordon-global-mode-map (kbd "M-L") (lambda (prefix-arg) (interactive "p") (move-vertical-edge-horizontally    prefix-arg)))
+(define-key gordon-global-mode-map (kbd "M-H") (lambda (prefix-arg) (interactive "p") (move-vertical-edge-horizontally (- prefix-arg))))
 
 
 (set-face-attribute 'default nil
@@ -181,10 +190,10 @@
 (setq ispell-program-name "aspell")
 
 (require 'frame-cmds)
-(global-set-key (kbd "C-S-J") 'enlarge-frame)
-(global-set-key (kbd "C-S-K") 'shrink-frame)
-(global-set-key (kbd "C-S-L") 'enlarge-frame-horizontally)
-(global-set-key (kbd "C-S-H") 'shrink-frame-horizontally)
+(define-key gordon-global-mode-map (kbd "C-S-J") 'enlarge-frame)
+(define-key gordon-global-mode-map (kbd "C-S-K") 'shrink-frame)
+(define-key gordon-global-mode-map (kbd "C-S-L") 'enlarge-frame-horizontally)
+(define-key gordon-global-mode-map (kbd "C-S-H") 'shrink-frame-horizontally)
 
 (require 'server)
 
@@ -204,3 +213,6 @@
 (load "~/.emacs.d/mode_customizations.el")
 (load "~/.emacs.d/dvorak_customizations.el")
 (load "~/.emacs.d/bugfixes.el")
+
+; do this after everything else so this appears first in minor-mode-map-alist
+(gordon-global-mode 1)

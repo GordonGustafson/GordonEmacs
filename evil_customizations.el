@@ -4,6 +4,8 @@
 (require 'evil)
 (evil-mode 1)
 
+(define-key gordon-global-mode-map (kbd "C-w") evil-window-map)
+
 (require 'org)
 (require 'cl)
 
@@ -56,7 +58,7 @@ and takes a numeric prefix argument COUNT."
 ;hack to stop ever calling evil-lookup (it still gets called sometimes even after K is remapped)
 (substitute-key-definition 'evil-lookup 'gordon-other-window evil-motion-state-map)
 
-(global-set-key (kbd "<f5>") 'evil-local-mode)
+(define-key gordon-global-mode-map  (kbd "<f5>") 'evil-local-mode)
 (define-key evil-normal-state-map "Y" 'evil-yank-end-of-line)
 (define-key evil-normal-state-map (kbd "<backspace>") 'evil-delete-backward-char)
 (define-key evil-normal-state-map " "
