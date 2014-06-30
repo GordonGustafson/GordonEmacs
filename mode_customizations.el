@@ -395,7 +395,9 @@ Only intended for interactive use."
   "gr" 'recompile
   "h" (lookup-key evil-motion-state-map "h")
   "?" (lookup-key evil-motion-state-map "?")
-  "0" 'evil-digit-argument-or-evil-beginning-of-line (kbd "<tab>"))
+  "0" 'evil-digit-argument-or-evil-beginning-of-line
+  (kbd "<return>") 'compile-goto-error
+  (kbd "<tab>")    'compilation-next-error)
 
 
 
