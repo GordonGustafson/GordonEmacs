@@ -318,6 +318,9 @@ Inside command, start and end will be bound to the results of those forms."
 
 ; DIFF-MODE CUSTOMIZATIONS
 
+(evil-define-key 'normal diff-mode-map
+  (kbd "q") 'quit-window
+  (kbd "<return>") 'diff-goto-source)
 
 
 
