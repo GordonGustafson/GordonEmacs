@@ -369,6 +369,21 @@ Inside command, start and end will be bound to the results of those forms."
 (define-key evil-motion-state-map "\C-]" 'ggtags-find-tag-dwim)
 (define-key evil-insert-state-map "\C-]" 'ggtags-find-tag-dwim)
 
+(defun ggtags-find-tag-dwim-other-window ()
+  "Like `ggtags-find-tag-dwim', but put buffer in another window.
+Only intended for interactive use."
+  (interactive)
+  (let (value)
+    (switch-to-buffer-other-window
+     (save-window-excursion
+       (setq value (call-interactively 'ggtags-find-tag-dwim))
+       (unless (or (bufferp value) (bufferp (car-safe value)))
+         (setq value (current-buffer)))
+       (current-buffer)))
+    value))
+
+(define-key evil-window-map (kbd "C-]") 'ggtags-find-tag-dwim-other-window)
+
 
 
 ; COMPILATION-MODE CUSTOMIZATIONS
