@@ -298,20 +298,19 @@ Inside command, start and end will be bound to the results of those forms."
 
 ; DSVN CUSTOMIZATIONS
 
-(autoload 'svn-status "dsvn" "Run `svn status'." t)
-(autoload 'svn-update "dsvn" "Run `svn update'." t)
+(require 'dsvn)
 
 (let ((evil-dsvn-mode-maps '(svn-status-mode-map svn-log-mode-map)))
-  (loop for mode-map in evil-dsvn-mode-maps do
-        (progn
-          (eval-after-load 'dsvn
-            '(progn
-               (evil-make-overriding-map svn-status-mode-map 'normal t)
-               (evil-define-key 'normal  svn-status-mode-map
-                 (kbd "j")   (lookup-key evil-motion-state-map "j")
-                 (kbd "k")   (lookup-key evil-motion-state-map "k")))))))
+  (loop for mode-map-symbol in evil-dsvn-mode-maps do
+        (let ((mode-map (symbol-value mode-map-symbol)))
+          (evil-make-overriding-map mode-map 'normal t)
+          (evil-define-key 'normal  mode-map
+            (kbd "j") (lookup-key evil-motion-state-map "j")
+            (kbd "k") (lookup-key evil-motion-state-map "k")
+            (kbd "d") 'svn-diff-file))))
 
 (evil-define-key 'normal svn-log-mode-map (kbd "<return>") 'svn-log-show-diff)
+(evil-define-key 'normal svn-status-mode-map (kbd "<return>") 'svn-find-file)
 
 (global-set-key (kbd "C-x s") 'svn-status) ; override save-some-buffers
 
