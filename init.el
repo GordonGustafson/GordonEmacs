@@ -16,10 +16,6 @@
   "As long as this is first in minor-mode-map-alist, these bindings will
 override all others.")
 
-(define-minor-mode gordon-global-mode
-  "A minor mode so that my key settings override annoying major modes."
-  t "" 'gordon-global-mode-map)
-
 
 (defun window-top-or-bottom ()
   "Figure out if the current window is on top, bottom or in the middle"
@@ -214,5 +210,11 @@ override all others.")
 (load "~/.emacs.d/dvorak_customizations.el")
 (load "~/.emacs.d/bugfixes.el")
 
+
 ; do this after everything else so this appears first in minor-mode-map-alist
+(define-minor-mode gordon-global-mode
+  "A minor mode so that my key settings override annoying major modes."
+  t "" 'gordon-global-mode-map)
+
+(evil-make-overriding-map gordon-global-mode-map 'normal t)
 (gordon-global-mode 1)
