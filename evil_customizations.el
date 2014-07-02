@@ -72,6 +72,7 @@ and takes a numeric prefix argument COUNT."
   (evil-without-repeat-prefix-arg (loop repeat count do (evil-insert-newline-above))))
 
 (define-key evil-normal-state-map "gr" 'revert-buffer)
+(define-key evil-normal-state-map "gt" 'toggle-truncate-lines)
 
 (defun multi-occur-in-all-buffers (regexp)
   "Show all lines matching REGEXP in all buffers."
