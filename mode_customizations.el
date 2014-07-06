@@ -165,6 +165,17 @@ Inside command, start and end will be bound to the results of those forms."
 
 
 
+; DESKTOP CUSTOMIZATIONS
+
+(require 'desktop)
+(desktop-save-mode 1)
+
+(setq desktop-save t)
+(setq desktop-restore-eager 6) ; restore 6 buffers now and the rest when idle
+(setq desktop-dirname "~/.emacs.d/user-emacs-directory/desktop/")
+
+
+
 ; OPENWITH CUSTOMIZATIONS
 
 (when (require 'openwith nil 'noerror)
