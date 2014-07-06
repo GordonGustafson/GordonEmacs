@@ -130,19 +130,19 @@ Inside command, start and end will be bound to the results of those forms."
 (add-hook 'org-mode-hook (lambda ()
              (org-indent-mode t)) t)
 
-(setq org-directory "~\\org")       ;not used often by org
+(setq org-directory "~/org") ;setting not used often by org
 
 (setq org-agenda-file-regexp ".*\\.org")    ;include all org files in listed directories
-(setq org-agenda-files (list "~\\org"
-                             "~\\Dropbox\\orgmode"))
+(setq org-agenda-files (list "~/org"
+                             "~/Dropbox/orgmode"))
 
 (setq org-mobile-checksum-binary (or (executable-find "shasum")
                                      (executable-find "sha1sum")
                                      (executable-find "md5sum")
                                      (executable-find "md5")))
 
-(setq org-mobile-inbox-for-pull "~\\org\\from-mobile.org")
-(setq org-mobile-directory "~\\Dropbox\\orgmode")
+(setq org-mobile-inbox-for-pull "~/org/from-mobile.org")
+(setq org-mobile-directory "~/Dropbox/orgmode")
 
 
 
