@@ -5,6 +5,8 @@
 (evil-mode 1)
 
 (define-key gordon-global-mode-map (kbd "C-w") evil-window-map)
+(define-key evil-window-map (kbd "q")   'evil-window-delete)
+(define-key evil-window-map (kbd "C-q") 'evil-window-delete)
 
 (require 'org)
 (require 'cl)
