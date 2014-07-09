@@ -110,12 +110,13 @@ and takes a numeric prefix argument COUNT."
 (add-hook 'org-mode-hook (lambda ()
                            (define-key org-mode-map (kbd "<tab>") 'evil-tab)))
 
-(defadvice evil-ret-and-indent (around enter-works-in-orgtbls activate)
+(evil-define-motion gordon-evil-ret-and-indent (count)
+  :type line
   (if (and (in-org-or-orgtbl-mode) (org-at-table-p 'any))
-    (org-return)
-    (progn
-      ad-do-it)))
+      (org-return)
+    (evil-ret-and-indent count)))
 
+(define-key evil-insert-state-map (kbd "RET") 'gordon-evil-ret-and-indent)
 
 (define-key evil-insert-state-map (kbd "C-p") 'previous-line)
 (define-key evil-insert-state-map (kbd "C-n") 'next-line)
