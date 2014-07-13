@@ -238,6 +238,10 @@ Inside command, start and end will be bound to the results of those forms."
 
 (eshell-command "alias sudo '*sudo $*'")      ; eshell's sudo often doesn't work
 
+(add-hook 'eshell-mode-hook
+  (lambda ()
+    (evil-define-key 'normal eshell-mode-map (kbd "<return>") 'eshell-send-input)))
+
 
 
 ; EZ-SHELL CUSTOMIZATIONS
