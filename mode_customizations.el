@@ -221,12 +221,15 @@ Inside command, start and end will be bound to the results of those forms."
 
 ; SHELL MODE CUSTOMIZATIONS
 
+(require 'shell)
+
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 
 (setq comint-prompt-read-only t)
 (setq comint-scroll-to-bottom-on-input 'this) ; move to prompt when typing
 (setq comint-input-ignoredups t)              ; no duplicates in command history
 
+(evil-define-key 'normal shell-mode-map (kbd "<return>") 'comint-send-input)
 
 
 ; ESHELL CUSTOMIZATIONS
