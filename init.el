@@ -209,6 +209,8 @@ override all others.")
 (load "~/.emacs.d/mode_customizations.el")
 (load "~/.emacs.d/dvorak_customizations.el")
 (load "~/.emacs.d/bugfixes.el")
+; this is a no-op if we're not using a mac window system
+(load "~/.emacs.d/mac_customizations.el")
 
 
 ; do this after everything else so this appears first in minor-mode-map-alist
