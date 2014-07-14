@@ -223,6 +223,11 @@ Inside command, start and end will be bound to the results of those forms."
 
 (require 'shell)
 
+(define-key      gordon-global-mode-map (kbd "C-z") 'shell)
+(define-key              shell-mode-map (kbd "C-z") 'bury-buffer)
+(evil-define-key 'normal shell-mode-map (kbd "C-z") 'bury-buffer)
+(evil-set-toggle-key "<f6>") ; unbinds C-z in evil
+
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 
 (setq comint-prompt-read-only t)
