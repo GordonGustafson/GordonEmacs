@@ -236,6 +236,9 @@ Inside command, start and end will be bound to the results of those forms."
 
 (evil-define-key 'normal shell-mode-map (kbd "<return>") 'comint-send-input)
 
+(setq explicit-bash-args (append '("--login" "--init-file" "~/.bashrc") explicit-bash-args))
+
+
 
 ; ESHELL CUSTOMIZATIONS
 
