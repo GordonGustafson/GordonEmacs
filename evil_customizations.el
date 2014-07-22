@@ -1,5 +1,7 @@
 ; Gordon's customizations for evil, a Vim emulation layer for Emacs
 
+(setq evil-want-C-u-scroll t) ; can usually use "4 X" instead of "C-u X"
+
 (add-to-list 'load-path "~/.emacs.d/evil")
 (require 'evil)
 (evil-mode 1)
@@ -13,10 +15,8 @@
 
 ; when point on foo in foo-bar, make */# search for foo-bar instead of just foo
 (setq-default evil-symbol-word-search t)
-;allow f and t commands to find characters beyond the current line
-(setq evil-cross-lines t)
-;evil window commands shouldn't auto-equalize window sizes
-(setq evil-auto-balance-windows nil)
+(setq evil-cross-lines t)            ; f and t find characters in other lines
+(setq evil-auto-balance-windows nil) ; C-w commands don't equalize window sizes
 
 (defadvice other-window (after switch-to-normal-state-in-non-calc-buffers activate)
   "Switch evil to normal state in the new buffer unless it is in calc-mode"
