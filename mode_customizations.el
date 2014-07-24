@@ -201,21 +201,22 @@ Inside command, start and end will be bound to the results of those forms."
 ; if you have any trouble rebinding things, see if that's what's causing it.
 (eval-after-load 'dired
   '(progn
-     ;; use the standard Dired bindings as a base
+     ; Ensure we don't override certain bindings from evil.
+     ; Unbinding them here is easier than rebinding to their old values.
+     (define-key dired-mode-map "g" nil)
+     (define-key dired-mode-map "G" nil)
+     (define-key dired-mode-map "n" nil)
+     (define-key dired-mode-map "N" nil)
+     (define-key dired-mode-map "?" nil)
+     (define-key dired-mode-map "." nil)
+
      (evil-make-overriding-map dired-mode-map 'normal t)
      (evil-add-hjkl-bindings dired-mode-map 'normal
-       "J" 'dired-goto-file
-       "K" 'other-window
-       "r" 'dired-do-redisplay
-       "H" (lambda () (interactive) (evil-window-top 2)    (evil-end-of-line))
-       "M" (lambda () (interactive) (evil-window-middle)   (evil-end-of-line))
-       "L" (lambda () (interactive) (evil-window-bottom 2) (evil-end-of-line))
-       "n" 'evil-search-next
-       "N" 'evil-search-previous
-       "?" 'evil-search-backward
-       (kbd "<return>") 'dired-find-file
-       "." 'evil-repeat ;replace dired-clean-directory with easy window resizing
-       ";" (lookup-key dired-mode-map ":"))))
+       "H" (lambda () (interactive) (evil-window-top 2)  (evil-end-of-line))
+       "M" (lambda () (interactive) (evil-window-middle) (evil-end-of-line))
+       "L" (lambda () (interactive) (evil-window-bottom) (evil-previous-line) (evil-end-of-line))
+       "K" 'gordon-other-window
+       (kbd "<return>") 'dired-find-file)))
 
 
 
