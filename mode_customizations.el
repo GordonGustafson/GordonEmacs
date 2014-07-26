@@ -229,6 +229,9 @@ Inside command, start and end will be bound to the results of those forms."
 (evil-define-key 'normal shell-mode-map (kbd "C-z") 'bury-buffer)
 (evil-set-toggle-key "<f6>") ; unbinds C-z in evil
 
+; use the same binding as bash. C-? is bound to redo if you need it.
+(define-key shell-mode-map (kbd "C-r") 'comint-history-isearch-backward-regexp)
+
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 
 (setq comint-prompt-read-only t)
