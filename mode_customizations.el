@@ -224,9 +224,17 @@ Inside command, start and end will be bound to the results of those forms."
 
 (require 'shell)
 
+(defun maybe-bury-shell-buffer (open-new-shell)
+  "Open new shell buffer if any prefix arg was passed. Otherwise, bury-buffer"
+  (interactive "P")
+  (if open-new-shell
+      (let ((current-prefix-arg '(4)))
+        (call-interactively 'shell))
+    (bury-buffer)))
+
 (define-key      gordon-global-mode-map (kbd "C-z") 'shell)
-(define-key              shell-mode-map (kbd "C-z") 'bury-buffer)
-(evil-define-key 'normal shell-mode-map (kbd "C-z") 'bury-buffer)
+(define-key              shell-mode-map (kbd "C-z") 'maybe-bury-shell-buffer)
+(evil-define-key 'normal shell-mode-map (kbd "C-z") 'maybe-bury-shell-buffer)
 (evil-set-toggle-key "<f6>") ; unbinds C-z in evil
 
 ; use the same binding as bash. C-? is bound to redo if you need it.
