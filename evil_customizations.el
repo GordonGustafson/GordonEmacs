@@ -111,13 +111,17 @@ and takes a numeric prefix argument COUNT."
 (add-hook 'org-mode-hook (lambda ()
                            (define-key org-mode-map (kbd "<tab>") 'evil-tab)))
 
-(evil-define-motion gordon-evil-ret-and-indent (count)
+(evil-define-motion gordon-evil-ret-insert-state (count)
+  "Calls most appropriate <enter> function for current mode and cursor position"
   :type line
-  (if (and (in-org-or-orgtbl-mode) (org-at-table-p 'any))
-      (org-return)
-    (evil-ret-and-indent count)))
+  (cond ((and (in-org-or-orgtbl-mode) (org-at-table-p 'any))
+         (org-return))
+        ((evil-in-comment-p)
+           (funcall comment-line-break-function))
+        (t
+         (evil-ret-and-indent count))))
 
-(define-key evil-insert-state-map (kbd "RET") 'gordon-evil-ret-and-indent)
+(define-key evil-insert-state-map (kbd "RET") 'gordon-evil-ret-insert-state)
 
 (define-key evil-insert-state-map (kbd "C-p") 'previous-line)
 (define-key evil-insert-state-map (kbd "C-n") 'next-line)
