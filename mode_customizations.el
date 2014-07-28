@@ -324,6 +324,16 @@ Inside command, start and end will be bound to the results of those forms."
 (evil-define-key 'normal magit-log-mode-map
   (kbd "<return>") 'magit-visit-item)
 
+(define-key magit-mode-map (kbd "1") nil)
+(define-key magit-mode-map (kbd "2") nil)
+(define-key magit-mode-map (kbd "3") nil)
+(define-key magit-mode-map (kbd "4") nil)
+
+(define-key magit-mode-map (kbd "C-1") 'magit-show-level-1)
+(define-key magit-mode-map (kbd "C-2") 'magit-show-level-2)
+(define-key magit-mode-map (kbd "C-3") 'magit-show-level-3)
+(define-key magit-mode-map (kbd "C-4") 'magit-show-level-4)
+
 (global-set-key (kbd "C-x g") 'magit-status)
 
 ; remove unnecessary bindings from git-rebase-mode:
