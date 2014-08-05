@@ -401,6 +401,33 @@ Inside command, start and end will be bound to the results of those forms."
 
 
 
+; FIND-FILE-IN-PROJECT CUSTOMIZATIONS
+
+(require 'find-file-in-project)
+
+(defun gordon-find-file (use-find-file-in-project)
+  (interactive "P")
+  (if use-find-file-in-project
+      (find-file-in-project)
+    (ido-find-file)))
+
+(global-set-key (kbd "C-x f")   'gordon-find-file)
+(global-set-key (kbd "C-x C-f") 'gordon-find-file)
+
+(setq ffip-limit 8192) ; This is why you buy RAM! (default is 512)
+
+; They forgot some. If things get too slow you may want to trim this variable.
+; Use add-to-list so these won't be added twice if they are added upstream.
+(add-to-list 'ffip-patterns "*.tex")
+(add-to-list 'ffip-patterns "*.css")
+(add-to-list 'ffip-patterns "*.cs")
+(add-to-list 'ffip-patterns "*.java")
+
+(add-to-list 'ffip-prune-patterns "bin") ; don't find files in any bin directory
+
+(setq ffip-project-file '(".git" "GTAGS")) ; keep a GTAGS file in project root
+
+
 ; OCCUR CUSTOMIZATIONS
 
 (setq evil-emacs-state-modes (remove 'occur-mode evil-emacs-state-modes))
