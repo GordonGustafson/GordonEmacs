@@ -75,6 +75,11 @@ and takes a numeric prefix argument COUNT."
 
 (define-key evil-normal-state-map "gr" 'revert-buffer)
 (define-key evil-normal-state-map "gt" 'toggle-truncate-lines)
+
+(defadvice align-regexp (around align-regexp-with-spaces activate)
+  (let ((indent-tabs-mode nil))
+	ad-do-it))
+
 (define-key evil-normal-state-map "ga" 'align-regexp)
 
 (defun multi-occur-in-all-buffers (regexp)
