@@ -384,6 +384,11 @@ Inside command, start and end will be bound to the results of those forms."
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
 (global-auto-complete-mode)
 
+; (setq ac-use-fuzzy nil)
+(setq ac-auto-start 5)
+(setq ac-delay .6)
+(setq ac-auto-show-menu 1.3)
+
 
 
 ; SMEX CUSTOMIZATIONS
