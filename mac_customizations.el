@@ -13,4 +13,11 @@
 
   ; fonts appear smaller on Mac, so make the default bigger
   (set-face-attribute 'default nil
-                      :family "Consolas" :height 125))
+                      :family "Consolas" :height 125)
+
+  ; Assumes you've installed GNU coreutils with brew
+  ; (When you get into advanced usage you start finding incompatibilities,
+  ; so I use GNU coreutils everywhere as they're more standard AND portable)
+  (let ((path-to-gnu-bash "/usr/local/bin/bash"))
+	(when (file-exists-p path-to-gnu-bash)
+	  (setq explicit-shell-file-name path-to-gnu-bash))))
