@@ -58,30 +58,29 @@ Necessary because save-excursion doesn't work when text is replaced by shell-com
   "Runs command on every region delimited by the results of move-to-start-form and move-to-end-form.
 
 To determine bounds of a region, move to (point-min), invoke move-to-start-form, then invoke move-to-end-form.
-Inside command, start and end will be bound to the results of those forms."
+Inside command, start and end will be bound to the results of those forms.
+Terminate when move-to-start-form returns nil."
   (interactive "")
   `(save-excursion
-    (while t          ;until one of the forms tries a failed search
-    (goto-char (point-min))
-    ,move-to-start-form
-      (let ((start (point-marker)))
-        ,move-to-end-form
-        (let ((end (point-marker)))
-          ,command)))))
+     (while (progn (goto-char (point-min)) ,move-to-start-form)
+       (let ((start (point-marker)))
+         ,move-to-end-form
+         (let ((end (point-marker)))
+           ,command)))))
 
 (defun format-latex-align ()
   "Adds basic latex math markup to all regions between @@@ and @@"
   (interactive "")
   (command-on-all-delimited-regions
-    (progn
-      (re-search-forward "^@@@")
-      (goto-char (match-beginning 0)))
-    (progn
-      (next-line)           ;skip over @@@ since it contains @@
-      (re-search-forward "^@@[^@]?")
-      (goto-char (match-end 0)))
-    (progn
-      (shell-command-on-region start end "bash ~/.emacs.d/format_latex_math.sh" nil t))))
+   (prog1
+       (re-search-forward "^@@@" (point-max) t)
+     (goto-char (match-beginning 0)))
+   (progn
+     (next-line)           ;skip over @@@ since it contains @@
+     (when (re-search-forward "^@@[^@]?" (point-max) t)
+       (goto-char (match-end 0))))
+   (progn
+     (shell-command-on-region start end "bash ~/.emacs.d/format_latex_math.sh" nil t))))
 
 (defun orgtbl-export-table-to-matrix (start end)
   (interactive "r")
@@ -98,16 +97,16 @@ Inside command, start and end will be bound to the results of those forms."
 (defun orgtbl-export-all-tables-to-matrices ()
   (interactive "")
   (command-on-all-delimited-regions
-    (progn
-      (re-search-forward "^[ \t]*|")   ;go to the next line of a table in buffer
-      (goto-char (match-beginning 0)))
-    (progn
-      (while (string-match "^[ \t]*|" (thing-at-point 'line)) ;while we are on a table line
-        (next-line))                                          ;move forward one line
-      (search-backward "|")
-      (forward-char))                                         ;then move after the last | in the table
-    (progn
-      (orgtbl-export-table-to-matrix start end))))
+   (prog1
+       (re-search-forward "^[ \t]*|" (point-max) t)   ;go to the next line of a table in buffer
+     (goto-char (match-beginning 0)))
+   (progn
+     (while (string-match "^[ \t]*|" (thing-at-point 'line)) ;while we are on a table line
+       (next-line))                                          ;move forward one line
+     (search-backward "|")
+     (forward-char))                                         ;then move after the last | in the table
+   (progn
+     (orgtbl-export-table-to-matrix start end))))
 
 
 
