@@ -250,6 +250,8 @@ Terminate when move-to-start-form returns nil."
 
 ; use the same binding as bash. C-? is bound to redo if you need it.
 (define-key shell-mode-map (kbd "C-r") 'comint-history-isearch-backward-regexp)
+(define-key shell-mode-map (kbd "C-p") 'comint-previous-input)
+(define-key shell-mode-map (kbd "C-n") 'comint-next-input)
 
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 
