@@ -174,6 +174,7 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
 
 (gordon-define-text-object "$" "\\$" "\\$")
 (gordon-define-text-object "|" "|" "|")
+(gordon-define-text-object "=" "\\(^\\|=\\) *" " *\\(=\\|$\\)")
 
 (defun distance-to-next-match (regex)
   "Returns the next position of regex in buffer without moving point.
