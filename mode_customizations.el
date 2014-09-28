@@ -43,6 +43,18 @@
 (eval-after-load 'latex
   '(define-key LaTeX-mode-map (kbd "C-c e") 'LaTeX-environment))
 
+;; use LaTeX-environment to implement an text object for the current environment
+(evil-define-text-object outer-latex-environment (count &optional beg end type)
+  (save-excursion
+    ;; LaTeX-mark-environment won't select the environment foo when point is
+    ;; on the '\' in '\begin{foo}', so make sure we move past the '\begin{'
+    (when (string-match (thing-at-point 'line) "\\\\begin{")
+      (next-line))
+    (LaTeX-mark-environment count)
+    `(,(region-beginning) ,(region-end))))
+
+(define-key evil-outer-text-objects-map "\\" 'outer-latex-environment)
+
 (defmacro save-excursion-by-preceding-text (&rest body)
   "Like save-excursion, but restores point based on line number and the text preceding it, ignoring any whitespace changes.
 Necessary because save-excursion doesn't work when text is replaced by shell-command-on-region."
