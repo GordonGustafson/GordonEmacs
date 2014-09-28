@@ -1,28 +1,28 @@
-; Gordon's customizations for using the dvorak keyboard layout with Emacs
+;; Gordon's customizations for using the dvorak keyboard layout with Emacs
 
 (activate-input-method "english-dvorak")
 (setq default-input-method "english-dvorak")
 (add-hook 'minibuffer-setup-hook (lambda () (set-input-method "english-dvorak")))
 
-; this runs whenever a new buffer is created in non-fundamental mode
+;; this runs whenever a new buffer is created in non-fundamental mode
 (add-hook 'after-change-major-mode-hook (lambda ()
                                           (set-input-method "english-dvorak")))
 
 
 
-; EVIL DVORAK CUSTOMIZATIONS
+;; EVIL DVORAK CUSTOMIZATIONS
 
 (defun convert-second-element-to-integer (pair)
   (cons (nth 0 pair)
-    (if (vectorp (nth 1 pair))
-      (string-to-char (elt (nth 1 pair) 0))
-      (nth 1 pair))))
+        (if (vectorp (nth 1 pair))
+            (string-to-char (elt (nth 1 pair) 0))
+          (nth 1 pair))))
 
 (defun qwerty-to-dvorak (char)
   (let ((translation-map (mapcar `convert-second-element-to-integer (cdr (quail-map)))))
     (if (assoc char translation-map)
-    (cdr (assoc char translation-map))
-    char)))
+        (cdr (assoc char translation-map))
+      char)))
 
 (defadvice evil-replace (before use-current-input-method activate)
   (ad-set-arg 3 (qwerty-to-dvorak (ad-get-arg 3))))
@@ -50,7 +50,7 @@
 
 
 
-; CALC MODE DVORAK CUSTOMIZATIONS
+;; CALC MODE DVORAK CUSTOMIZATIONS
 
 (require 'calc)
 

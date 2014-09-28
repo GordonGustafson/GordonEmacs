@@ -1,8 +1,8 @@
-; Gordon's customizations for various Emacs modes
+;; Gordon's customizations for various Emacs modes
 (require 'evil)
 (require 'cl)
 
-; LATEX CUSTOMIZATIONS
+;; LATEX CUSTOMIZATIONS
 
 (setq-default TeX-PDF-mode t)  ;use .pdf for previews instead of .dvi
 
@@ -13,30 +13,31 @@
 (setq TeX-auto-save t)  ; save that parsed data in 'auto' folder when saving
 (setq-default TeX-master nil) ; ask for master file if needed
 
-;(add-hook 'LaTeX-mode-hook 'turn-on-reftex)
-;(setq reftex-plug-into-AUCTeX t)
+;; (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+;; (setq reftex-plug-into-AUCTeX t)
 
 (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
-(add-hook 'LaTeX-mode-hook (lambda ()
-  (push
-    '("latexmk" "latexmk -pvc -pdf -f %s" TeX-run-TeX nil t
-      :help "Run Latexmk on file")
-    TeX-command-list)))
+(add-hook 'LaTeX-mode-hook
+          (lambda ()
+            (push
+             '("latexmk" "latexmk -pvc -pdf -f %s" TeX-run-TeX nil t
+               :help "Run Latexmk on file")
+             TeX-command-list)))
 
 (setq TeX-command-default "latexmk")
 
 (defface font-latex-verbatim-face
   (let ((font (if (and (assq :inherit custom-face-attributes))
-                 '(:family "consolas"))))
- `((((class grayscale) (background light))
-   (:foreground "DimGray" ,@font))
-  (((class grayscale) (background dark))
-   (:foreground "LightGray" ,@font))
-  (((class color) (background light))
-   (:foreground "SaddleBrown" ,@font))
-  (((class color) (background dark))
-   (:foreground "burlywood" ,@font))
-  (t (,@font))))
+                  '(:family "consolas"))))
+    `((((class grayscale) (background light))
+       (:foreground "DimGray" ,@font))
+      (((class grayscale) (background dark))
+       (:foreground "LightGray" ,@font))
+      (((class color) (background light))
+       (:foreground "SaddleBrown" ,@font))
+      (((class color) (background dark))
+       (:foreground "burlywood" ,@font))
+      (t (,@font))))
   "Face used to highlight TeX verbatim environments."
   :group 'font-latex-highlighting-faces)
 
@@ -60,11 +61,11 @@
 Necessary because save-excursion doesn't work when text is replaced by shell-command-on-region."
   (interactive "")
   `(let* ((original-line (line-number-at-pos))
-         (point-to-bol-string (buffer-substring-no-properties (line-beginning-position) (point)))
-         (point-to-bol-regex (replace-regexp-in-string " *" " *" point-to-bol-string)))
-    ,@body
-    (goto-line original-line)
-    (re-search-forward point-to-bol-regex)))
+          (point-to-bol-string (buffer-substring-no-properties (line-beginning-position) (point)))
+          (point-to-bol-regex (replace-regexp-in-string " *" " *" point-to-bol-string)))
+     ,@body
+     (goto-line original-line)
+     (re-search-forward point-to-bol-regex)))
 
 (defmacro command-on-all-delimited-regions (move-to-start-form move-to-end-form command)
   "Runs command on every region delimited by the results of move-to-start-form and move-to-end-form.
@@ -122,7 +123,7 @@ Terminate when move-to-start-form returns nil."
 
 
 
-; ORG-MODE CUSTOMIZATIONS
+;; ORG-MODE CUSTOMIZATIONS
 
 (setq default-major-mode 'org-mode)
 (add-to-list 'auto-mode-alist '("\\.txt$" . org-mode)) ;open txt files in org-mode
@@ -139,7 +140,7 @@ Terminate when move-to-start-form returns nil."
 (define-key global-map "\C-cl" 'org-store-link)
 (define-key global-map "\C-ca" 'org-agenda)
 (add-hook 'org-mode-hook (lambda ()
-             (org-indent-mode t)) t)
+                           (org-indent-mode t)) t)
 
 (setq org-directory "~/org") ;setting not used often by org
 
@@ -157,26 +158,26 @@ Terminate when move-to-start-form returns nil."
 
 
 
-; ORG LATEX CUSTOMIZATIONS
+;; ORG LATEX CUSTOMIZATIONS
 
 (require 'ox-latex) ; required so we can set org-latex-default-packages-alist
 
 (define-key org-mode-map (kbd "C-c e") 'LaTeX-environment)
 
-;remove this font package because it provides a definition for iint that conflicts with amsmath (causes error)
+;; remove this font package because it provides a definition for iint that conflicts with amsmath (causes error)
 (setq org-latex-default-packages-alist (delete '("" "wasysym" t) org-latex-default-packages-alist))
 
 (setq TeX-view-program-selection '(((output-dvi style-pstricks)
-                                        "dvips and start")
-                                       (output-dvi "Yap")
-                                       (output-pdf "evince")
-                                       (output-html "start")))
+                                    "dvips and start")
+                                   (output-dvi "Yap")
+                                   (output-pdf "evince")
+                                   (output-html "start")))
 
 (setq org-export-async-debug t)
 
 
 
-; DESKTOP CUSTOMIZATIONS
+;; DESKTOP CUSTOMIZATIONS
 
 (require 'desktop)
 (desktop-save-mode 1)
@@ -187,12 +188,13 @@ Terminate when move-to-start-form returns nil."
 
 
 
-; OPENWITH CUSTOMIZATIONS
+;; OPENWITH CUSTOMIZATIONS
 
 (when (require 'openwith nil 'noerror)
-  (setq openwith-associations (list
-         (list (openwith-make-extension-regexp '("mpg" "mpeg" "mp3" "flac" "m4a"
-            "mp4" "avi" "wmv" "wav" "mov" "flv" "ogm" "ogg" "mkv")) "vlc" '(file))
+  (setq openwith-associations
+        (list
+         (list (openwith-make-extension-regexp '("mpg" "mpeg" "mp3" "flac" "m4a" "mp4" "avi" "wmv"
+                                                 "wav" "mov" "flv" "ogm" "ogg" "mkv")) "vlc" '(file))
          (list (openwith-make-extension-regexp '("png" "gif" "jpeg" "jpg"))  "iceweasel" '(file))
          (list (openwith-make-extension-regexp '("pdf")) "evince" '(file))))
   (openwith-mode t))
@@ -201,19 +203,19 @@ Terminate when move-to-start-form returns nil."
 
 
 
-; DIRED MODE CUSTOMIZATIONS
+;; DIRED MODE CUSTOMIZATIONS
 
 (require 'dired-x)
 (setq-default dired-omit-mode t)
 (setq dired-omit-files
       (concat dired-omit-files "\\|^\\..+$"))   ; hide dot-files
 
-; evil-integration contains a similar version of this.
-; if you have any trouble rebinding things, see if that's what's causing it.
+;; evil-integration contains a similar version of this.
+;; if you have any trouble rebinding things, see if that's what's causing it.
 (eval-after-load 'dired
   '(progn
-     ; Ensure we don't override certain bindings from evil.
-     ; Unbinding them here is easier than rebinding to their old values.
+     ;; Ensure we don't override certain bindings from evil.
+     ;; Unbinding them here is easier than rebinding to their old values.
      (define-key dired-mode-map "g" nil)
      (define-key dired-mode-map "G" nil)
      (define-key dired-mode-map "n" nil)
@@ -231,7 +233,7 @@ Terminate when move-to-start-form returns nil."
 
 
 
-; SHELL MODE CUSTOMIZATIONS
+;; SHELL MODE CUSTOMIZATIONS
 
 (require 'shell)
 
@@ -248,7 +250,7 @@ Terminate when move-to-start-form returns nil."
 (evil-define-key 'normal shell-mode-map (kbd "C-z") 'maybe-bury-shell-buffer)
 (evil-set-toggle-key "<f6>") ; unbinds C-z in evil
 
-; use the same binding as bash. C-? is bound to redo if you need it.
+;; use the same binding as bash. C-? is bound to redo if you need it.
 (define-key shell-mode-map (kbd "C-r") 'comint-history-isearch-backward-regexp)
 (define-key shell-mode-map (kbd "M-r") nil)
 
@@ -267,31 +269,31 @@ Terminate when move-to-start-form returns nil."
 (evil-define-key 'normal shell-mode-map (kbd "C-d")
   (lookup-key evil-motion-state-map (kbd "C-d"))) ; fix shell's stupid binding
 
-; execute my .bashrc in *shell*
+;; execute my .bashrc in *shell*
 (setq explicit-bash-args (append '("--login" "--init-file" "~/.bashrc") explicit-bash-args))
 
 
 
-; ESHELL CUSTOMIZATIONS
+;; ESHELL CUSTOMIZATIONS
 
 (setq eshell-scroll-to-bottom-on-input 'this) ; move to prompt when typing
 
 (eshell-command "alias sudo '*sudo $*'")      ; eshell's sudo often doesn't work
 
 (add-hook 'eshell-mode-hook
-  (lambda ()
-    (evil-define-key 'normal eshell-mode-map (kbd "<return>") 'eshell-send-input)))
+          (lambda ()
+            (evil-define-key 'normal eshell-mode-map (kbd "<return>") 'eshell-send-input)))
 
 
 
-; EZ-SHELL CUSTOMIZATIONS
+;; EZ-SHELL CUSTOMIZATIONS
 
 (defun ez-shell ()
   (interactive)
   (with-current-buffer (get-buffer-create "*ez-shell*")
     (let ((shell-commands-to-run (buffer-substring-no-properties (point-min) (point-max))))
       (if (string= shell-commands-to-run "")
-        (pop-to-buffer "*ez-shell*")
+          (pop-to-buffer "*ez-shell*")
         (let* ((commands (split-string shell-commands-to-run "\n" t))
                (results (loop for command in commands collect (eshell-command-result command)))
                (report (mapconcat 'identity results "\n")))
@@ -305,16 +307,16 @@ Terminate when move-to-start-form returns nil."
 
 
 
-; MAGIT CUSTOMIZATIONS
+;; MAGIT CUSTOMIZATIONS
 
 (require 'magit)
 
-(let ((evil-magit-mode-maps '(magit-mode-map magit-commit-mode-map
-                              magit-status-mode-map magit-log-mode-map
+(let ((evil-magit-mode-maps '(magit-mode-map
+                              magit-commit-mode-map magit-status-mode-map
                               magit-cherry-mode-map magit-reflog-mode-map
                               magit-diff-mode-map magit-wazzup-mode-map
                               magit-branch-manager-mode-map
-                              magit-process-mode-map)))
+                              magit-process-mode-map magit-log-mode-map)))
   (loop for mode-map in evil-magit-mode-maps do
         (progn
           (evil-define-key 'normal  (symbol-value mode-map)
@@ -322,12 +324,12 @@ Terminate when move-to-start-form returns nil."
             (kbd "k")   (lookup-key evil-motion-state-map "k"))
           (evil-make-overriding-map (symbol-value mode-map) 'normal t))))
 
-(let ((evil-magit-modes '(magit-mode magit-commit-mode
-                          magit-status-mode magit-log-mode
+(let ((evil-magit-modes '(magit-mode
+                          magit-commit-mode magit-status-mode
                           magit-cherry-mode magit-reflog-mode
                           magit-diff-mode magit-wazzup-mode
                           magit-branch-manager-mode
-                          magit-process-mode)))
+                          magit-process-mode magit-log-mode)))
   (setq evil-emacs-state-modes (remove-if (lambda (mode)
                                             (memq mode evil-magit-modes))
                                           evil-emacs-state-modes)))
@@ -353,7 +355,7 @@ Terminate when move-to-start-form returns nil."
 
 (global-set-key (kbd "C-x g") 'magit-status)
 
-; remove unnecessary bindings from git-rebase-mode:
+;; remove unnecessary bindings from git-rebase-mode:
 (setq git-rebase-mode-map
       (let ((map (make-sparse-keymap)))
         (define-key map (kbd "C-c C-c") 'server-edit)
@@ -364,7 +366,7 @@ Terminate when move-to-start-form returns nil."
 
 
 
-; DSVN CUSTOMIZATIONS
+;; DSVN CUSTOMIZATIONS
 
 (require 'dsvn)
 
@@ -384,7 +386,7 @@ Terminate when move-to-start-form returns nil."
 
 
 
-; DIFF-MODE CUSTOMIZATIONS
+;; DIFF-MODE CUSTOMIZATIONS
 
 (evil-define-key 'normal diff-mode-map
   (kbd "q") 'quit-window
@@ -392,23 +394,23 @@ Terminate when move-to-start-form returns nil."
 
 
 
-; AUTO-COMPLETE CUSTOMIZATIONS
+;; AUTO-COMPLETE CUSTOMIZATIONS
 
-; setup completion sources when entering appropriate major modes:
+;; setup completion sources when entering appropriate major modes:
 (require 'auto-complete-config)
 (ac-config-default)
 
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
 (global-auto-complete-mode)
 
-; (setq ac-use-fuzzy nil)
+;; (setq ac-use-fuzzy nil)
 (setq ac-auto-start 5)
 (setq ac-delay .6)
 (setq ac-auto-show-menu 1.3)
 
 
 
-; SMEX CUSTOMIZATIONS
+;; SMEX CUSTOMIZATIONS
 
 (smex-initialize)
 (global-set-key (kbd "M-x") 'smex)
@@ -416,14 +418,14 @@ Terminate when move-to-start-form returns nil."
 
 
 
-; IDO CUSTOMIZATIONS
+;; IDO CUSTOMIZATIONS
 
 (require 'ido)
 (ido-mode t)
 
 
 
-; FIND-FILE-IN-PROJECT CUSTOMIZATIONS
+;; FIND-FILE-IN-PROJECT CUSTOMIZATIONS
 
 (require 'find-file-in-project)
 
@@ -438,8 +440,8 @@ Terminate when move-to-start-form returns nil."
 
 (setq ffip-limit 8192) ; This is why you buy RAM! (default is 512)
 
-; They forgot some. If things get too slow you may want to trim this variable.
-; Use add-to-list so these won't be added twice if they are added upstream.
+;; They forgot some. If things get too slow you may want to trim this variable.
+;; Use add-to-list so these won't be added twice if they are added upstream.
 (add-to-list 'ffip-patterns "*.tex")
 (add-to-list 'ffip-patterns "*.css")
 (add-to-list 'ffip-patterns "*.cs")
@@ -450,7 +452,7 @@ Terminate when move-to-start-form returns nil."
 (setq ffip-project-file '(".git" "GTAGS")) ; keep a GTAGS file in project root
 
 
-; OCCUR CUSTOMIZATIONS
+;; OCCUR CUSTOMIZATIONS
 
 (setq evil-emacs-state-modes (remove 'occur-mode evil-emacs-state-modes))
 
@@ -461,14 +463,14 @@ Terminate when move-to-start-form returns nil."
 
 
 
-; GGTAGS (GNU GLOBAL) CUSTOMIZATIONS
+;; GGTAGS (GNU GLOBAL) CUSTOMIZATIONS
 
 (require 'ggtags)
 (add-hook 'prog-mode-hook (lambda () (ggtags-mode 1)))
 
-; Finds the definition if point is on a reference and vice versa.
-; HOWEVER, gnu global doesn't know about references when using the
-; ctags backend, so finding all refences only works in C, C++, and Java.
+;; Finds the definition if point is on a reference and vice versa.
+;; HOWEVER, gnu global doesn't know about references when using the
+;; ctags backend, so finding all refences only works in C, C++, and Java.
 (define-key evil-motion-state-map "\C-]" 'ggtags-find-tag-dwim)
 (define-key evil-insert-state-map "\C-]" 'ggtags-find-tag-dwim)
 
@@ -489,11 +491,11 @@ Only intended for interactive use."
 
 
 
-; COMPILATION-MODE CUSTOMIZATIONS
+;; COMPILATION-MODE CUSTOMIZATIONS
 
 (define-key compilation-mode-map "g" nil)
 
-; gnu-global-mode derives from compilation-mode
+;; gnu-global-mode derives from compilation-mode
 (evil-define-key 'normal compilation-mode-map
   "gr" 'recompile
   "h" (lookup-key evil-motion-state-map "h")
@@ -505,75 +507,75 @@ Only intended for interactive use."
 
 
 
-; RAINBOW-DELIMITERS CUSTOMIZATIONS
+;; RAINBOW-DELIMITERS CUSTOMIZATIONS
 
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 
 
 
-; WHITESPACE MODE CUSTOMIZATIONS
+;; WHITESPACE MODE CUSTOMIZATIONS
 
 (require 'whitespace)
 
 (setq whitespace-style '(face trailing lines-tail indentation
-                           empty space-before-tab space-after-tab))
+                              empty space-before-tab space-after-tab))
 (setq whitespace-line-column 80)
 (add-hook 'prog-mode-hook (lambda () (whitespace-mode t)))
 
 
 
-; GENERAL PROGRAMMING CUSTOMIZATIONS
+;; GENERAL PROGRAMMING CUSTOMIZATIONS
 
 (setq-default c-basic-offset 4)
 (setq-default tab-width 4)
 
-; consider whitespace or * to be valid line prefixes when filling
-; paragraphs. * can be a line prefix in javadoc comments. This variable
-; only applies when the paragraph being filled starts as one line.
+;; consider whitespace or * to be valid line prefixes when filling
+;; paragraphs. * can be a line prefix in javadoc comments. This variable
+;; only applies when the paragraph being filled starts as one line.
 (setq adaptive-fill-first-line-regexp "\\`[ \\t*]*\\'")
 
 
 
-; C-SHARP (C#) MODE CUSTOMIZATIONS
+;; C-SHARP (C#) MODE CUSTOMIZATIONS
 
 (setq auto-mode-alist (cons '( "\\.cs\\'" . csharp-mode) auto-mode-alist) )
 
 
 
-; ARTIST MODE CUSTOMIZATIONS
+;; ARTIST MODE CUSTOMIZATIONS
 
 (defadvice artist-mode (after deactive-evil-for-artist-mode activate)
   (if artist-mode
-    (turn-off-evil-mode)
+      (turn-off-evil-mode)
     (turn-on-evil-mode)))
 
 
 
-; CALC MODE CUSTOMIZATIONS
+;; CALC MODE CUSTOMIZATIONS
 
 (require 'calc)
 (require 'calc-ext)
 
 (setq calc-display-trail nil) ;don't display trail buffer by default
 
-;remap common operators to dvorak
+;;remap common operators to dvorak
 (define-key calc-mode-map "}" 'calc-plus)
 (define-key calc-mode-map "'" 'calc-minus)
 (define-key calc-mode-map "[" 'calc-divide)
 (define-key calc-mode-map "q" 'calc-algebraic-entry)
 
-;need to remap K to switch to other buffers because I ensure
-;that evil switches to insert state after entering a calc buffer (see evil_customizations)
+;; need to remap K to switch to other buffers because I ensure
+;; that evil switches to insert state after entering a calc buffer (see evil_customizations)
 (define-key calc-mode-map "K" 'other-window)
 
-;use the latex calc language when the buffer is in org-mode (calc embedded)
+;; use the latex calc language when the buffer is in org-mode (calc embedded)
 (add-to-list 'calc-language-alist '(org-mode . latex))
 
 (add-to-list 'evil-insert-state-modes 'calc-mode)
 
 
 
-; W3M CUSTOMIZATIONS
+;; W3M CUSTOMIZATIONS
 
 (setq evil-emacs-state-modes (remove 'w3m-mode evil-emacs-state-modes))
 
@@ -581,12 +583,12 @@ Only intended for interactive use."
 (setq w3m-use-cookies t)
 (setq w3m-home-page "http://www.stackoverflow.com/questions")
 (setq w3m-search-default-engine "g")
-;don't use the word at point as the default search text
-;(you have to delete it if you want to search something else)
+;; don't use the word at point as the default search text
+;; (you have to delete it if you want to search something else)
 (setq w3m-search-word-at-point nil)
 (add-hook 'w3m-mode-hook 'w3m-lnum-mode)
 
-;w3m-lnum's default hint color isn't great with dark-blue color theme
+;; w3m-lnum's default hint color isn't great with dark-blue color theme
 (face-spec-set 'w3m-lnum '((t (:foreground "#FF9999"))) )
 
 (defun w3m-new-tab ()
@@ -600,9 +602,9 @@ Only intended for interactive use."
 
 (defun w3m-follow-hint-new-tab ()
   (interactive)
-  ;prefix argument opens a new session
-  ;how are sessions different from tabs????
-  ;should w3m-new-tab use sessions somehow????
+  ;; prefix argument opens a new session
+  ;; how are sessions different from tabs????
+  ;; should w3m-new-tab use sessions somehow????
   (w3m-lnum-follow 4))
 
 (defun w3m-search-new-tab (search-engine query)
@@ -610,39 +612,41 @@ Only intended for interactive use."
   (w3m-new-tab)
   (w3m-search-do-search 'w3m-goto-url search-engine query))
 
-(eval-after-load "w3m-search" '(progn
-  ; C-u S g RET <search term> RET
-  (add-to-list 'w3m-search-engine-alist '("g" "http://www.google.com/search?q=%s" utf-8))
-  (add-to-list 'w3m-search-engine-alist '("q" "http://stackoverflow.com/search?q=%s" utf-8))
-  (add-to-list 'w3m-search-engine-alist '("w" "http://en.wikipedia.org/wiki/Special:Search?search=%s" utf-8))))
+(eval-after-load "w3m-search"
+  '(progn
+     ;; C-u S g RET <search term> RET
+     (add-to-list 'w3m-search-engine-alist '("g" "http://www.google.com/search?q=%s" utf-8))
+     (add-to-list 'w3m-search-engine-alist '("q" "http://stackoverflow.com/search?q=%s" utf-8))
+     (add-to-list 'w3m-search-engine-alist '("w" "http://en.wikipedia.org/wiki/Special:Search?search=%s" utf-8))))
 
-(eval-after-load 'w3m-lnum '(progn
-  (defvar w3m-mode-map)
-  (evil-make-overriding-map w3m-lnum-mode-map 'normal t)
-  (evil-make-overriding-map w3m-mode-map 'normal t)
-  (evil-define-key 'normal w3m-mode-map
-    "o" 'w3m-search
-    "t" 'w3m-search-new-tab
-;   "f" 'w3m-view-this-url  w3m-lnum handles this
-    "F" 'w3m-follow-hint-new-tab
-    "b" 'evil-backward-word-begin
-    (kbd "<backspace>") 'w3m-view-previous-page
-    "gg" 'evil-goto-first-line
-    "G" 'evil-goto-line
-    "d" 'w3m-delete-buffer
-    "h" 'w3m-previous-buffer
-    "j" 'w3m-scroll-up
-    "k" 'w3m-scroll-down
-    "l" 'w3m-next-buffer
-    "H" 'w3m-view-previous-page
-    "K" 'other-window
-    "L" 'w3m-view-next-page
-    (kbd "C-e") 'w3m-scroll-up
-    (kbd "C-y") 'w3m-scroll-down)))
+(eval-after-load 'w3m-lnum
+  '(progn
+     (defvar w3m-mode-map)
+     (evil-make-overriding-map w3m-lnum-mode-map 'normal t)
+     (evil-make-overriding-map w3m-mode-map 'normal t)
+     (evil-define-key 'normal w3m-mode-map
+       "o" 'w3m-search
+       "t" 'w3m-search-new-tab
+       ;;  "f" 'w3m-view-this-url  w3m-lnum handles this
+       "F" 'w3m-follow-hint-new-tab
+       "b" 'evil-backward-word-begin
+       (kbd "<backspace>") 'w3m-view-previous-page
+       "gg" 'evil-goto-first-line
+       "G" 'evil-goto-line
+       "d" 'w3m-delete-buffer
+       "h" 'w3m-previous-buffer
+       "j" 'w3m-scroll-up
+       "k" 'w3m-scroll-down
+       "l" 'w3m-next-buffer
+       "H" 'w3m-view-previous-page
+       "K" 'other-window
+       "L" 'w3m-view-next-page
+       (kbd "C-e") 'w3m-scroll-up
+       (kbd "C-y") 'w3m-scroll-down)))
 
 
 
-; MAIL CUSTOMIZATIONS
+;; MAIL CUSTOMIZATIONS
 
 (global-set-key (kbd "C-x i") (lambda ()
                                 (interactive)
@@ -655,20 +659,20 @@ Only intended for interactive use."
   (evil-normal-state))
 
 (setq gnus-select-method '(nnimap "gmail"
-  (nnimap-address "imap.gmail.com")
-  (nnimap-server-port 993)
-  (nnimap-stream ssl)
-  (nnimap-authinfo-file "~/.authinfo")))
+                                  (nnimap-address "imap.gmail.com")
+                                  (nnimap-server-port 993)
+                                  (nnimap-stream ssl)
+                                  (nnimap-authinfo-file "~/.authinfo")))
 
 (setq gnus-thread-sort-functions
- '(gnus-thread-sort-by-most-recent-date))
+      '(gnus-thread-sort-by-most-recent-date))
 
 (setq message-send-mail-function 'smtpmail-send-it
- smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
-  smtpmail-auth-credentials '(("smtp.gmail.com" 587 "gordon3.14@gmail.com" nil))
-  smtpmail-default-smtp-server "smtp.gmail.com"
-  smtpmail-smtp-server "smtp.gmail.com"
-  smtpmail-smtp-service 587)
+      smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
+      smtpmail-auth-credentials '(("smtp.gmail.com" 587 "gordon3.14@gmail.com" nil))
+      smtpmail-default-smtp-server "smtp.gmail.com"
+      smtpmail-smtp-server "smtp.gmail.com"
+      smtpmail-smtp-service 587)
 
 (setq send-mail-function 'message-send-mail-function)
 
@@ -676,12 +680,12 @@ Only intended for interactive use."
 (setq user-full-name "Gordon Gustafson")
 (setq gnus-use-full-window nil)
 
-;always fetch all the messages in a newsgroup.
-;The prompt for how many to fetch can take longer to answer than the actual fetching would
+;; always fetch all the messages in a newsgroup.
+;; The prompt for how many to fetch can take longer to answer than the actual fetching would
 (setq gnus-large-newsgroup nil)
 
-;always read the backup file of group interactions if it exists (it's there in case Emacs crashes before the updates are applied)
-;Disabled so I have one less prompty to answer
+;; always read the backup file of group interactions if it exists (it's there in case Emacs crashes before the updates are applied)
+;; Disabled so I have one less prompty to answer
 (setq gnus-always-read-dribble-file t)
 
 (eval-after-load 'gnus-msg
@@ -689,10 +693,10 @@ Only intended for interactive use."
      ;; use the standard gnus-summary-mode bindings as a base
      (evil-make-overriding-map gnus-summary-mode-map 'normal t)
      (evil-add-hjkl-bindings gnus-summary-mode-map  'normal
-      ;"h"                           ;overrides gnus-summary-select-article-buffer
-      ;"j"                           ;overrides gnus-summary-goto-article
-      ;"k"                           ;overrides gnus-summary-kill-same-subject-and-select
-      ;"l"                           ;overrides gnus-summary-goto-last-article
+       ;; "h"                        ;overrides gnus-summary-select-article-buffer
+       ;; "j"                        ;overrides gnus-summary-goto-article
+       ;; "k"                        ;overrides gnus-summary-kill-same-subject-and-select
+       ;; "l"                        ;overrides gnus-summary-goto-last-article
        "K" 'other-window             ;overrides gnus-summary-mime-map
        "H" 'evil-window-top          ;overrides gnus-summary-help-map
        "M" 'evil-window-middle       ;overrides gnus-summary-mark-map

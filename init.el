@@ -1,5 +1,5 @@
-; The init file that loads the other .el files in this directory
-; It should have path $HOME/.emacs.d/init.el for Emacs to find it automatically
+;; The init file that loads the other .el files in this directory
+;; It should have path $HOME/.emacs.d/init.el for Emacs to find it automatically
 
 (make-frame-visible)
 (setq frame-title-format "%b - emacs")
@@ -41,18 +41,18 @@ override all others.")
     ('top    (window-resize (get-buffer-window) (- delta) nil))
     ('bottom (window-resize (get-buffer-window)    delta  nil))
     ('mid
-      (if (> delta 0)
-        (window-resize (window-in-direction 'above) (- delta) nil)
-        (window-resize (window-in-direction 'below)    delta  nil)))))
+     (if (> delta 0)
+         (window-resize (window-in-direction 'above) (- delta) nil)
+       (window-resize (window-in-direction 'below)    delta  nil)))))
 
 (defun move-vertical-edge-horizontally (delta)
   (case (window-left-or-right)
     ('right (window-resize (get-buffer-window) (- delta) t))
     ('left  (window-resize (get-buffer-window)    delta  t))
     ('mid
-      (if (> delta 0)
-        (window-resize (window-in-direction 'right) (- delta) t)
-        (window-resize (window-in-direction 'left )    delta  t)))))
+     (if (> delta 0)
+         (window-resize (window-in-direction 'right) (- delta) t)
+       (window-resize (window-in-direction 'left )    delta  t)))))
 
 (define-key gordon-global-mode-map (kbd "M-K") (lambda (prefix-arg) (interactive "p") (move-horizontal-edge-vertically    prefix-arg)))
 (define-key gordon-global-mode-map (kbd "M-J") (lambda (prefix-arg) (interactive "p") (move-horizontal-edge-vertically (- prefix-arg))))
@@ -72,46 +72,46 @@ override all others.")
 
 
 (defun replace-garbage-chars ()
-"Replace goofy MS and other garbage characters with latin1 equivalents."
-(interactive)
-(save-excursion
-  (replace-string "΄" "\"" nil (point-min) (point-max))
-  (replace-string "“" "\"" nil (point-min) (point-max))
-  (replace-string "’" "'" nil (point-min) (point-max))
-  (replace-string "“" "\"" nil (point-min) (point-max))
-  (replace-string "—" "--" nil (point-min) (point-max)) ; multi-byte
-  (replace-string "" "'" nil (point-min) (point-max))
-  (replace-string "" "'" nil (point-min) (point-max))
-  (replace-string "" "\"" nil (point-min) (point-max))
-  (replace-string "" "\"" nil (point-min) (point-max))
-  (replace-string "" "\"" nil (point-min) (point-max))
-  (replace-string "" "\"" nil (point-min) (point-max))
-  (replace-string "‘" "\"" nil (point-min) (point-max))
-  (replace-string "’" "'" nil (point-min) (point-max))
-  (replace-string "¡\"" "\"" nil (point-min) (point-max))
-  (replace-string "¡­" "..." nil (point-min) (point-max))
-  (replace-string "" "..." nil (point-min) (point-max))
-  (replace-string "" " " nil (point-min) (point-max)) ; M-SPC
-  (replace-string "" "`" nil (point-min) (point-max))  ; \221
-  (replace-string "" "'" nil (point-min) (point-max))  ; \222
-  (replace-string "" "``" nil (point-min) (point-max))
-  (replace-string "" "''" nil (point-min) (point-max))
-  (replace-string "" "*" nil (point-min) (point-max))
-  (replace-string "" "--" nil (point-min) (point-max))
-  (replace-string "" "--" nil (point-min) (point-max))
-  (replace-string " " " " nil (point-min) (point-max)) ; M-SPC
-  (replace-string "¡" "\"" nil (point-min) (point-max))
-  (replace-string "´" "\"" nil (point-min) (point-max))
-  (replace-string "»" "<<" nil (point-min) (point-max))
-  (replace-string "Ç" "'" nil (point-min) (point-max))
-  (replace-string "È" "\"" nil (point-min) (point-max))
-  (replace-string "é" "e" nil (point-min) (point-max)) ;; &eacute;
-  (replace-string "ó" "-" nil (point-min) (point-max))
-))
+  "Replace goofy MS and other garbage characters with latin1 equivalents."
+  (interactive)
+  (save-excursion
+    (replace-string "΄" "\"" nil (point-min) (point-max))
+    (replace-string "“" "\"" nil (point-min) (point-max))
+    (replace-string "’" "'" nil (point-min) (point-max))
+    (replace-string "“" "\"" nil (point-min) (point-max))
+    (replace-string "—" "--" nil (point-min) (point-max)) ; multi-byte
+    (replace-string "" "'" nil (point-min) (point-max))
+    (replace-string "" "'" nil (point-min) (point-max))
+    (replace-string "" "\"" nil (point-min) (point-max))
+    (replace-string "" "\"" nil (point-min) (point-max))
+    (replace-string "" "\"" nil (point-min) (point-max))
+    (replace-string "" "\"" nil (point-min) (point-max))
+    (replace-string "‘" "\"" nil (point-min) (point-max))
+    (replace-string "’" "'" nil (point-min) (point-max))
+    (replace-string "¡\"" "\"" nil (point-min) (point-max))
+    (replace-string "¡­" "..." nil (point-min) (point-max))
+    (replace-string "" "..." nil (point-min) (point-max))
+    (replace-string "" " " nil (point-min) (point-max)) ; M-SPC
+    (replace-string "" "`" nil (point-min) (point-max))  ; \221
+    (replace-string "" "'" nil (point-min) (point-max))  ; \222
+    (replace-string "" "``" nil (point-min) (point-max))
+    (replace-string "" "''" nil (point-min) (point-max))
+    (replace-string "" "*" nil (point-min) (point-max))
+    (replace-string "" "--" nil (point-min) (point-max))
+    (replace-string "" "--" nil (point-min) (point-max))
+    (replace-string " " " " nil (point-min) (point-max)) ; M-SPC
+    (replace-string "¡" "\"" nil (point-min) (point-max))
+    (replace-string "´" "\"" nil (point-min) (point-max))
+    (replace-string "»" "<<" nil (point-min) (point-max))
+    (replace-string "Ç" "'" nil (point-min) (point-max))
+    (replace-string "È" "\"" nil (point-min) (point-max))
+    (replace-string "é" "e" nil (point-min) (point-max)) ;; &eacute;
+    (replace-string "ó" "-" nil (point-min) (point-max))
+    ))
 
 
 
-;(setq initial-buffer-choice t) ;buffer to view when not opening a certain file
+;;(setq initial-buffer-choice t) ;buffer to view when not opening a certain file
 (setq inhibit-splash-screen t)
 (setq initial-scratch-message "")
 
@@ -138,7 +138,7 @@ override all others.")
 
 
 
-; settings loaded last because they could cause problems
+;; settings loaded last because they could cause problems
 (require 'cl)
 (require 'package)
 (package-initialize)
@@ -151,21 +151,22 @@ override all others.")
              '("melpa" . "http://melpa.milkbox.net/packages/") t)
 
 (defun package-installed-and-up-to-date-p (package)
-  ;assumes that package-refresh-contents has already been called
-  ;also assume all built-in packages are out of date, which is usually true.
+  ;; assumes that package-refresh-contents has already been called
+  ;; also assume all built-in packages are out of date, which is usually true.
   (if (not (package-installed-p package))
-    nil
+      nil
     (let* ((newest-desc  (cdr (assq package package-archive-contents)))
            (installed-desc (cdr (or (assq package package-alist) (assq package package--builtins))))
            (newest-version  (package-desc-vers newest-desc))
            (installed-version (package-desc-vers installed-desc)))
-             (or (equal installed-version newest-version) (version-list-< newest-version installed-version)))))
+      (or (equal installed-version newest-version) (version-list-< newest-version installed-version)))))
 
 (message "%s" "Emacs Prelude is now refreshing its package database...")
 (package-refresh-contents)
 (message "%s" " done.")
 
-(defvar gordon-packages '(color-theme org auctex frame-cmds frame-fns
+(defvar gordon-packages '(color-theme
+                          org auctex frame-cmds frame-fns
                           bash-completion csharp-mode openwith git-commit-mode
                           magit auto-complete smex rainbow-delimiters dsvn
                           ggtags goto-chg undo-tree find-file-in-project)
@@ -209,11 +210,11 @@ override all others.")
 (load "~/.emacs.d/mode_customizations.el")
 (load "~/.emacs.d/dvorak_customizations.el")
 (load "~/.emacs.d/bugfixes.el")
-; this is a no-op if we're not using a mac window system
+;; this is a no-op if we're not using a mac window system
 (load "~/.emacs.d/mac_customizations.el")
 
 
-; do this after everything else so this appears first in minor-mode-map-alist
+;; do this after everything else so this appears first in minor-mode-map-alist
 (define-minor-mode gordon-global-mode
   "A minor mode so that my key settings override annoying major modes."
   t "" 'gordon-global-mode-map)

@@ -1,6 +1,6 @@
-; Not necessarily bug fixes per se, but 'patches' so things work the way I want.
-; A few massive redifinitions here are easier to keep track of than
-; small tweaks spread across the entire lisp directory.
+;; Not necessarily bug fixes per se, but 'patches' so things work the way I want.
+;; A few massive redifinitions here are easier to keep track of than
+;; small tweaks spread across the entire lisp directory.
 
 (require 'ispell)
 

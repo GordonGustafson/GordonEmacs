@@ -1,4 +1,4 @@
-; Gordon's customizations for evil, a Vim emulation layer for Emacs
+;; Gordon's customizations for evil, a Vim emulation layer for Emacs
 
 (setq evil-want-C-u-scroll t) ; can usually use "4 X" instead of "C-u X"
 
@@ -13,7 +13,7 @@
 (require 'org)
 (require 'cl)
 
-; when point on foo in foo-bar, make */# search for foo-bar instead of just foo
+;; when point on foo in foo-bar, make */# search for foo-bar instead of just foo
 (setq-default evil-symbol-word-search t)
 (setq evil-cross-lines t)            ; f and t find characters in other lines
 (setq evil-auto-balance-windows nil) ; C-w commands don't equalize window sizes
@@ -21,15 +21,15 @@
 (defadvice other-window (after switch-to-normal-state-in-non-calc-buffers activate)
   "Switch evil to normal state in the new buffer unless it is in calc-mode"
   (if (eq major-mode 'calc-mode)
-     (evil-insert-state)
-     (evil-normal-state)))
+      (evil-insert-state)
+    (evil-normal-state)))
 
 (defun gordon-other-window (&optional n)
   "Select next window. Numeric prefix arg of 4 (C-u) selects previous window, but all other prefixes work normally."
   (interactive "P")
   (let ((numeric-prefix-arg (prefix-numeric-value n)))
     (if (equal numeric-prefix-arg 4)
-      (other-window (- 1))
+        (other-window (- 1))
       (other-window numeric-prefix-arg))))
 
 (evil-define-operator evil-yank-end-of-line (beg end type register)
@@ -46,7 +46,7 @@ and takes a numeric prefix argument COUNT."
     `(evil-define-command ,command-name (count)
        :repeat nil
        (interactive "p")
-         ,@body)))
+       ,@body)))
 
 (evil-declare-ignore-repeat 'evil-delete-char)
 (evil-declare-ignore-repeat 'evil-delete-backward-char)
@@ -56,8 +56,8 @@ and takes a numeric prefix argument COUNT."
 (evil-declare-repeat 'evil-scroll-left)
 (evil-declare-repeat 'evil-scroll-right)
 
-;(define-key evil-normal-state-map "K" 'other-window)
-;hack to stop ever calling evil-lookup (it still gets called sometimes even after K is remapped)
+;; (define-key evil-normal-state-map "K" 'other-window)
+;; hack to stop ever calling evil-lookup (it still gets called sometimes even after K is remapped)
 (substitute-key-definition 'evil-lookup 'gordon-other-window evil-motion-state-map)
 
 (define-key gordon-global-mode-map  (kbd "<f5>") 'evil-local-mode)
@@ -102,17 +102,17 @@ and takes a numeric prefix argument COUNT."
   :repeat nil
   (interactive)
   (cond
-    ((and (in-org-or-orgtbl-mode) (org-at-table-p 'any))
-      (org-cycle))
-    ((memq major-mode '(calc-mode shell-mode eshell-mode magit-status-mode))
-      (call-interactively (local-key-binding "\t")))
-    ((and (memq major-mode '(org-mode)) (not (eq evil-state 'insert)))
-      (call-interactively (local-key-binding "\t")))
-    (t
-      (let ((bol-to-point (buffer-substring-no-properties (line-beginning-position) (point))))
-          (if (string-match "^[ \t]*$" bol-to-point)
-            (indent-for-tab-command)
-            (call-interactively 'dabbrev-expand))))))
+   ((and (in-org-or-orgtbl-mode) (org-at-table-p 'any))
+    (org-cycle))
+   ((memq major-mode '(calc-mode shell-mode eshell-mode magit-status-mode))
+    (call-interactively (local-key-binding "\t")))
+   ((and (memq major-mode '(org-mode)) (not (eq evil-state 'insert)))
+    (call-interactively (local-key-binding "\t")))
+   (t
+    (let ((bol-to-point (buffer-substring-no-properties (line-beginning-position) (point))))
+      (if (string-match "^[ \t]*$" bol-to-point)
+          (indent-for-tab-command)
+        (call-interactively 'dabbrev-expand))))))
 
 (define-key evil-insert-state-map (kbd "<tab>") 'evil-tab)
 (define-key evil-normal-state-map (kbd "<tab>") 'evil-tab)
@@ -125,7 +125,7 @@ and takes a numeric prefix argument COUNT."
   (cond ((and (in-org-or-orgtbl-mode) (org-at-table-p 'any))
          (org-return))
         ((evil-in-comment-p)
-           (funcall comment-line-break-function))
+         (funcall comment-line-break-function))
         (t
          (evil-ret-and-indent count))))
 
@@ -141,7 +141,7 @@ and takes a numeric prefix argument COUNT."
 (define-key evil-ex-completion-map (kbd "M-p") 'previous-complete-history-element)
 (define-key evil-ex-completion-map (kbd "M-n")     'next-complete-history-element)
 
-; Ensure that ESC will exit just about anything. Otherwise you need to press it three times.
+;; Ensure that ESC will exit just about anything. Otherwise you need to press it three times.
 (defun minibuffer-keyboard-quit ()
   "Abort recursive edit.
 In Delete Selection mode, if the mark is active, just deactivate it;
@@ -165,12 +165,12 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
   (let ((inner-name (make-symbol "inner-name"))
         (outer-name (make-symbol "outer-name")))
     `(progn
-      (evil-define-text-object ,inner-name (count &optional beg end type)
-        (evil-regexp-range count beg end type ,start-regex ,end-regex t))
-      (evil-define-text-object ,outer-name (count &optional beg end type)
-        (evil-regexp-range count beg end type ,start-regex ,end-regex nil))
-      (define-key evil-inner-text-objects-map ,key (quote ,inner-name))
-      (define-key evil-outer-text-objects-map ,key (quote ,outer-name)))))
+       (evil-define-text-object ,inner-name (count &optional beg end type)
+         (evil-regexp-range count beg end type ,start-regex ,end-regex t))
+       (evil-define-text-object ,outer-name (count &optional beg end type)
+         (evil-regexp-range count beg end type ,start-regex ,end-regex nil))
+       (define-key evil-inner-text-objects-map ,key (quote ,inner-name))
+       (define-key evil-outer-text-objects-map ,key (quote ,outer-name)))))
 
 (gordon-define-text-object "$" "\\$" "\\$")
 (gordon-define-text-object "|" "|" "|")
@@ -183,26 +183,26 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
     (re-search-forward regex (point-max) t)))
 
 (defconst gordon-matching-delimiters `( ("(" . ")")
-                                      ("\\[" . "\\]")
+                                        ("\\[" . "\\]")
                                         ("{" . "}")))
 
 (defun get-next-delimiter (delims)
   "Returns the next delimeter in delims and its position in the buffer in a list"
   (let ((next-delim nil))
     (let ((final-position
-          (reduce (lambda (old-closest-match delim-regex)
-                  (let ((current-match (distance-to-next-match delim-regex)))
-                    (if (null current-match)
-                      (progn
-                        (delq delim-regex delims)
-                        old-closest-match)
-                      (if (< current-match old-closest-match)
-                        (progn
-                          (setq next-delim (match-string-no-properties 0))
-                          current-match)
-                        old-closest-match))))
-                 delims :initial-value (point-max))))
-  (cons next-delim final-position))))
+           (reduce (lambda (old-closest-match delim-regex)
+                     (let ((current-match (distance-to-next-match delim-regex)))
+                       (if (null current-match)
+                           (progn
+                             (delq delim-regex delims)
+                             old-closest-match)
+                         (if (< current-match old-closest-match)
+                             (progn
+                               (setq next-delim (match-string-no-properties 0))
+                               current-match)
+                           old-closest-match))))
+                   delims :initial-value (point-max))))
+      (cons next-delim final-position))))
 
 (defun first-matching-predicate (predicate sequence)
   (let ((only-matching-items (remove-if-not predicate sequenc)))
@@ -212,51 +212,51 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
   (interactive)
   (goto-char (point-min))
   (let* ((delim-stack '())
-        (open-delims (mapcar #'car gordon-matching-delimiters))
-       (close-delims (mapcar #'cdr gordon-matching-delimiters))
-        (all-delims (append open-delims close-delims))
-        (current-delim)
-        (current-delim-position)
-        (last-position))
+         (open-delims (mapcar #'car gordon-matching-delimiters))
+         (close-delims (mapcar #'cdr gordon-matching-delimiters))
+         (all-delims (append open-delims close-delims))
+         (current-delim)
+         (current-delim-position)
+         (last-position))
     (while t
       (destructuring-bind (current-delim . current-delim-position) (get-next-delimiter all-delims)
-      (when (null current-delim) ;we've searched the whole buffer
-        (if (null delim-stack)   ;if there are no unmatched delimeters
-          (return)
-          (progn
-            (message "File ended before all delimiters were matched")
-            (goto-char last-position))))
-      (if (member current-delim open-delims)
-        (progn
-          (setq delim-stack (cons current-delim delim-stack))
-          (setq last-position current-delim-position))
-        (if (member current-delim close-delims)
-          (if (equal (position (car delim-stack) open-delims) (position current-delim close-delims))
-            (setq delim-stack (cdr delim-stack))
+        (when (null current-delim) ;we've searched the whole buffer
+          (if (null delim-stack)   ;if there are no unmatched delimeters
+              (return)
             (progn
-              (message (format "Unmatched delimiters %s and %s" (car delim-stack) (current-delim)))
-              (goto-char current-delim-position)))
-          (message "Error is check-matching-delimiters: got a delimeter that does not match any known opening or closing delimeters"))))
-    (message "All delimiters match. YAY!"))))
+              (message "File ended before all delimiters were matched")
+              (goto-char last-position))))
+        (if (member current-delim open-delims)
+            (progn
+              (setq delim-stack (cons current-delim delim-stack))
+              (setq last-position current-delim-position))
+          (if (member current-delim close-delims)
+              (if (equal (position (car delim-stack) open-delims) (position current-delim close-delims))
+                  (setq delim-stack (cdr delim-stack))
+                (progn
+                  (message (format "Unmatched delimiters %s and %s" (car delim-stack) (current-delim)))
+                  (goto-char current-delim-position)))
+            (message "Error is check-matching-delimiters: got a delimeter that does not match any known opening or closing delimeters"))))
+      (message "All delimiters match. YAY!"))))
 
 
-  ;;   (Let ((next-delim-location (point-max))
-  ;;         (next-delim))
-  ;;   (save-excursion
-  ;;     (loop for (start-delim . end-delim) in gordon-matching-delimiters do
-  ;;       (let ((next-open-delim-location (re-search-forward start-delim))
-  ;;            (next-close-delim-location (re-search-forward end-delim)))
+;;   (Let ((next-delim-location (point-max))
+;;         (next-delim))
+;;   (save-excursion
+;;     (loop for (start-delim . end-delim) in gordon-matching-delimiters do
+;;       (let ((next-open-delim-location (re-search-forward start-delim))
+;;            (next-close-delim-location (re-search-forward end-delim)))
 
-  ;;         (when (< (next-open-delim-location) (next-delim-location))
-  ;;           (setq next-delim-location next-open-delim-location)
-  ;;           (setq next-delim-location next-open-delim-location)
+;;         (when (< (next-open-delim-location) (next-delim-location))
+;;           (setq next-delim-location next-open-delim-location)
+;;           (setq next-delim-location next-open-delim-location)
 
-  ;;       )
-  ;; )))))
-  ;;       minimizing (min (re-search-forward start-delim) (re-search-forward end-delim)) into next-delim
-  ;;       finally (progn
-  ;;                 (goto-char (- next-delim 1))
-  ;;                 (message (match-string 0))
+;;       )
+;; )))))
+;;       minimizing (min (re-search-forward start-delim) (re-search-forward end-delim)) into next-delim
+;;       finally (progn
+;;                 (goto-char (- next-delim 1))
+;;                 (message (match-string 0))
 
 (define-key evil-normal-state-map "U" 'check-matching-delimiters)
 
@@ -264,10 +264,10 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
 
 (defun newline-at-end-of-sentences (from to)
   (interactive (progn
-    (barf-if-buffer-read-only)
-    (if (use-region-p)
-      (list (region-beginning) (region-end))
-      (list (line-beginning-position) (line-end-position)))))
+                 (barf-if-buffer-read-only)
+                 (if (use-region-p)
+                     (list (region-beginning) (region-end))
+                   (list (line-beginning-position) (line-end-position)))))
   (save-excursion
     (goto-char from)
     (while (< (point) to)
@@ -295,7 +295,7 @@ Do not save it in any register."
   (let ((original-beg (region-beginning)))
     (goto-char (region-end))   ; insert $ after end of region
     (if (eolp)
-      (end-of-line)
+        (end-of-line)
       (forward-char))
     (insert "$")
 
