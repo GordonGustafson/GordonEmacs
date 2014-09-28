@@ -73,6 +73,9 @@ and takes a numeric prefix argument COUNT."
 (define-key evil-normal-state-map (kbd "S-<return>")
   (evil-without-repeat-prefix-arg (loop repeat count do (evil-insert-newline-above))))
 
+(define-key evil-normal-state-map "gI" (lambda () (interactive)
+                                         (save-excursion
+                                           (indent-region (point-min) (point-max) nil))))
 (define-key evil-normal-state-map "gr" 'revert-buffer)
 (define-key evil-normal-state-map "gt" 'toggle-truncate-lines)
 
