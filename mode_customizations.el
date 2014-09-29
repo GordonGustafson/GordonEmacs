@@ -41,8 +41,13 @@
   "Face used to highlight TeX verbatim environments."
   :group 'font-latex-highlighting-faces)
 
+
 (eval-after-load 'latex
-  '(define-key LaTeX-mode-map (kbd "C-c e") 'LaTeX-environment))
+  '(progn
+     ;; tell Auctex not to mess with proof tree indentation
+     (add-to-list 'LaTeX-indent-environment-list '("prooftree" current-indentation))
+
+     (define-key LaTeX-mode-map (kbd "C-c e") 'LaTeX-environment)))
 
 ;; use LaTeX-environment to implement an text object for the current environment
 (evil-define-text-object outer-latex-environment (count &optional beg end type)
