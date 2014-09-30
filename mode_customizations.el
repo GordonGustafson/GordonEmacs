@@ -238,6 +238,21 @@ Terminate when move-to-start-form returns nil."
 
 
 
+;; TERM MODE CUSTOMIZATIONS
+
+(eval-after-load 'term
+  '(progn
+     (define-key term-raw-map (kbd "M-x") 'nil) ; M-x should go to Emacs
+
+     ;; map C-<backspace> to send M-<backspace> so bash deletes the previous word
+     (define-key term-raw-map (kbd "C-<backspace>") 'term-send-raw-meta)))
+
+
+(delete 'term-mode evil-insert-state-modes)
+(add-to-list 'evil-emacs-state-modes 'term-mode)
+
+
+
 ;; SHELL MODE CUSTOMIZATIONS
 
 (require 'shell)
