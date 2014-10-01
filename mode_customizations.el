@@ -6,6 +6,9 @@
 
 (setq-default TeX-PDF-mode t)  ;use .pdf for previews instead of .dvi
 
+(setq TeX-view-program-list '(("Evince" "evince --page-index=%(outpage) %o")))
+(setq TeX-view-program-selection '((output-pdf "Evince")))
+
 (setq preview-image-type 'pnm) ;solves error: preview-image-type setting 'png unsupported by this Emacs
 (setq preview-gs-options '("-q" "-dNOSAFER" "-dNOPAUSE" "-DNOPLATFONTS" "-dPrinted" "-dTextAlphaBits=4" "-dGraphicsAlphaBits=4")) ;switch to NOSAFER is need to make preview work????
 
@@ -171,12 +174,6 @@ Terminate when move-to-start-form returns nil."
 
 ;; remove this font package because it provides a definition for iint that conflicts with amsmath (causes error)
 (setq org-latex-default-packages-alist (delete '("" "wasysym" t) org-latex-default-packages-alist))
-
-(setq TeX-view-program-selection '(((output-dvi style-pstricks)
-                                    "dvips and start")
-                                   (output-dvi "Yap")
-                                   (output-pdf "evince")
-                                   (output-html "start")))
 
 (setq org-export-async-debug t)
 
