@@ -6,6 +6,10 @@
 (require 'evil)
 (evil-mode 1)
 
+;; C-u in insert-state behaves like in bash (delete to beginning of line)
+(define-key evil-insert-state-map (kbd "C-u") (lambda () (interactive)
+                                                (kill-line 0)))
+
 (define-key gordon-global-mode-map (kbd "C-w") evil-window-map)
 (define-key evil-window-map (kbd "q")   'evil-window-delete)
 (define-key evil-window-map (kbd "C-q") 'evil-window-delete)
