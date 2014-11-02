@@ -85,7 +85,7 @@ and takes a numeric prefix argument COUNT."
 
 (defadvice align-regexp (around align-regexp-with-spaces activate)
   (let ((indent-tabs-mode nil))
-	ad-do-it))
+    ad-do-it))
 
 (define-key evil-normal-state-map "ga" 'align-regexp)
 
@@ -138,6 +138,7 @@ and takes a numeric prefix argument COUNT."
 (define-key evil-insert-state-map (kbd "C-p") 'previous-line)
 (define-key evil-insert-state-map (kbd "C-n") 'next-line)
 (define-key evil-insert-state-map (kbd "C-e") 'end-of-line)
+(define-key evil-insert-state-map (kbd "C-k") 'kill-line)
 
 (evil-ex-define-cmd "W[rite]" 'evil-write)   ; add CAPITAL versions of commonly used ex commands
 (evil-ex-define-cmd "S[ubstitute]" 'evil-ex-substitute)
