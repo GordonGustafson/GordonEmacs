@@ -143,7 +143,10 @@ Terminate when move-to-start-form returns nil."
 (setq org-support-shift-select t)
 (setq org-startup-folded 'showall) ;show everything on startup
 (setq org-startup-truncated nil)   ;don't wrap lines
-(setq org-log-done t)              ;insert a timestamp when a task is marked as finished
+(setq org-log-done nil)            ; don't insert a timestamp when a task is marked as finished
+;; allow "-*- mode: org; org-log-done: t -*-" in a file to set org-log-done to t:
+(setq safe-local-variable-values (cons '(org-log-done . t) safe-local-variable-values))
+
 (setq org-M-RET-may-split-line nil)
 (define-key global-map "\C-cl" 'org-store-link)
 (define-key global-map "\C-ca" 'org-agenda)
