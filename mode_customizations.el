@@ -186,6 +186,7 @@ Terminate when move-to-start-form returns nil."
 (setq desktop-save nil)
 (setq desktop-restore-eager 6) ; restore 6 buffers now and the rest when idle
 (desktop-save-mode 0)
+(add-to-list 'desktop-modes-not-to-save 'dired-mode)
 
 
 
