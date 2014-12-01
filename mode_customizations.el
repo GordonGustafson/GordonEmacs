@@ -14,7 +14,6 @@
 
 (setq TeX-parse-self t) ; parse file on load in order to apply style hooks
 (setq TeX-auto-save t)  ; save that parsed data in 'auto' folder when saving
-(setq-default TeX-master nil) ; ask for master file if needed
 
 ;; (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
 ;; (setq reftex-plug-into-AUCTeX t)
