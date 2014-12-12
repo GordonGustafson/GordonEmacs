@@ -166,20 +166,20 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
 (global-set-key [escape] 'evil-exit-emacs-state)
 
 
-(defmacro gordon-define-text-object (key start-regex end-regex)
+(defmacro define-and-bind-text-object (key start-regex end-regex)
   (let ((inner-name (make-symbol "inner-name"))
         (outer-name (make-symbol "outer-name")))
     `(progn
        (evil-define-text-object ,inner-name (count &optional beg end type)
-         (evil-regexp-range count beg end type ,start-regex ,end-regex t))
+         (evil-select-paren ,start-regex ,end-regex beg end type count nil))
        (evil-define-text-object ,outer-name (count &optional beg end type)
-         (evil-regexp-range count beg end type ,start-regex ,end-regex nil))
+         (evil-select-paren ,start-regex ,end-regex beg end type count t))
        (define-key evil-inner-text-objects-map ,key (quote ,inner-name))
        (define-key evil-outer-text-objects-map ,key (quote ,outer-name)))))
 
-(gordon-define-text-object "$" "\\$" "\\$")
-(gordon-define-text-object "|" "|" "|")
-(gordon-define-text-object "=" "\\(^\\|=\\) *" " *\\(=\\|$\\)")
+(define-and-bind-text-object "$" "\\$" "\\$")
+(define-and-bind-text-object "|" "|" "|")
+(define-and-bind-text-object "=" "\\(^\\|=\\) *" " *\\(=\\|$\\)")
 
 (defun distance-to-next-match (regex)
   "Returns the next position of regex in buffer without moving point.
