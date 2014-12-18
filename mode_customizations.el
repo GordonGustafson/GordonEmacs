@@ -377,6 +377,7 @@ Terminate when move-to-start-form returns nil."
 ;; remove unnecessary bindings from git-rebase-mode:
 (setq git-rebase-mode-map
       (let ((map (make-sparse-keymap)))
+        (set-keymap-parent map text-mode-map)
         (define-key map (kbd "C-c C-c") 'server-edit)
         (define-key map (kbd "C-c C-k") 'rebase-mode-abort)
         map))
