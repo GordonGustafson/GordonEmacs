@@ -379,7 +379,7 @@ Terminate when move-to-start-form returns nil."
       (let ((map (make-sparse-keymap)))
         (set-keymap-parent map text-mode-map)
         (define-key map (kbd "C-c C-c") 'server-edit)
-        (define-key map (kbd "C-c C-k") 'rebase-mode-abort)
+        (define-key map (kbd "C-c C-k") 'git-rebase-abort)
         map))
 
 (evil-define-key 'normal git-rebase-mode-map (kbd "<return>") 'git-rebase-show-commit)
