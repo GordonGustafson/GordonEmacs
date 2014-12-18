@@ -387,22 +387,21 @@ Terminate when move-to-start-form returns nil."
 
 ;; DSVN CUSTOMIZATIONS
 
-(require 'dsvn)
+(eval-after-load 'dsvn
+  '(progn
+     (let ((evil-dsvn-mode-maps '(svn-status-mode-map svn-log-mode-map)))
+       (loop for mode-map-symbol in evil-dsvn-mode-maps do
+             (let ((mode-map (symbol-value mode-map-symbol)))
+               (evil-make-overriding-map mode-map 'normal t)
+               (evil-define-key 'normal  mode-map
+                 (kbd "j") (lookup-key evil-motion-state-map "j")
+                 (kbd "k") (lookup-key evil-motion-state-map "k")
+                 (kbd "d") 'svn-diff-file))))
 
-(let ((evil-dsvn-mode-maps '(svn-status-mode-map svn-log-mode-map)))
-  (loop for mode-map-symbol in evil-dsvn-mode-maps do
-        (let ((mode-map (symbol-value mode-map-symbol)))
-          (evil-make-overriding-map mode-map 'normal t)
-          (evil-define-key 'normal  mode-map
-            (kbd "j") (lookup-key evil-motion-state-map "j")
-            (kbd "k") (lookup-key evil-motion-state-map "k")
-            (kbd "d") 'svn-diff-file))))
-
-(evil-define-key 'normal svn-log-mode-map (kbd "<return>") 'svn-log-show-diff)
-(evil-define-key 'normal svn-status-mode-map (kbd "<return>") 'svn-find-file)
+     (evil-define-key 'normal svn-log-mode-map (kbd "<return>") 'svn-log-show-diff)
+     (evil-define-key 'normal svn-status-mode-map (kbd "<return>") 'svn-find-file)))
 
 (global-set-key (kbd "C-x s") 'svn-status) ; override save-some-buffers
-
 
 
 ;; DIFF-MODE CUSTOMIZATIONS
