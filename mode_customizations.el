@@ -382,6 +382,8 @@ Terminate when move-to-start-form returns nil."
         (define-key map (kbd "C-c C-k") 'rebase-mode-abort)
         map))
 
+(evil-define-key 'normal git-rebase-mode-map (kbd "<return>") 'git-rebase-show-commit)
+
 (add-hook 'git-rebase-mode-hook (lambda () (read-only-mode -1)))
 
 
