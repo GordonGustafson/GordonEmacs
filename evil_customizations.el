@@ -71,7 +71,7 @@ and takes a numeric prefix argument COUNT."
   (evil-without-repeat-prefix-arg (when (not (looking-at "\n")) (forward-char))
                                   (self-insert-command count) (backward-char)))
 (define-key evil-normal-state-map (kbd "S-<SPC>")
-  (evil-without-repeat-prefix-arg (self-insert-command count) (backward-char count)))
+  (evil-without-repeat-prefix-arg (insert " ") (backward-char count)))
 (define-key evil-normal-state-map (kbd "<return>")
   (evil-without-repeat-prefix-arg (loop repeat count do (evil-insert-newline-below))))
 (define-key evil-normal-state-map (kbd "S-<return>")
