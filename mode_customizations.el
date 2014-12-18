@@ -569,6 +569,13 @@ Only intended for interactive use."
 
 
 
+;; GRAPHVIZ DOT MODE CUSTOMIZATIONS
+
+(setq graphviz-dot-auto-indent-on-newline nil)
+(setq graphviz-dot-auto-indent-on-semi nil)
+
+
+
 ;; ARTIST MODE CUSTOMIZATIONS
 
 (defadvice artist-mode (after deactive-evil-for-artist-mode activate)
