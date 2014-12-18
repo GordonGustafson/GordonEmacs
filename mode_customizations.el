@@ -337,11 +337,17 @@ Terminate when move-to-start-form returns nil."
                               magit-branch-manager-mode-map
                               magit-process-mode-map magit-log-mode-map)))
   (loop for mode-map in evil-magit-mode-maps do
-        (progn
-          (evil-define-key 'normal  (symbol-value mode-map)
+        (let ((mode-map-value (symbol-value mode-map)))
+          (evil-define-key 'normal mode-map-value
             (kbd "j")   (lookup-key evil-motion-state-map "j")
-            (kbd "k")   (lookup-key evil-motion-state-map "k"))
-          (evil-make-overriding-map (symbol-value mode-map) 'normal t))))
+            (kbd "k")   (lookup-key evil-motion-state-map "k")
+            (kbd "H")   (lookup-key evil-motion-state-map "H")
+            (kbd "M")   (lookup-key evil-motion-state-map "M")
+            (kbd "L")   (lookup-key evil-motion-state-map "L")
+            (kbd "g")   (lookup-key evil-motion-state-map "g")
+            (kbd "G")   (lookup-key evil-motion-state-map "G"))
+          (evil-define-key 'normal mode-map-value "gr" 'magit-refresh)
+          (evil-make-overriding-map mode-map-value 'normal t))))
 
 (let ((evil-magit-modes '(magit-mode
                           magit-commit-mode magit-status-mode
