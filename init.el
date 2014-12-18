@@ -125,6 +125,7 @@ override all others.")
 (scroll-bar-mode -1)
 (menu-bar-mode -1)
 (show-paren-mode 1)
+(setq ring-bell-function 'ignore)
 
 (setq-default indent-tabs-mode nil)
 (setq sentence-end-double-space nil)
