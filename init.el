@@ -148,11 +148,10 @@ override all others.")
 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
 
 
-(defvar gordon-packages '(color-theme
-                          org auctex frame-cmds frame-fns
-                          csharp-mode openwith git-commit-mode
-                          magit auto-complete smex rainbow-delimiters dsvn
-                          ggtags goto-chg undo-tree find-file-in-project)
+(defvar gordon-packages '(color-theme org frame-cmds frame-fns
+                          openwith magit auto-complete smex
+                          rainbow-delimiters ggtags goto-chg undo-tree
+                          find-file-in-project)
   "Packages that will be installed/updated to the latest version on startup")
 
 (defun install-gordon-packages ()
