@@ -150,7 +150,7 @@ override all others.")
 
 (defvar gordon-packages '(color-theme
                           org auctex frame-cmds frame-fns
-                          bash-completion csharp-mode openwith git-commit-mode
+                          csharp-mode openwith git-commit-mode
                           magit auto-complete smex rainbow-delimiters dsvn
                           ggtags goto-chg undo-tree find-file-in-project)
   "Packages that will be installed/updated to the latest version on startup")
