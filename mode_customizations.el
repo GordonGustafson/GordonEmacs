@@ -544,9 +544,8 @@ Only intended for interactive use."
 
 (require 'whitespace)
 
-(setq whitespace-style '(face trailing lines-tail indentation
-                              empty space-before-tab space-after-tab))
-(setq whitespace-line-column 80)
+(setq whitespace-style '(face trailing indentation empty
+                              space-before-tab space-after-tab))
 (add-hook 'prog-mode-hook (lambda () (whitespace-mode t)))
 
 

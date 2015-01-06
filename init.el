@@ -128,6 +128,7 @@ override all others.")
 (setq ring-bell-function 'ignore)
 
 (setq-default indent-tabs-mode nil)
+(setq column-number-mode t)
 (setq sentence-end-double-space nil)
 (setq blink-matching-delay .500)
 
