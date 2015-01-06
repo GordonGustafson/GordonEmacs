@@ -396,6 +396,8 @@ Terminate when move-to-start-form returns nil."
 
 ;; DSVN CUSTOMIZATIONS
 
+(autoload 'svn-status "dsvn" "Run `svn status'." t)
+
 (eval-after-load 'dsvn
   '(progn
      (let ((evil-dsvn-mode-maps '(svn-status-mode-map svn-log-mode-map)))
