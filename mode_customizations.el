@@ -570,6 +570,19 @@ Only intended for interactive use."
 
 
 
+;; VERILOG MODE CUSTOMIZATIONS
+
+(setq verilog-indent-level 3)
+(setq verilog-auto-newline nil)
+(setq verilog-tab-always-indent nil)
+(setq verilog-linter "verilator --lint-only ")
+
+(add-hook 'verilog-mode-hook
+          (lambda ()
+            (define-key verilog-mode-map (kbd "C-c C-c") 'verilog-auto-save-compile)))
+
+
+
 ;; GRAPHVIZ DOT MODE CUSTOMIZATIONS
 
 (setq graphviz-dot-auto-indent-on-newline nil)
