@@ -200,7 +200,8 @@ Terminate when move-to-start-form returns nil."
          (list (openwith-make-extension-regexp '("mpg" "mpeg" "mp3" "flac" "m4a" "mp4" "avi" "wmv"
                                                  "wav" "mov" "flv" "ogm" "ogg" "mkv")) "vlc" '(file))
          (list (openwith-make-extension-regexp '("png" "gif" "jpeg" "jpg"))  "iceweasel" '(file))
-         (list (openwith-make-extension-regexp '("pdf")) "evince" '(file))))
+         (list (openwith-make-extension-regexp '("pdf")) "evince" '(file))
+         (list (openwith-make-extension-regexp '("doc" "docx" "rtf" "odt")) "libreoffice" '(file))))
   (openwith-mode t))
 
 (setq large-file-warning-threshold 250000000) ; confirm if larger than 250 Mb
