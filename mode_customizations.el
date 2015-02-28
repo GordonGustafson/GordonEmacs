@@ -215,6 +215,11 @@ Terminate when move-to-start-form returns nil."
 (setq dired-omit-files
       (concat dired-omit-files "\\|^\\..+$"))   ; hide dot-files
 
+;; a non-recursive copy is pretty much making a new directory,
+;; and I don't use hardlinks often enough to need non-recursive deletes
+(setq dired-recursive-copies 'always) ; "always" means no asking
+(setq dired-recursive-deletes 'always)
+
 ;; evil-integration contains a similar version of this.
 ;; if you have any trouble rebinding things, see if that's what's causing it.
 (eval-after-load 'dired
