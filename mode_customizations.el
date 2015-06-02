@@ -235,6 +235,11 @@ Terminate when move-to-start-form returns nil."
      (define-key dired-mode-map "?" nil)
      (define-key dired-mode-map "." nil)
 
+     ;; dired-do-delete makes it easy to delete the wrong thing, especially if you
+     ;; mark something and later try to delete the file under the cursor with D).
+     ;; Just use d x instead
+     (define-key dired-mode-map "D" nil)
+
      (evil-make-overriding-map dired-mode-map 'normal t)
      (evil-add-hjkl-bindings dired-mode-map 'normal
        "H" (lambda () (interactive) (evil-window-top 2)  (evil-end-of-line))
