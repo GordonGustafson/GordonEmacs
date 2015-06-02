@@ -240,13 +240,28 @@ Terminate when move-to-start-form returns nil."
      ;; Just use d x instead
      (define-key dired-mode-map "D" nil)
 
+     ;; r renames to current directory (defined later), R renames to other dired window
+     (define-key dired-mode-map "R" (lambda (_)
+                                      (interactive "p") ; commands needs to be interactive to be bound to a key
+                                      (let ((dired-dwim-target t))
+                                        (call-interactively 'dired-do-rename))))
+
+     ;; c copies to current directory (defined later), C copies to other dired window
+     (define-key dired-mode-map "C" (lambda (_)
+                                      (interactive "p") ; commands needs to be interactive to be bound to a key
+                                      (let ((dired-dwim-target t))
+                                        (call-interactively 'dired-do-copy))))
+
      (evil-make-overriding-map dired-mode-map 'normal t)
      (evil-add-hjkl-bindings dired-mode-map 'normal
        "H" (lambda () (interactive) (evil-window-top 2)  (evil-end-of-line))
        "M" (lambda () (interactive) (evil-window-middle) (evil-end-of-line))
        "L" (lambda () (interactive) (evil-window-bottom) (evil-previous-line) (evil-end-of-line))
        "K" 'gordon-other-window
-       (kbd "<return>") 'dired-find-file)))
+       (kbd "<return>") 'dired-find-file
+       ;; evil-integration overrides "r", so we can't define this in dired-mode-map:
+       "r" 'dired-do-rename
+       "c" 'dired-do-copy)))
 
 
 
