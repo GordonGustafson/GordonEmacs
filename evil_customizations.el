@@ -148,6 +148,8 @@ and takes a numeric prefix argument COUNT."
 (define-key evil-ex-completion-map (kbd "C-p") 'previous-complete-history-element)
 (define-key evil-ex-completion-map (kbd "C-n")     'next-complete-history-element)
 
+(evil-select-search-module 'evil-search-module 'evil-search)
+
 ;; Ensure that ESC will exit just about anything. Otherwise you need to press it three times.
 (defun minibuffer-keyboard-quit ()
   "Abort recursive edit.
