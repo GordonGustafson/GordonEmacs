@@ -142,12 +142,12 @@ override all others.")
 
 ;; settings loaded last because they could cause problems
 (require 'package)
-(package-initialize)
 
 (add-to-list 'package-archives '("elpa" . "http://tromey.com/elpa/"))
 (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
 
+(package-initialize)
 
 (defvar gordon-packages '(color-theme org frame-cmds frame-fns
                           openwith magit auto-complete smex
