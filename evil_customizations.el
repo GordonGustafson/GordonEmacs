@@ -145,8 +145,6 @@ and takes a numeric prefix argument COUNT."
 (evil-ex-define-cmd "W[rite]" 'evil-write)   ; add CAPITAL versions of commonly used ex commands
 (evil-ex-define-cmd "S[ubstitute]" 'evil-ex-substitute)
 
-(define-key evil-ex-completion-map (kbd "C-p") 'previous-complete-history-element)
-(define-key evil-ex-completion-map (kbd "C-n")     'next-complete-history-element)
 
 (evil-select-search-module 'evil-search-module 'evil-search)
 
