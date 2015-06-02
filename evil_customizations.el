@@ -4,6 +4,7 @@
 
 (add-to-list 'load-path "~/.emacs.d/evil")
 (require 'evil)
+(require 'evil-anzu)
 (evil-mode 1)
 
 ;; C-u in insert-state behaves like in bash (delete to beginning of line)

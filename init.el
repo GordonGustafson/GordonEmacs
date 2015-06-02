@@ -152,12 +152,18 @@ override all others.")
 (defvar gordon-packages '(color-theme org frame-cmds frame-fns
                           openwith magit auto-complete smex
                           rainbow-delimiters ggtags goto-chg undo-tree
-                          find-file-in-project)
+                          find-file-in-project evil-anzu)
   "Packages that will be installed/updated to the latest version on startup")
 
 (defun install-gordon-packages ()
   (interactive)
-  (mapc 'package-install gordon-packages))
+  (mapc 'package-install gordon-packages)
+  ;; If we don't remove the evil package we could end up using it instead
+  ;; of the git version. There's no way to remove it programmatically.
+  ;; If we don't remove it from other packages' dependencies we'll get an
+  ;; error on startup when the evil package isn't installed.
+  (message "Don't forget to remove the evil package and remove it from \
+other packages' dependencies!"))
 
 
 (require 'color-theme)
