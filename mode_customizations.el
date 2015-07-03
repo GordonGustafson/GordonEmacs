@@ -227,7 +227,7 @@ Terminate when move-to-start-form returns nil."
 (setq dired-recursive-copies 'always) ; "always" means no asking
 (setq dired-recursive-deletes 'always)
 
-(setq dired-listing-switches "-alh")    ; human-readable file sizes
+(setq dired-listing-switches "-alhv")    ; h = human-readable file sizes, v = sort numerically
 
 ;; evil-integration contains a similar version of this.
 ;; if you have any trouble rebinding things, see if that's what's causing it.
