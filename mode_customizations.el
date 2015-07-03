@@ -220,6 +220,8 @@ Terminate when move-to-start-form returns nil."
 (setq dired-omit-files
       (concat dired-omit-files "\\|^\\..+$"))   ; hide dot-files
 
+(put 'dired-find-alternate-file 'disabled nil)
+
 ;; a non-recursive copy is pretty much making a new directory,
 ;; and I don't use hardlinks often enough to need non-recursive deletes
 (setq dired-recursive-copies 'always) ; "always" means no asking
