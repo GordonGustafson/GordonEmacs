@@ -150,7 +150,12 @@ Terminate when move-to-start-form returns nil."
 (define-key global-map "\C-cl" 'org-store-link)
 (define-key global-map "\C-ca" 'org-agenda)
 (add-hook 'org-mode-hook (lambda ()
-                           (org-indent-mode t)) t)
+                           (org-indent-mode t)
+                           ;; org-mode has a very unpredictable definition of
+                           ;; paragraph-start, so just use a form feed or line
+                           ;; filled with whitespace (the global default)
+                           (setq paragraph-start "\f\\|[ 	]*$")
+                           (setq paragraph-separate "[ 	\f]*$")))
 
 (setq org-directory "~/org") ;setting not used often by org
 
