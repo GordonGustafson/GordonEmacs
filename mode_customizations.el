@@ -104,15 +104,23 @@ Terminate when move-to-start-form returns nil."
 
 (defun orgtbl-export-table-to-matrix (start end)
   (interactive "r")
-  (goto-char start)
-  (insert "\\begin{bmatrix}\n")
-  (previous-line)
-  (delete-indentation) ;merge this one with the previous line
-  (goto-char end)
-  (insert "\n\\end{bmatrix}")
-  (replace-regexp "^[ \t]*| " "" nil start end)
-  (replace-regexp "|[^|]*$" "\\\\\\\\" nil start end)
-  (replace-regexp "|" "&" nil start end))
+  (save-excursion
+    (goto-char end)
+    (previous-line)
+    ;; Emacs calc won't accept a matrix with \\ after the last row.
+    ;; To accomodate this, put a marker after the second-to-last row of of the
+    ;; matrix so we can perform a replace-regexp that excludes the last row.
+    (let ((point-above-end (point-marker)))
+      (goto-char start)
+      (insert "\\begin{bmatrix}\n")
+      (previous-line)
+      (delete-indentation) ; merge current line with previous line
+      (goto-char end)
+      (insert "\n\\end{bmatrix}")
+      (replace-regexp "^[ \t]*| " "" nil start end)
+      (replace-regexp "|[^|]*$" "\\\\\\\\" nil start point-above-end)
+      (replace-regexp "|[^|]*$" "" nil point-above-end end) ; remove final |
+      (replace-regexp "|" "&" nil start end))))
 
 (defun orgtbl-export-all-tables-to-matrices ()
   (interactive "")
