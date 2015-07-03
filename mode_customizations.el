@@ -361,6 +361,7 @@ Terminate when move-to-start-form returns nil."
 
 ;; MAGIT CUSTOMIZATIONS
 
+(setq magit-last-seen-setup-instructions "1.4.0")
 (require 'magit)
 
 (let ((evil-magit-mode-maps '(magit-mode-map
