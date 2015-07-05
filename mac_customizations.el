@@ -20,4 +20,15 @@
   ;; so I use GNU coreutils everywhere as they're more standard AND portable)
   (let ((path-to-gnu-bash "/usr/local/bin/bash"))
     (when (file-exists-p path-to-gnu-bash)
-      (setq explicit-shell-file-name path-to-gnu-bash))))
+      (setq explicit-shell-file-name path-to-gnu-bash)))
+
+  (when (require 'openwith nil 'noerror)
+    (setq openwith-associations
+          (list
+           (list (openwith-make-extension-regexp '("mpg" "mpeg" "mp3" "flac" "m4a" "mp4" "avi" "wmv"
+                                                   "wav" "mov" "flv" "ogm" "ogg" "mkv")) "open -a /Applications/iTunes.app" '(file))
+           ;; This opens images in a new firefox window. I couldn't
+           ;; find a way to make them open in a new tab instead.
+           (list (openwith-make-extension-regexp '("png" "gif" "jpeg" "jpg"))  "open -a /Applications/Firefox.app -new-tab" '(file))
+           (list (openwith-make-extension-regexp '("pdf")) "open -a /Applications/Preview.app" '(file))
+           (list (openwith-make-extension-regexp '("doc" "docx" "rtf" "odt")) "open -a /Applications/Pages.app" '(file))))))
