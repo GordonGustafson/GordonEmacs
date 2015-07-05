@@ -152,7 +152,7 @@ override all others.")
 (defvar gordon-packages '(color-theme org frame-cmds frame-fns
                           openwith magit auto-complete smex
                           rainbow-delimiters ggtags goto-chg undo-tree
-                          find-file-in-project evil-anzu)
+                          find-file-in-project evil-anzu dtrt-indent)
   "Packages that will be installed/updated to the latest version on startup")
 
 (defun install-gordon-packages ()

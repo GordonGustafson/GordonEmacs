@@ -586,13 +586,22 @@ Only intended for interactive use."
 
 
 
+;; DTRT MODE CUSTOMIZATIONS
+
+(require 'dtrt-indent)
+(dtrt-indent-mode t)
+
+
+
 ;; WHITESPACE MODE CUSTOMIZATIONS
 
 (require 'whitespace)
 
 (setq whitespace-style '(face trailing indentation empty
                               space-before-tab space-after-tab))
-(add-hook 'prog-mode-hook (lambda () (whitespace-mode t)))
+(add-hook 'prog-mode-hook (lambda ()
+                            (dtrt-indent-try-set-offset)
+                            (whitespace-mode t))) ; reactivate whitespace-mode to pick up any change in settings
 
 
 
