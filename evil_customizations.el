@@ -75,7 +75,11 @@ and takes a numeric prefix argument COUNT."
                                   (self-insert-command count) (backward-char)))
 (define-key evil-normal-state-map (kbd "S-<SPC>")
   (evil-without-repeat-prefix-arg (insert " ") (backward-char count)))
-(define-key evil-normal-state-map (kbd "<return>")
+;; The choice of RET instead of <return> is significant here ("RET" gets overriden
+;; by magit's text-property keymaps but <return> does not). I suspect this is because
+;; there are many representations of the enter key (<return>, RET, \n, \r), and they
+;; are looked up in a specific order.
+(define-key evil-normal-state-map (kbd "RET")
   (evil-without-repeat-prefix-arg (loop repeat count do (evil-insert-newline-below))))
 (define-key evil-normal-state-map (kbd "S-<return>")
   (evil-without-repeat-prefix-arg (loop repeat count do (evil-insert-newline-above))))
@@ -111,7 +115,7 @@ and takes a numeric prefix argument COUNT."
   (cond
    ((and (in-org-or-orgtbl-mode) (org-at-table-p 'any))
     (org-cycle))
-   ((memq major-mode '(calc-mode shell-mode eshell-mode magit-status-mode))
+   ((memq major-mode '(calc-mode shell-mode eshell-mode magit-mode magit-status-mode))
     (call-interactively (local-key-binding "\t")))
    ((and (memq major-mode '(org-mode)) (not (eq evil-state 'insert)))
     (call-interactively (local-key-binding "\t")))

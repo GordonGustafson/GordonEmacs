@@ -377,12 +377,12 @@ Terminate when move-to-start-form returns nil."
 (setq magit-last-seen-setup-instructions "1.4.0")
 (require 'magit)
 
-(let ((evil-magit-mode-maps '(magit-mode-map
-                              magit-commit-mode-map magit-status-mode-map
-                              magit-cherry-mode-map magit-reflog-mode-map
-                              magit-diff-mode-map magit-wazzup-mode-map
-                              magit-branch-manager-mode-map
-                              magit-process-mode-map magit-log-mode-map)))
+(let ((evil-magit-mode-maps '(magit-mode-map magit-cherry-mode-map
+                              magit-diff-mode-map magit-log-mode-map
+                              magit-log-select-mode-map magit-process-mode-map
+                              magit-reflog-mode-map magit-refs-mode-map
+                              magit-revision-mode-map magit-stash-mode-map
+                              magit-stashes-mode-map magit-status-mode-map)))
   (loop for mode-map in evil-magit-mode-maps do
         (let ((mode-map-value (symbol-value mode-map)))
           (evil-define-key 'normal mode-map-value
@@ -392,38 +392,33 @@ Terminate when move-to-start-form returns nil."
             (kbd "M")   (lookup-key evil-motion-state-map "M")
             (kbd "L")   (lookup-key evil-motion-state-map "L")
             (kbd "g")   (lookup-key evil-motion-state-map "g")
-            (kbd "G")   (lookup-key evil-motion-state-map "G"))
-          (evil-define-key 'normal mode-map-value "gr" 'magit-refresh)
+            (kbd "G")   (lookup-key evil-motion-state-map "G")
+            (kbd "V")   (lookup-key evil-motion-state-map "V")
+            (kbd "gr")  'magit-refresh)
           (evil-make-overriding-map mode-map-value 'normal t))))
 
-(let ((evil-magit-modes '(magit-mode
-                          magit-commit-mode magit-status-mode
-                          magit-cherry-mode magit-reflog-mode
-                          magit-diff-mode magit-wazzup-mode
-                          magit-branch-manager-mode
-                          magit-process-mode magit-log-mode)))
+(evil-define-key 'normal magit-status-mode-map (kbd "J") (lookup-key magit-status-mode-map "j"))
+
+
+(let ((evil-magit-modes '(magit-cherry-mode magit-diff-mode
+                          magit-log-mode magit-log-select-mode
+                          magit-process-mode magit-reflog-mode
+                          magit-refs-mode magit-revision-mode
+                          magit-stash-mode magit-stashes-mode
+                          magit-status-mode)))
   (setq evil-emacs-state-modes (remove-if (lambda (mode)
                                             (memq mode evil-magit-modes))
                                           evil-emacs-state-modes)))
-
-(evil-define-key 'normal magit-mode-map
-  (kbd "C-k") 'magit-discard-item)
-
-(evil-define-key 'normal magit-commit-mode-map
-  (kbd "n") 'evil-search-next)
-
-(evil-define-key 'normal magit-log-mode-map
-  (kbd "<return>") 'magit-visit-item)
 
 (define-key magit-mode-map (kbd "1") nil)
 (define-key magit-mode-map (kbd "2") nil)
 (define-key magit-mode-map (kbd "3") nil)
 (define-key magit-mode-map (kbd "4") nil)
 
-(define-key magit-mode-map (kbd "C-1") 'magit-show-level-1)
-(define-key magit-mode-map (kbd "C-2") 'magit-show-level-2)
-(define-key magit-mode-map (kbd "C-3") 'magit-show-level-3)
-(define-key magit-mode-map (kbd "C-4") 'magit-show-level-4)
+(define-key magit-mode-map (kbd "C-1") 'magit-section-show-level-1)
+(define-key magit-mode-map (kbd "C-2") 'magit-section-show-level-2)
+(define-key magit-mode-map (kbd "C-3") 'magit-section-show-level-3)
+(define-key magit-mode-map (kbd "C-4") 'magit-section-show-level-4)
 
 (global-set-key (kbd "C-x g") 'magit-status)
 
