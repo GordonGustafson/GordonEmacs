@@ -394,7 +394,13 @@ Terminate when move-to-start-form returns nil."
             (kbd "g")   (lookup-key evil-motion-state-map "g")
             (kbd "G")   (lookup-key evil-motion-state-map "G")
             (kbd "V")   (lookup-key evil-motion-state-map "V")
-            (kbd "gr")  'magit-refresh)
+            (kbd "gr")  'magit-refresh
+            (kbd "/")   (lookup-key evil-motion-state-map "/")
+            (kbd "?")   (lookup-key evil-motion-state-map "?")
+            (kbd "n")   (lookup-key evil-motion-state-map "n")
+            (kbd "N")   (lookup-key evil-motion-state-map "N")
+            (kbd ".")   (lookup-key evil-normal-state-map ".")
+            (kbd "i")   'magit-mark-item)
           (evil-make-overriding-map mode-map-value 'normal t))))
 
 (evil-define-key 'normal magit-status-mode-map (kbd "J") (lookup-key magit-status-mode-map "j"))
