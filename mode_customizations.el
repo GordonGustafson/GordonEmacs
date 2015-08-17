@@ -299,17 +299,17 @@ Terminate when move-to-start-form returns nil."
 
 (require 'shell)
 
-(defun maybe-bury-shell-buffer (open-new-shell)
-  "Open new shell buffer if any prefix arg was passed. Otherwise, bury-buffer"
+(defun open-shell-buffer-by-number (shell-buffer-number)
+  "Switch to or create a shell in the buffer named *shell*<shell-buffer-number>"
   (interactive "P")
-  (if open-new-shell
-      (let ((current-prefix-arg '(4)))
-        (call-interactively 'shell))
-    (bury-buffer)))
+  (if (null shell-buffer-number)
+      (setq shell-buffer-number 1))
+  (let* ((shell-buffer-name (format "*shell*<%d>" shell-buffer-number)))
+    (shell shell-buffer-name)))
 
-(define-key      gordon-global-mode-map (kbd "C-z") 'shell)
-(define-key              shell-mode-map (kbd "C-z") 'maybe-bury-shell-buffer)
-(evil-define-key 'normal shell-mode-map (kbd "C-z") 'maybe-bury-shell-buffer)
+(define-key      gordon-global-mode-map (kbd "C-z") 'open-shell-buffer-by-number)
+(define-key              shell-mode-map (kbd "C-z") 'open-shell-buffer-by-number)
+(evil-define-key 'normal shell-mode-map (kbd "C-z") 'open-shell-buffer-by-number)
 (evil-set-toggle-key "<f6>") ; unbinds C-z in evil
 
 ;; use the same binding as bash. C-? is bound to redo if you need it.
