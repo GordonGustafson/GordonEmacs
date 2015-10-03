@@ -383,9 +383,9 @@ Terminate when move-to-start-form returns nil."
                               magit-reflog-mode-map magit-refs-mode-map
                               magit-revision-mode-map magit-stash-mode-map
                               magit-stashes-mode-map magit-status-mode-map)))
-  (loop for mode-map in evil-magit-mode-maps do
-        (let ((mode-map-value (symbol-value mode-map)))
-          (evil-define-key 'normal mode-map-value
+  (loop for mode-map-symbol  in evil-magit-mode-maps do
+        (let ((mode-map (symbol-value mode-map-symbol)))
+          (evil-define-key 'normal mode-map
             (kbd "j")   (lookup-key evil-motion-state-map "j")
             (kbd "k")   (lookup-key evil-motion-state-map "k")
             (kbd "H")   (lookup-key evil-motion-state-map "H")
@@ -401,7 +401,20 @@ Terminate when move-to-start-form returns nil."
             (kbd "N")   (lookup-key evil-motion-state-map "N")
             (kbd ".")   (lookup-key evil-normal-state-map ".")
             (kbd "i")   'magit-mark-item)
-          (evil-make-overriding-map mode-map-value 'normal t))))
+          (evil-make-overriding-map mode-map 'normal t))))
+
+;; Various 'text-keymaps' in magit
+(let ((magit-section-maps '(magit-file-section-map magit-hunk-section-map
+                            magit-unstaged-section-map magit-staged-section-map
+                            magit-untracked-section-map magit-branch-section-map
+                            magit-remote-section-map magit-tag-section-map
+                            magit-commit-section-map magit-module-commit-section-map
+                            magit-unpulled-section-map magit-unpushed-section-map
+                            magit-stashes-section-map magit-stash-section-map)))
+  (loop for section-map-symbol in magit-section-maps do
+        (let ((section-map (symbol-value section-map-symbol)))
+          (define-key section-map (kbd "C-k") (lookup-key section-map "k"))
+          (define-key section-map (kbd "k")   nil))))
 
 (evil-define-key 'normal magit-status-mode-map (kbd "J") (lookup-key magit-status-mode-map "j"))
 
