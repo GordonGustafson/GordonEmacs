@@ -648,6 +648,13 @@ Only intended for interactive use."
 
 
 
+;; C MODE CUSTOMIZATIONS
+
+;; Make M-; produce C99 comments
+(add-hook 'c-mode-hook (lambda () (setq comment-start "//" comment-end "")))
+
+
+
 ;; C-SHARP (C#) MODE CUSTOMIZATIONS
 
 (setq auto-mode-alist (cons '( "\\.cs\\'" . csharp-mode) auto-mode-alist) )
