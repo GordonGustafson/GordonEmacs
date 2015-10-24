@@ -634,6 +634,13 @@ Only intended for interactive use."
 
 
 
+;; ESS CUSTOMIZATIONS
+
+(eval-after-load 'ess-mode
+  '(ess-toggle-underscore nil))
+
+
+
 ;; C-SHARP (C#) MODE CUSTOMIZATIONS
 
 (setq auto-mode-alist (cons '( "\\.cs\\'" . csharp-mode) auto-mode-alist) )
