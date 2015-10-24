@@ -641,6 +641,13 @@ Only intended for interactive use."
 
 
 
+;; OCTAVE CUSTOMIZATIONS
+
+; .m files are opened in objc-mode by default
+(add-to-list 'auto-mode-alist '("\\.m$" . octave-mode))
+
+
+
 ;; C-SHARP (C#) MODE CUSTOMIZATIONS
 
 (setq auto-mode-alist (cons '( "\\.cs\\'" . csharp-mode) auto-mode-alist) )
