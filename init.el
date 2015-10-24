@@ -137,6 +137,7 @@ override all others.")
 (setq backup-by-copying t)
 
 (put 'narrow-to-region 'disabled nil)
+(setq-default fill-column 80)
 
 
 
