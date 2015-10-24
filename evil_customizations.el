@@ -16,6 +16,12 @@
 (define-key gordon-global-mode-map (kbd "C-w") evil-window-map)
 (define-key evil-window-map (kbd "q")   'evil-window-delete)
 (define-key evil-window-map (kbd "C-q") 'evil-window-delete)
+(define-key evil-window-map (kbd "C-h") 'evil-window-left)
+(define-key evil-window-map (kbd "C-j") 'evil-window-down)
+(define-key evil-window-map (kbd "C-k") 'evil-window-up)
+(define-key evil-window-map (kbd "C-l") 'evil-window-right)
+(define-key evil-window-map (kbd "C-=") 'balance-windows)
+(define-key evil-window-map (kbd "C--") 'evil-window-decrease-height)
 
 (require 'org)
 (require 'cl)
