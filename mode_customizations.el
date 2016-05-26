@@ -399,6 +399,9 @@ Terminate when move-to-start-form returns nil."
 (setq magit-last-seen-setup-instructions "1.4.0")
 (require 'magit)
 
+;; Don't make me confirm a commit message unless it's *really* long
+(setq git-commit-summary-max-length 72)
+
 (let ((evil-magit-mode-maps '(magit-mode-map magit-cherry-mode-map
                               magit-diff-mode-map magit-log-mode-map
                               magit-log-select-mode-map magit-process-mode-map
