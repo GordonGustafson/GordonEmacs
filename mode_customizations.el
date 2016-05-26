@@ -468,6 +468,19 @@ Terminate when move-to-start-form returns nil."
 
 
 
+;; MAGIT GITHUB PULL REQUESTS CUSTOMIZATIONS
+
+(when (require 'magit-gh-pulls nil 'noerror)
+  (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls)
+  ;; magit-gh-pulls uses "#" as the prefix by default, but I would rather it
+  ;; search backwards (via evil). This changes the prefix to "&", which I don't
+  ;; need in magit-status buffers.
+  (define-key magit-gh-pulls-mode-map (kbd "&") 'magit-gh-pulls-popup)
+  (define-key magit-gh-pulls-mode-map (kbd "#") nil) ; restore old binding for #
+  (evil-make-overriding-map magit-gh-pulls-mode-map 'normal t))
+
+
+
 ;; DSVN CUSTOMIZATIONS
 
 (autoload 'svn-status "dsvn" "Run `svn status'." t)
