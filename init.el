@@ -60,8 +60,7 @@ override all others.")
 (define-key gordon-global-mode-map (kbd "M-H") (lambda (prefix-arg) (interactive "p") (move-vertical-edge-horizontally (- prefix-arg))))
 
 
-(set-face-attribute 'default nil
-                    :family "Consolas" :height 100)
+(set-face-attribute 'default nil :family "Consolas" :height 105)
 
 (defadvice switch-to-buffer (before existing-buffer-only activate)
   "When interactive, switch to existing buffers only."
