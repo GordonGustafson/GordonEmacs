@@ -44,12 +44,11 @@
   :group 'font-latex-highlighting-faces)
 
 
-(eval-after-load 'latex
-  '(progn
-     ;; tell Auctex not to mess with proof tree indentation
-     (add-to-list 'LaTeX-indent-environment-list '("prooftree" current-indentation))
+(with-eval-after-load 'latex
+  ;; tell Auctex not to mess with proof tree indentation
+  (add-to-list 'LaTeX-indent-environment-list '("prooftree" current-indentation))
 
-     (define-key LaTeX-mode-map (kbd "C-c e") 'LaTeX-environment)))
+  (define-key LaTeX-mode-map (kbd "C-c e") 'LaTeX-environment))
 
 ;; use LaTeX-environment to implement an text object for the current environment
 (evil-define-text-object outer-latex-environment (count &optional beg end type)
@@ -254,55 +253,57 @@ Terminate when move-to-start-form returns nil."
 
 ;; evil-integration contains a similar version of this.
 ;; if you have any trouble rebinding things, see if that's what's causing it.
-(eval-after-load 'dired
-  '(progn
-     ;; Ensure we don't override certain bindings from evil.
-     ;; Unbinding them here is easier than rebinding to their old values.
-     (define-key dired-mode-map "g" nil)
-     (define-key dired-mode-map "G" nil)
-     (define-key dired-mode-map "n" nil)
-     (define-key dired-mode-map "N" nil)
-     (define-key dired-mode-map "?" nil)
-     (define-key dired-mode-map "." nil)
+(with-eval-after-load 'dired
+  ;; Ensure we don't override certain bindings from evil.
+  ;; Unbinding them here is easier than rebinding to their old values.
+  (define-key dired-mode-map "g" nil)
+  (define-key dired-mode-map "G" nil)
+  (define-key dired-mode-map "n" nil)
+  (define-key dired-mode-map "N" nil)
+  (define-key dired-mode-map "?" nil)
+  (define-key dired-mode-map "." nil)
 
-     ;; dired-do-delete makes it easy to delete the wrong thing, especially if you
-     ;; mark something and later try to delete the file under the cursor with D).
-     ;; Just use d x instead
-     (define-key dired-mode-map "D" nil)
+  ;; dired-do-delete makes it easy to delete the wrong thing, especially if you
+  ;; mark something and later try to delete the file under the cursor with D).
+  ;; Just use d x instead
+  (define-key dired-mode-map "D" nil)
 
-     ;; r renames to current directory (defined later), R renames to other dired window
-     (define-key dired-mode-map "R" (lambda (_)
-                                      (interactive "p") ; commands needs to be interactive to be bound to a key
-                                      (let ((dired-dwim-target t))
-                                        (call-interactively 'dired-do-rename))))
+  ;; r moves to current directory (see below), R moves to other dired window
+  (define-key dired-mode-map "R" (lambda (_)
+                                   (interactive "p")
+                                   (let ((dired-dwim-target t))
+                                     (call-interactively 'dired-do-rename))))
 
-     ;; c copies to current directory (defined later), C copies to other dired window
-     (define-key dired-mode-map "C" (lambda (_)
-                                      (interactive "p") ; commands needs to be interactive to be bound to a key
-                                      (let ((dired-dwim-target t))
-                                        (call-interactively 'dired-do-copy))))
+  ;; c copies to current directory (see below), C copies to other dired window
+  (define-key dired-mode-map "C" (lambda (_)
+                                   (interactive "p")
+                                   (let ((dired-dwim-target t))
+                                     (call-interactively 'dired-do-copy))))
 
-     (evil-make-overriding-map dired-mode-map 'normal t)
-     (evil-add-hjkl-bindings dired-mode-map 'normal
-       "H" (lambda () (interactive) (evil-window-top 2)  (evil-end-of-line))
-       "M" (lambda () (interactive) (evil-window-middle) (evil-end-of-line))
-       "L" (lambda () (interactive) (evil-window-bottom) (evil-previous-line) (evil-end-of-line))
-       "K" 'gordon-other-window
-       (kbd "<return>") 'dired-find-file
-       ;; evil-integration overrides "r", so we can't define this in dired-mode-map:
-       "r" 'dired-do-rename
-       "c" 'dired-do-copy)))
+  (evil-make-overriding-map dired-mode-map 'normal t)
+  (evil-add-hjkl-bindings dired-mode-map 'normal
+    "H" (lambda () (interactive) (evil-window-top 2)  (evil-end-of-line))
+    "M" (lambda () (interactive) (evil-window-middle) (evil-end-of-line))
+    "L" (lambda () (interactive) (evil-window-bottom)
+                                 (evil-previous-line)
+                                 (evil-end-of-line))
+    "K" 'gordon-other-window
+    (kbd "<return>") 'dired-find-file
+    ;; evil-integration overrides "r", so we can't define it in dired-mode-map.
+    ;; We could define "c" in dired-mode-map, but we define it here for symmetry
+    ;; with "r".
+    "r" 'dired-do-rename
+    "c" 'dired-do-copy))
 
 
 
 ;; TERM MODE CUSTOMIZATIONS
 
-(eval-after-load 'term
-  '(progn
-     (define-key term-raw-map (kbd "M-x") 'nil) ; M-x should go to Emacs
+(with-eval-after-load 'term
+  (define-key term-raw-map (kbd "M-x") 'nil) ; M-x should go to Emacs
 
-     ;; map C-<backspace> to send M-<backspace> so bash deletes the previous word
-     (define-key term-raw-map (kbd "C-<backspace>") 'term-send-raw-meta)))
+  ;; map C-<backspace> to send M-<backspace> so bash deletes the previous word
+  (define-key term-raw-map (kbd "C-<backspace>") 'term-send-raw-meta))
 
 
 (delete 'term-mode evil-insert-state-modes)
@@ -468,19 +469,18 @@ Terminate when move-to-start-form returns nil."
 
 (autoload 'svn-status "dsvn" "Run `svn status'." t)
 
-(eval-after-load 'dsvn
-  '(progn
-     (let ((evil-dsvn-mode-maps '(svn-status-mode-map svn-log-mode-map)))
-       (loop for mode-map-symbol in evil-dsvn-mode-maps do
-             (let ((mode-map (symbol-value mode-map-symbol)))
-               (evil-make-overriding-map mode-map 'normal t)
-               (evil-define-key 'normal  mode-map
-                 (kbd "j") (lookup-key evil-motion-state-map "j")
-                 (kbd "k") (lookup-key evil-motion-state-map "k")
-                 (kbd "d") 'svn-diff-file))))
+(with-eval-after-load 'dsvn
+  (let ((evil-dsvn-mode-maps '(svn-status-mode-map svn-log-mode-map)))
+    (loop for mode-map-symbol in evil-dsvn-mode-maps do
+          (let ((mode-map (symbol-value mode-map-symbol)))
+            (evil-make-overriding-map mode-map 'normal t)
+            (evil-define-key 'normal  mode-map
+              (kbd "j") (lookup-key evil-motion-state-map "j")
+              (kbd "k") (lookup-key evil-motion-state-map "k")
+              (kbd "d") 'svn-diff-file))))
 
-     (evil-define-key 'normal svn-log-mode-map (kbd "<return>") 'svn-log-show-diff)
-     (evil-define-key 'normal svn-status-mode-map (kbd "<return>") 'svn-find-file)))
+  (evil-define-key 'normal svn-log-mode-map (kbd "<return>") 'svn-log-show-diff)
+  (evil-define-key 'normal svn-status-mode-map (kbd "<return>") 'svn-find-file))
 
 (global-set-key (kbd "C-x s") 'svn-status) ; override save-some-buffers
 
@@ -645,8 +645,8 @@ Only intended for interactive use."
 
 ;; ESS CUSTOMIZATIONS
 
-(eval-after-load 'ess-mode
-  '(ess-toggle-underscore nil))
+(with-eval-after-load 'ess-mode
+  (ess-toggle-underscore nil))
 
 
 
@@ -760,37 +760,35 @@ Only intended for interactive use."
   (w3m-new-tab)
   (w3m-search-do-search 'w3m-goto-url search-engine query))
 
-(eval-after-load "w3m-search"
-  '(progn
-     ;; C-u S g RET <search term> RET
-     (add-to-list 'w3m-search-engine-alist '("g" "http://www.google.com/search?q=%s" utf-8))
-     (add-to-list 'w3m-search-engine-alist '("q" "http://stackoverflow.com/search?q=%s" utf-8))
-     (add-to-list 'w3m-search-engine-alist '("w" "http://en.wikipedia.org/wiki/Special:Search?search=%s" utf-8))))
+(with-eval-after-load "w3m-search"
+  ;; C-u S g RET <search term> RET
+  (add-to-list 'w3m-search-engine-alist '("g" "http://www.google.com/search?q=%s" utf-8))
+  (add-to-list 'w3m-search-engine-alist '("q" "http://stackoverflow.com/search?q=%s" utf-8))
+  (add-to-list 'w3m-search-engine-alist '("w" "http://en.wikipedia.org/wiki/Special:Search?search=%s" utf-8)))
 
-(eval-after-load 'w3m-lnum
-  '(progn
-     (defvar w3m-mode-map)
-     (evil-make-overriding-map w3m-lnum-mode-map 'normal t)
-     (evil-make-overriding-map w3m-mode-map 'normal t)
-     (evil-define-key 'normal w3m-mode-map
-       "o" 'w3m-search
-       "t" 'w3m-search-new-tab
-       ;;  "f" 'w3m-view-this-url  w3m-lnum handles this
-       "F" 'w3m-follow-hint-new-tab
-       "b" 'evil-backward-word-begin
-       (kbd "<backspace>") 'w3m-view-previous-page
-       "gg" 'evil-goto-first-line
-       "G" 'evil-goto-line
-       "d" 'w3m-delete-buffer
-       "h" 'w3m-previous-buffer
-       "j" 'w3m-scroll-up
-       "k" 'w3m-scroll-down
-       "l" 'w3m-next-buffer
-       "H" 'w3m-view-previous-page
-       "K" 'other-window
-       "L" 'w3m-view-next-page
-       (kbd "C-e") 'w3m-scroll-up
-       (kbd "C-y") 'w3m-scroll-down)))
+(with-eval-after-load 'w3m-lnum
+  (defvar w3m-mode-map)
+  (evil-make-overriding-map w3m-lnum-mode-map 'normal t)
+  (evil-make-overriding-map w3m-mode-map 'normal t)
+  (evil-define-key 'normal w3m-mode-map
+    "o" 'w3m-search
+    "t" 'w3m-search-new-tab
+    ;;  "f" 'w3m-view-this-url  w3m-lnum handles this
+    "F" 'w3m-follow-hint-new-tab
+    "b" 'evil-backward-word-begin
+    (kbd "<backspace>") 'w3m-view-previous-page
+    "gg" 'evil-goto-first-line
+    "G" 'evil-goto-line
+    "d" 'w3m-delete-buffer
+    "h" 'w3m-previous-buffer
+    "j" 'w3m-scroll-up
+    "k" 'w3m-scroll-down
+    "l" 'w3m-next-buffer
+    "H" 'w3m-view-previous-page
+    "K" 'other-window
+    "L" 'w3m-view-next-page
+    (kbd "C-e") 'w3m-scroll-up
+    (kbd "C-y") 'w3m-scroll-down))
 
 
 
@@ -836,16 +834,17 @@ Only intended for interactive use."
 ;; Disabled so I have one less prompty to answer
 (setq gnus-always-read-dribble-file t)
 
-(eval-after-load 'gnus-msg
-  '(progn
-     ;; use the standard gnus-summary-mode bindings as a base
-     (evil-make-overriding-map gnus-summary-mode-map 'normal t)
-     (evil-add-hjkl-bindings gnus-summary-mode-map  'normal
-       ;; "h"                        ;overrides gnus-summary-select-article-buffer
-       ;; "j"                        ;overrides gnus-summary-goto-article
-       ;; "k"                        ;overrides gnus-summary-kill-same-subject-and-select
-       ;; "l"                        ;overrides gnus-summary-goto-last-article
-       "K" 'other-window             ;overrides gnus-summary-mime-map
-       "H" 'evil-window-top          ;overrides gnus-summary-help-map
-       "M" 'evil-window-middle       ;overrides gnus-summary-mark-map
-       "L" 'evil-window-bottom)))    ;overrides gnus-summary-lower-score
+(with-eval-after-load 'gnus-msg
+  ;; use the standard gnus-summary-mode bindings as a base
+  (evil-make-overriding-map gnus-summary-mode-map 'normal t)
+  (evil-add-hjkl-bindings gnus-summary-mode-map  'normal
+                              ; old, overridden binding
+                              ; -----------------------
+    ;; "h"                    ; gnus-summary-select-article-buffer
+    ;; "j"                    ; gnus-summary-goto-article
+    ;; "k"                    ; gnus-summary-kill-same-subject-and-select
+    ;; "l"                    ; gnus-summary-goto-last-article
+    "K" 'other-window         ; gnus-summary-mime-map
+    "H" 'evil-window-top      ; gnus-summary-help-map
+    "M" 'evil-window-middle   ; gnus-summary-mark-map
+    "L" 'evil-window-bottom)) ; gnus-summary-lower-score
