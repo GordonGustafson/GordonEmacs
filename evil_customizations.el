@@ -125,6 +125,8 @@ and takes a numeric prefix argument COUNT."
     (call-interactively (local-key-binding "\t")))
    ((and (memq major-mode '(org-mode)) (not (eq evil-state 'insert)))
     (call-interactively (local-key-binding "\t")))
+   ;; Make '<s' tab-complete to a SRC block
+   ((org-try-structure-completion))
    (t
     (let ((bol-to-point (buffer-substring-no-properties (line-beginning-position) (point))))
       (if (string-match "^[ \t]*$" bol-to-point)
