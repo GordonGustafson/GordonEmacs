@@ -623,7 +623,7 @@ Only intended for interactive use."
 
 (require 'whitespace)
 
-(setq whitespace-style '(face trailing indentation empty
+(setq whitespace-style '(face trailing indentation
                               space-before-tab space-after-tab))
 (add-hook 'prog-mode-hook (lambda ()
                             (dtrt-indent-try-set-offset)
