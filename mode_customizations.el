@@ -608,6 +608,7 @@ Only intended for interactive use."
 
 ;; COMPILATION-MODE CUSTOMIZATIONS
 
+;; Make sure I can access "gr" and other evil bindings starting with "g"
 (define-key compilation-mode-map "g" nil)
 
 ;; gnu-global-mode derives from compilation-mode
@@ -619,6 +620,14 @@ Only intended for interactive use."
   (kbd "<return>") 'compile-goto-error
   (kbd "<tab>")    'compilation-next-error)
 
+
+
+;; GREP-MODE CUSTOMIZATIONS
+
+;; Make sure I can access "gr" and other evil bindings starting with "g". For
+;; some reason `grep-mode-map` binds "g" to `'recompile` instead of inheriting
+;; that binding from `compilation-mode-map`.
+(add-hook 'grep-mode-hook (lambda () (define-key grep-mode-map "g" nil)))
 
 
 
