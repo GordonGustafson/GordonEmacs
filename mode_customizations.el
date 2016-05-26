@@ -145,7 +145,9 @@ Terminate when move-to-start-form returns nil."
 
 (global-set-key (kbd "C-|") 'org-table-create-or-convert-from-region)
 
-(set-face-attribute 'org-level-3 nil ':foreground "PaleGreen")
+;; Gold provides a nice contrast with everything but level-1 headings, which are
+;; already hard to confuse with level-3 headings.
+(set-face-attribute 'org-level-3 nil ':foreground "gold")
 
 (setq org-support-shift-select t)
 (setq org-startup-folded 'showall) ;show everything on startup
