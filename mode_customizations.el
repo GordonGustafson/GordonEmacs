@@ -411,19 +411,7 @@ Terminate when move-to-start-form returns nil."
             (kbd "i")   'magit-mark-item)
           (evil-make-overriding-map mode-map 'normal t))))
 
-;; Various 'text-keymaps' in magit
-(let ((magit-section-maps '(magit-file-section-map magit-hunk-section-map
-                            magit-unstaged-section-map magit-staged-section-map
-                            magit-untracked-section-map magit-branch-section-map
-                            magit-remote-section-map magit-tag-section-map
-                            magit-commit-section-map magit-module-commit-section-map
-                            magit-unpulled-section-map magit-unpushed-section-map
-                            magit-stashes-section-map magit-stash-section-map)))
-  (loop for section-map-symbol in magit-section-maps do
-        (let ((section-map (symbol-value section-map-symbol)))
-          (define-key section-map (kbd "C-k") (lookup-key section-map "k"))
-          (define-key section-map (kbd "k")   nil))))
-
+(evil-define-key 'normal magit-status-mode-map (kbd "C-k") 'magit-delete-thing)
 (evil-define-key 'normal magit-status-mode-map (kbd "J") (lookup-key magit-status-mode-map "j"))
 
 
