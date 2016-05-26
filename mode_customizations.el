@@ -314,6 +314,33 @@ Terminate when move-to-start-form returns nil."
 (evil-define-key 'normal shell-mode-map (kbd "C-z") 'open-shell-buffer-by-number)
 (evil-set-toggle-key "<f6>") ; unbinds C-z in evil
 
+
+(defun scroll-to-location-if-not-visible (buffer location)
+  (let ((window-displaying-buf (get-buffer-window buffer (selected-frame))))
+    ;; When `buffer` is visible but `location` in `buffer` is not
+    (when (and window-displaying-buf
+               (not (pos-visible-in-window-p location window-displaying-buf)))
+      (set-window-start win location))))
+
+(defun rerun-last-command-in-shell-by-number (shell-buffer-number)
+  (interactive "P")
+  (if (null shell-buffer-number)
+      (setq shell-buffer-number 1))
+  (let ((shell-buffer-name (format "*shell*<%d>" shell-buffer-number)))
+    (set-buffer shell-buffer-name)
+    (scroll-to-location-if-not-visible shell-buffer-name (point-max))
+    ;; The rest of this functions simulates user actions that would re-execute
+    ;; the last command. Hopefully there's a better way, but I'll admit I didn't
+    ;; look for one. This relies on the `comint-previous-input` putting the
+    ;; cursor at the end of the input. This is a reasonable assumption, but it's
+    ;; gross to rely on where the point is.
+    (goto-char (point-max))  ; `end-of-buffer` docs say to use this instead
+    (comint-previous-input 1)
+    (comint-send-input)))
+
+(define-key evil-normal-state-map "S" 'rerun-last-command-in-shell-by-number)
+
+
 ;; use the same binding as bash. C-? is bound to redo if you need it.
 (define-key shell-mode-map (kbd "C-r") 'comint-history-isearch-backward-regexp)
 (define-key shell-mode-map (kbd "M-r") nil)
@@ -350,27 +377,6 @@ Terminate when move-to-start-form returns nil."
 (add-hook 'eshell-mode-hook
           (lambda ()
             (evil-define-key 'normal eshell-mode-map (kbd "<return>") 'eshell-send-input)))
-
-
-
-;; EZ-SHELL CUSTOMIZATIONS
-
-(defun ez-shell ()
-  (interactive)
-  (with-current-buffer (get-buffer-create "*ez-shell*")
-    (let ((shell-commands-to-run (buffer-substring-no-properties (point-min) (point-max))))
-      (if (string= shell-commands-to-run "")
-          (pop-to-buffer "*ez-shell*")
-        (let* ((commands (split-string shell-commands-to-run "\n" t))
-               (results (loop for command in commands collect (eshell-command-result command)))
-               (report (mapconcat 'identity results "\n")))
-          (with-current-buffer (get-buffer-create "*report*")
-            (erase-buffer)
-            (insert report)
-            (when (not (get-buffer-window (current-buffer)))
-              (message report))))))))
-
-(define-key evil-normal-state-map "S" 'ez-shell)
 
 
 
