@@ -555,12 +555,15 @@ Terminate when move-to-start-form returns nil."
 
 (setq ffip-limit 8192) ; This is why you buy RAM! (default is 512)
 
-;; They forgot some. If things get too slow you may want to trim this variable.
-;; Use add-to-list so these won't be added twice if they are added upstream.
-(add-to-list 'ffip-patterns "*.tex")
-(add-to-list 'ffip-patterns "*.css")
-(add-to-list 'ffip-patterns "*.cs")
-(add-to-list 'ffip-patterns "*.java")
+;; The file patterns findable with ffip. This overwrites the defaults. If ffip
+;; gets too slow you may want to trim this list or set it per-project with
+;; `ffip-create-project-file`.
+(setq ffip-patterns
+      '("*.txt" "*.tex" "*.markdown" "*.md"
+        "*.html" "*.css" "*.js"
+        "*.java" "*.scala" "*.clj"
+        "*.c" "*.h" "*.cpp"
+        "*.sh" "*.py" "*.rb" "*.cs" "*.hs"))
 
 (add-to-list 'ffip-prune-patterns "bin") ; don't find files in any bin directory
 
