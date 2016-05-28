@@ -366,7 +366,7 @@ Terminate when move-to-start-form returns nil."
 
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 
-(setq dirtrack-list '("^\\(?:(.*?)\\)\\(.*\\)\\$" 1)) ; assume PS1=\w$
+(setq dirtrack-list '("^\\(.*\\)\\$" 1)) ; assume PS1=\w$
 (add-hook 'shell-mode-hook (lambda () (dirtrack-mode 1)))
 
 (setq comint-prompt-read-only t)
