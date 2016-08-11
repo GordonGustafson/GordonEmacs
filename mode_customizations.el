@@ -588,7 +588,7 @@ Terminate when move-to-start-form returns nil."
         "*.c" "*.h" "*.cpp"
         "*.sh" "*.py" "*.rb" "*.cs" "*.hs"))
 
-(add-to-list 'ffip-prune-patterns "bin") ; don't find files in any bin directory
+(add-to-list 'ffip-prune-patterns "*/ENV/*") ; don't find files in any ENV directory
 
 (setq ffip-project-file '(".git" "GTAGS")) ; keep a GTAGS file in project root
 
