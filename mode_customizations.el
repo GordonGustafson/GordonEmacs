@@ -471,6 +471,8 @@ Terminate when move-to-start-form returns nil."
 (define-key magit-mode-map (kbd "C-3") 'magit-section-show-level-3)
 (define-key magit-mode-map (kbd "C-4") 'magit-section-show-level-4)
 
+(global-set-key (kbd "C-x C-g") 'magit-blame)
+(global-set-key (kbd "C-x G") 'magit-blame-quit)
 (global-set-key (kbd "C-x g") 'magit-status)
 
 ;; remove unnecessary bindings from git-rebase-mode:
