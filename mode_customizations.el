@@ -487,6 +487,8 @@ Terminate when move-to-start-form returns nil."
 
 (add-hook 'git-rebase-mode-hook (lambda () (read-only-mode -1)))
 
+(set-face-attribute 'magit-blame-heading nil ':background "white")
+
 
 
 ;; MAGIT GITHUB PULL REQUESTS CUSTOMIZATIONS
