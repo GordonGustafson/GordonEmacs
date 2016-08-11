@@ -394,6 +394,25 @@ Terminate when move-to-start-form returns nil."
 
 
 
+;; RCIRC CUSTOMIZATIONS
+
+(require 'rcirc)
+
+(setq evil-emacs-state-modes (remove 'rcirc-mode evil-emacs-state-modes))
+
+(evil-define-key 'insert rcirc-mode-map (kbd "<return>") 'rcirc-send-input)
+(evil-define-key 'insert rcirc-mode-map (kbd "C-p") 'rcirc-insert-prev-input)
+(evil-define-key 'insert rcirc-mode-map (kbd "C-n") 'rcirc-insert-next-input)
+(define-key rcirc-mode-map (kbd "C-p") 'rcirc-insert-prev-input)
+(define-key rcirc-mode-map (kbd "C-n") 'rcirc-insert-next-input)
+(define-key rcirc-mode-map (kbd "M-p") nil)
+
+
+(setq rcirc-default-nick "gordongustafson")
+
+
+
+
 ;; MAGIT CUSTOMIZATIONS
 
 (setq magit-last-seen-setup-instructions "1.4.0")
