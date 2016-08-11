@@ -251,3 +251,10 @@ Do not save it in any register."
   (setq buffer-undo-list (remove* nil buffer-undo-list :count 2))) ; remove excess undo markers we created
 
 (define-key evil-visual-state-map "m" 'gordon-evil-calc-evaluate)
+
+
+
+;; UNDO-TREE CUSTOMIZATIONS
+
+(setq undo-tree-auto-save-history t)
+(setq undo-tree-history-directory-alist backup-directory-alist)
