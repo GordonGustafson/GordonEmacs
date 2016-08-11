@@ -438,6 +438,7 @@ Terminate when move-to-start-form returns nil."
             (kbd "g")   (lookup-key evil-motion-state-map "g")
             (kbd "G")   (lookup-key evil-motion-state-map "G")
             (kbd "V")   (lookup-key evil-motion-state-map "V")
+            (kbd "g")   (lookup-key evil-motion-state-map "g") ; normal-state-map?
             (kbd "gr")  'magit-refresh
             (kbd "/")   (lookup-key evil-motion-state-map "/")
             (kbd "?")   (lookup-key evil-motion-state-map "?")
