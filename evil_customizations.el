@@ -247,8 +247,8 @@ Do not save it in any register."
   (calc-embedded nil)    ; quit calc-embedded mode
   (delete-char -1)       ; delete starting $
   (evil-find-char 1 ?$)
-  (delete-char 1)        ; delete ending $
-  (setq buffer-undo-list (remove* nil buffer-undo-list :count 2))) ; remove excess undo markers we created
+  (delete-char 1))       ; delete ending $
+  ;; (setq buffer-undo-list (remove* nil buffer-undo-list :count 2))) ; remove excess undo markers we created
 
 (define-key evil-visual-state-map "m" 'gordon-evil-calc-evaluate)
 
