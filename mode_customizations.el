@@ -456,7 +456,7 @@ Terminate when move-to-start-form returns nil."
                           magit-process-mode magit-reflog-mode
                           magit-refs-mode magit-revision-mode
                           magit-stash-mode magit-stashes-mode
-                          magit-status-mode)))
+                          magit-status-mode git-rebase-mode)))
   (setq evil-emacs-state-modes (remove-if (lambda (mode)
                                             (memq mode evil-magit-modes))
                                           evil-emacs-state-modes)))
