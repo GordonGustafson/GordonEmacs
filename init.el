@@ -62,7 +62,8 @@ override all others.")
 
 (set-face-attribute 'default nil :family "Consolas" :height 105)
 ;; Remove fringes on windows to avoid wasting space
-(set-fringe-style 0)
+(set-fringe-mode 0)
+
 ;; Seting these to newlines makes one extra character fit on each line.
 ;; I don't know why this works; it may break in the future.
 (let ((newline-glyph (make-glyph-code ?\n)))
