@@ -13,7 +13,7 @@
 
   ;; fonts appear smaller on Mac, so make the default bigger
   (set-face-attribute 'default nil
-                      :family "Consolas" :height 125)
+                      :family "Consolas" :height 135)
 
   ;; Assumes you've installed GNU coreutils with brew
   ;; (When you get into advanced usage you start finding incompatibilities,
