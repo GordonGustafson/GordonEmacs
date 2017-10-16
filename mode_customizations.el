@@ -748,12 +748,6 @@ Only intended for interactive use."
 
 
 
-;; RAINBOW-DELIMITERS CUSTOMIZATIONS
-
-(add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
-
-
-
 ;; DTRT MODE CUSTOMIZATIONS
 
 (require 'dtrt-indent)
