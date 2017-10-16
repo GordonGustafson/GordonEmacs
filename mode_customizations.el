@@ -303,6 +303,7 @@ Terminate when move-to-start-form returns nil."
 (setq dired-omit-extensions nil)
 (setq dired-omit-files
       (concat dired-omit-files "\\|^\\..+$"))   ; hide dot-files
+(setq dired-omit-extensions nil)                ; don't hide specific extensions
 
 (put 'dired-find-alternate-file 'disabled nil)
 
