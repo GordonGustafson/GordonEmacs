@@ -214,7 +214,9 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
     (while (< (point) to)
       (forward-sentence)
       (unless (= (char-after (1+ (point))) ?\n)
-        (forward-char)
+        ;; Assume sentences are space-separated, and that we don't want trailing
+        ;; spaces.
+        (delete-char 1)
         (insert "\n")))))
 
 (define-key evil-normal-state-map "Q" 'newline-at-end-of-sentences)

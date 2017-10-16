@@ -70,6 +70,9 @@ override all others.")
   (set-display-table-slot standard-display-table 'truncation newline-glyph)
   (set-display-table-slot standard-display-table 'wrap newline-glyph))
 
+;; let me wrap lines in narrow windows if I want to
+(setq truncate-partial-width-windows 10)
+
 (defadvice switch-to-buffer (before existing-buffer-only activate)
   "When interactive, switch to existing buffers only."
   (interactive "b"))  ;only allow buffer names as input

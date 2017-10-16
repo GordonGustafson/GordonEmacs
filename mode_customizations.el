@@ -6,8 +6,8 @@
 
 (setq-default TeX-PDF-mode t)  ;use .pdf for previews instead of .dvi
 
-(setq TeX-view-program-list '(("Evince" "evince --page-index=%(outpage) %o")))
-(setq TeX-view-program-selection '((output-pdf "Evince")))
+(setq TeX-view-program-list '(("mupdf" "mupdf %o")))
+(setq TeX-view-program-selection '((output-pdf "mupdf")))
 
 (setq preview-image-type 'pnm) ;solves error: preview-image-type setting 'png unsupported by this Emacs
 (setq preview-gs-options '("-q" "-dNOSAFER" "-dNOPAUSE" "-DNOPLATFONTS" "-dPrinted" "-dTextAlphaBits=4" "-dGraphicsAlphaBits=4")) ;switch to NOSAFER is need to make preview work????
@@ -148,11 +148,24 @@ Terminate when move-to-start-form returns nil."
            :efmt "%s\\,(%s)" :hline "\\hline")))
     (orgtbl-to-generic table (org-combine-plists params2 params))))
 
+(defun orgtbl-to-latex-pipeline (table params)
+  "Convert the Orgtbl mode TABLE to LaTeX."
+  (let* ((alignment (concat
+                     (mapconcat (lambda (x) (if x "|r" "|l"))
+                                org-table-last-alignment "")
+                    "|"))
+         (params2
+          (list
+           :tstart (concat "\\begin{tabular}{" alignment "}")
+           :tend "\\end{tabular}"
+           :lstart "" :lend " \\\\" :sep " & "
+           :efmt "%s\\,(%s)" :hline "\\hline")))
+    (orgtbl-to-generic table (org-combine-plists params2 params))))
+
 
 
 ;; ORG-MODE CUSTOMIZATIONS
 
-(setq default-major-mode 'org-mode)
 (add-to-list 'auto-mode-alist '("\\.txt$" . org-mode)) ;open txt files in org-mode
 
 (global-set-key (kbd "C-|") 'org-table-create-or-convert-from-region)
@@ -179,19 +192,67 @@ Terminate when move-to-start-form returns nil."
                            (setq paragraph-start "\f\\|[ 	]*$")
                            (setq paragraph-separate "[ 	\f]*$")))
 
-(setq org-directory "~/org") ;setting not used often by org
 
-(setq org-agenda-file-regexp ".*\\.org")    ;include all org files in listed directories
-(setq org-agenda-files (list "~/org"
-                             "~/Dropbox/orgmode"))
+
+;; ORG MOBILE CUSTOMIZATIONS
+
+
+
+(setq org-directory "~/Dropbox/org") ; setting not used often by org??
 
 (setq org-mobile-checksum-binary (or (executable-find "shasum")
                                      (executable-find "sha1sum")
                                      (executable-find "md5sum")
                                      (executable-find "md5")))
 
-(setq org-mobile-inbox-for-pull "~/org/from-mobile.org")
-(setq org-mobile-directory "~/Dropbox/orgmode")
+(setq org-mobile-inbox-for-pull "~/Dropbox/org/from-mobile.org")
+(setq org-mobile-directory "~/Dropbox/org")
+
+
+
+;; ORG AGENDA CUSTOMIZATIONS
+
+(require 'org-agenda)
+
+;; original value was "\\`[^.].*\\.org\\'" , why???
+(setq org-agenda-file-regexp ".*\\.org")    ;include all org files in listed directories
+(setq org-agenda-files '("~/Dropbox/org"))
+
+(defun org-agenda-todo-toggle-past-deadlines ()
+  (interactive)
+  (setq org-agenda-todo-ignore-deadlines
+        (if org-agenda-todo-ignore-deadlines nil 'past)))
+
+(define-key org-agenda-mode-map "r" 'org-agenda-todo-toggle-past-deadlines)
+
+(setq evil-emacs-state-modes (remove 'org-agenda-mode evil-emacs-state-modes))
+(evil-define-key 'normal org-agenda-mode-map
+  (kbd "j")   (lookup-key evil-motion-state-map "j")
+  (kbd "k")   (lookup-key evil-motion-state-map "k")
+  (kbd "H")   (lookup-key evil-motion-state-map "H")
+  (kbd "M")   (lookup-key evil-motion-state-map "M")
+  (kbd "L")   (lookup-key evil-motion-state-map "L")
+  (kbd "G")   (lookup-key evil-motion-state-map "G")
+  (kbd "V")   (lookup-key evil-motion-state-map "V")
+  (kbd "g")   (copy-keymap (make-composed-keymap (lookup-key evil-motion-state-map "g")
+                                                 (lookup-key evil-normal-state-map "g")))
+  (kbd "gr")  'org-agenda-redo
+  (kbd "/")   (lookup-key evil-motion-state-map "/")
+  (kbd "?")   (lookup-key evil-motion-state-map "?")
+  (kbd "n")   (lookup-key evil-motion-state-map "n")
+  (kbd "N")   (lookup-key evil-motion-state-map "N")
+  (kbd "y")   (lookup-key evil-normal-state-map "y"))
+(evil-make-overriding-map org-agenda-mode-map 'normal t)
+
+(evil-define-key 'normal org-agenda-mode-map (kbd "&") 'org-agenda-filter-by-tag)
+
+;; My custom org-agenda commands
+(setq org-agenda-custom-commands '(
+  ("q" "Quarter" agenda "display deadlines for the next 90 days" (
+    (org-agenda-span 90)
+    (org-agenda-time-grid nil)
+    (org-agenda-entry-types '(:deadline)) ;; this entry excludes :scheduled
+    (org-deadline-warning-days 14)))))
 
 
 
@@ -226,8 +287,8 @@ Terminate when move-to-start-form returns nil."
         (list
          (list (openwith-make-extension-regexp '("mpg" "mpeg" "mp3" "flac" "m4a" "mp4" "avi" "wmv"
                                                  "wav" "mov" "flv" "ogm" "ogg" "mkv")) "vlc" '(file))
-         (list (openwith-make-extension-regexp '("png" "gif" "jpeg" "jpg"))  "iceweasel" '(file))
-         (list (openwith-make-extension-regexp '("pdf")) "evince" '(file))
+         (list (openwith-make-extension-regexp '("png" "gif" "jpeg" "jpg"))  "chromium" '(file))
+         (list (openwith-make-extension-regexp '("pdf")) "mupdf" '(file))
          (list (openwith-make-extension-regexp '("doc" "docx" "rtf" "odt")) "libreoffice" '(file))))
   (openwith-mode t))
 
@@ -239,6 +300,7 @@ Terminate when move-to-start-form returns nil."
 
 (require 'dired-x)
 (setq-default dired-omit-mode t)
+(setq dired-omit-extensions nil)
 (setq dired-omit-files
       (concat dired-omit-files "\\|^\\..+$"))   ; hide dot-files
 
@@ -293,7 +355,21 @@ Terminate when move-to-start-form returns nil."
     ;; We could define "c" in dired-mode-map, but we define it here for symmetry
     ;; with "r".
     "r" 'dired-do-rename
-    "c" 'dired-do-copy))
+    "c" 'dired-do-copy
+    "gf" 'find-dired
+    "gF" 'find-grep-dired))
+
+
+
+;; EMMS CUSTOMIZATIONS
+
+(eval-after-load 'emms
+  '(progn
+     (require 'emms-setup)
+     (require 'emms-player-mplayer)
+     (require 'emms-player-vlc)
+     (emms-standard)
+     (emms-default-players)))
 
 
 
@@ -320,7 +396,7 @@ Terminate when move-to-start-form returns nil."
   (interactive "P")
   (if (null shell-buffer-number)
       (setq shell-buffer-number 1))
-  (let* ((shell-buffer-name (format "*shell*<%d>" shell-buffer-number)))
+  (let ((shell-buffer-name (format "*shell*<%d>" shell-buffer-number)))
     (shell shell-buffer-name)))
 
 (define-key      gordon-global-mode-map (kbd "C-z") 'open-shell-buffer-by-number)
@@ -334,15 +410,26 @@ Terminate when move-to-start-form returns nil."
     ;; When `buffer` is visible but `location` in `buffer` is not
     (when (and window-displaying-buf
                (not (pos-visible-in-window-p location window-displaying-buf)))
-      (set-window-start win location))))
+      (set-window-start window-displaying-buf location))))
+
+(defun position-of-last-newline-in-buffer ()
+  (save-excursion
+    (goto-char (point-max))
+    (search-backward "\n" (point-min) t)
+    (point)))
 
 (defun rerun-last-command-in-shell-by-number (shell-buffer-number)
   (interactive "P")
+  ;; Save the file since we're usually editing a file and seeing how it affects
+  ;; the command.
+  (when buffer-file-name
+    (save-buffer))
   (if (null shell-buffer-number)
       (setq shell-buffer-number 1))
   (let ((shell-buffer-name (format "*shell*<%d>" shell-buffer-number)))
     (set-buffer shell-buffer-name)
-    (scroll-to-location-if-not-visible shell-buffer-name (point-max))
+    (scroll-to-location-if-not-visible shell-buffer-name
+                                       (position-of-last-newline-in-buffer))
     ;; The rest of this functions simulates user actions that would re-execute
     ;; the last command. Hopefully there's a better way, but I'll admit I didn't
     ;; look for one. This relies on the `comint-previous-input` putting the
@@ -435,16 +522,20 @@ Terminate when move-to-start-form returns nil."
             (kbd "H")   (lookup-key evil-motion-state-map "H")
             (kbd "M")   (lookup-key evil-motion-state-map "M")
             (kbd "L")   (lookup-key evil-motion-state-map "L")
-            (kbd "g")   (lookup-key evil-motion-state-map "g")
             (kbd "G")   (lookup-key evil-motion-state-map "G")
+            ;; NOTE: magit includes the line *after* the visual selection in the
+            ;; selection when using V, which is really bad.
             (kbd "V")   (lookup-key evil-motion-state-map "V")
-            (kbd "g")   (lookup-key evil-motion-state-map "g") ; normal-state-map?
+            (kbd "v")   (lookup-key evil-motion-state-map "v")
+            (kbd "g")   (copy-keymap (make-composed-keymap (lookup-key evil-motion-state-map "g")
+                                                           (lookup-key evil-normal-state-map "g")))
             (kbd "gr")  'magit-refresh
             (kbd "/")   (lookup-key evil-motion-state-map "/")
             (kbd "?")   (lookup-key evil-motion-state-map "?")
             (kbd "n")   (lookup-key evil-motion-state-map "n")
             (kbd "N")   (lookup-key evil-motion-state-map "N")
             (kbd ".")   (lookup-key evil-normal-state-map ".")
+            (kbd "S")   (lookup-key evil-normal-state-map "S")
             (kbd "i")   'magit-mark-item)
           (evil-make-overriding-map mode-map 'normal t))))
 
@@ -472,7 +563,7 @@ Terminate when move-to-start-form returns nil."
 (define-key magit-mode-map (kbd "C-3") 'magit-section-show-level-3)
 (define-key magit-mode-map (kbd "C-4") 'magit-section-show-level-4)
 
-(global-set-key (kbd "C-x C-g") 'magit-blame)
+(global-set-key (kbd "C-x M-g") 'magit-blame)
 (global-set-key (kbd "C-x G") 'magit-blame-quit)
 (global-set-key (kbd "C-x g") 'magit-status)
 
@@ -488,7 +579,7 @@ Terminate when move-to-start-form returns nil."
 
 (add-hook 'git-rebase-mode-hook (lambda () (read-only-mode -1)))
 
-(set-face-attribute 'magit-blame-heading nil ':background "white")
+(set-face-attribute 'magit-blame-heading nil ':background "black")
 
 
 
@@ -586,12 +677,11 @@ Terminate when move-to-start-form returns nil."
       '("*.txt" "*.tex" "*.markdown" "*.md"
         "*.html" "*.css" "*.js"
         "*.java" "*.scala" "*.clj"
-        "*.c" "*.h" "*.cpp"
+        "*.c" "*.h" "*.hpp" "*.cpp"
         "*.sh" "*.py" "*.rb" "*.cs" "*.hs"))
 
 (add-to-list 'ffip-prune-patterns "*/ENV/*") ; don't find files in any ENV directory
 
-(setq ffip-project-file '(".git" "GTAGS")) ; keep a GTAGS file in project root
 
 
 ;; OCCUR CUSTOMIZATIONS
@@ -716,9 +806,88 @@ Only intended for interactive use."
 
 
 
+;; C++ CUSTOMIZATIONS
+
+;; Don't align argument lists with the opening parenthesis.
+;; Taken from here: http://stackoverflow.com/questions/6952369
+(add-hook 'c++-mode-hook (lambda () (c-set-offset 'arglist-intro '+)))
+
+
+
+
 ;; C-SHARP (C#) MODE CUSTOMIZATIONS
 
 (setq auto-mode-alist (cons '( "\\.cs\\'" . csharp-mode) auto-mode-alist) )
+
+
+
+;; CLOJURE AND CIDER CUSTOMIZATIONS
+
+(with-eval-after-load 'clojure-mode
+  ;; Without this `M-q` would wrap the current line instead of reflowing (AKA
+  ;; filling) the current paragraph.
+  (define-key clojure-mode-map (kbd "M-q") (lambda ()
+                                             (interactive "")
+                                             (clojure-fill-paragraph)))
+
+  (evil-define-key 'normal cider-repl-mode-map (kbd "RET") (lookup-key cider-repl-mode-map (kbd "RET")))
+  (evil-define-key 'insert cider-repl-mode-map (kbd "RET") (lookup-key cider-repl-mode-map (kbd "RET")))
+  (evil-define-key 'normal cider-repl-mode-map (kbd "C-p") (lookup-key cider-repl-mode-map (kbd "M-p")))
+  (evil-define-key 'insert cider-repl-mode-map (kbd "C-p") (lookup-key cider-repl-mode-map (kbd "M-p")))
+  (evil-define-key 'normal cider-repl-mode-map (kbd "C-n") (lookup-key cider-repl-mode-map (kbd "M-n")))
+  (evil-define-key 'insert cider-repl-mode-map (kbd "C-n") (lookup-key cider-repl-mode-map (kbd "M-n")))
+  (evil-define-key 'normal cider-repl-mode-map (kbd "C-r") (lookup-key cider-repl-mode-map (kbd "M-r")))
+  (evil-define-key 'insert cider-repl-mode-map (kbd "C-r") (lookup-key cider-repl-mode-map (kbd "M-r")))
+  ;; For some reason this needs to be <tab> rather than TAB???
+  (evil-define-key 'normal cider-repl-mode-map (kbd "<tab>") (lookup-key cider-repl-mode-map (kbd "TAB")))
+  (evil-define-key 'insert cider-repl-mode-map (kbd "<tab>") (lookup-key cider-repl-mode-map (kbd "TAB")))
+
+  (evil-define-key 'normal cider-repl-mode-map (kbd "M-.") (lookup-key cider-repl-mode-map (kbd "M-.")))
+
+  ;; This isn't being used yet, but I wrote it trying to get slamhound.el to work
+  (defun eval-with-cider (code)
+    (let ((dict-result (nrepl-sync-request:eval code
+                                                (cider-current-connection)
+                                                (cider-current-session))))
+      (nrepl-dict-get dict-result "value")))
+
+  ;; Indent clojure.spec/fdef as if it were a defn. Otherwise I get this:
+  ;; (s/fdef foo
+  ;;         :args ...)
+  (put-clojure-indent 'fdef :defn)
+  (put-clojure-indent 'match :defn)
+  ;; (put-clojure-indent 'fn-spec :defn)
+
+
+  (defun rerun-last-command-in-cider-repl ()
+    (interactive)
+    ;; Save the file since we're usually editing a file and seeing how it affects
+    ;; the command.
+    (when buffer-file-name
+      (save-buffer))
+    (cider-refresh)
+    ;; TODO: this seems to help. Figure out if it's actually because
+    ;;       `cider-refresh` is 'non-blocking' in some sense.
+    (sleep-for 0 100)
+    ;; TODO: don't hardcode the fact that the cider-repl is being run from a
+    ;; project.clj contained in a directory called `repo`.
+    (let ((cider-repl-buffer-name "*cider-repl repo*"))
+      (with-current-buffer cider-repl-buffer-name
+        (scroll-to-location-if-not-visible cider-repl-buffer-name
+                                           (position-of-last-newline-in-buffer))
+        ;; Running this `rerun-...` function multiple times in immediate
+        ;; succession will cycle through previous commands because this checks
+        ;; `last-command` to see if we intended to search further backward in
+        ;; history (see `cider-repl.el`).
+        (cider-repl-backward-input)
+        (cider-repl-return))))
+
+  ;; ;; Assumes file starts with "(ns foo\n"
+  ;; (when (looking-at "(ns ")
+  ;;   (forward-char 4)
+  ;;   (let ((ns (buffer-substring-no-properties (point) (line-end-position)))
+
+  (evil-define-key 'normal clojure-mode-map (kbd "C-s") 'rerun-last-command-in-cider-repl))
 
 
 
@@ -900,3 +1069,17 @@ Only intended for interactive use."
     "H" 'evil-window-top      ; gnus-summary-help-map
     "M" 'evil-window-middle   ; gnus-summary-mark-map
     "L" 'evil-window-bottom)) ; gnus-summary-lower-score
+
+
+
+;; GROOVY CUSTOMIZATIONS
+
+; open .gradle files in groovy-mode
+(add-to-list 'auto-mode-alist '("\\.gradle$" . groovy-mode))
+
+
+
+;; XI CUSTOMIZATIONS
+
+; open .xi files in prog-mode
+(add-to-list 'auto-mode-alist '("\\.xi$" . prog-mode))
