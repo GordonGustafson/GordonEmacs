@@ -506,6 +506,10 @@ Terminate when move-to-start-form returns nil."
 (setq magit-last-seen-setup-instructions "1.4.0")
 (require 'magit)
 
+;; Make editing commit messages come up in normal state.
+;; From https://emacs.stackexchange.com/questions/14008
+(add-hook 'with-editor-mode-hook 'evil-normal-state)
+
 ;; Don't make me confirm a commit message unless it's *really* long
 (setq git-commit-summary-max-length 72)
 
