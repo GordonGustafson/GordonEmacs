@@ -1,6 +1,9 @@
 ;; The init file that loads the other .el files in this directory
 ;; It should have path $HOME/.emacs.d/init.el for Emacs to find it automatically
 
+;; Add my personal bin directory to Emacs' equivalent of $PATH
+(add-to-list 'exec-path "~/bin")
+
 (make-frame-visible)
 (setq frame-title-format "%b - emacs")
 
