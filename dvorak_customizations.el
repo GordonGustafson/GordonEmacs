@@ -2,7 +2,31 @@
 
 (activate-input-method "english-dvorak")
 (setq default-input-method "english-dvorak")
-(add-hook 'minibuffer-setup-hook (lambda () (set-input-method "english-dvorak")))
+;; For some reason the minibuffer doesn't seem to use an input method unless
+;; it's forced to like this.
+;;
+;; Recording macros with an input method active is broken at the *Emacs* level
+;; (Evil has nothing to do with it). Evil uses the Emacs xxx-kbd-macro functions
+;; to implement recording and playing macros with `q`, and playing macros with
+;; `.`. If you use those functions directly with an input method active, you'll
+;; see that keys inserted into the buffer that can be affected by the input
+;; method are duplicated. For example, if you record a macro that inserts "fo"
+;; in the buffer with an input method enabled, it will insert "ffoo" in the
+;; buffer when played back (what is inserted will vary if the input method is
+;; enabled when being played back, but the keys are duplicated either way).
+;;
+;; Since this has nothing to do with Evil, I'm not going to even try to fix it.
+;; If I need to insert text in macros, I'll disable the input method before
+;; recording the macro, and make sure it's disabled when I play back the macro.
+;; `defining-kbd-macro` is true when defining a macro with `q`, and
+;; `evil-in-single-undo` is true when playing back a macro with `@` or repeating
+;; a command with `v` (evil-with-single-undo isn't used many other places
+;; besides repeating).
+(add-hook 'minibuffer-setup-hook
+          (lambda ()
+            (set-input-method (if (or defining-kbd-macro evil-in-single-undo)
+                                  nil
+                                  "english-dvorak"))))
 
 ;; this runs whenever a new buffer is created in non-fundamental mode
 (add-hook 'after-change-major-mode-hook (lambda ()
