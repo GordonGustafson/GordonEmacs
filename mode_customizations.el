@@ -392,6 +392,11 @@ Terminate when move-to-start-form returns nil."
 
 (require 'shell)
 
+;; Make shells display in current window.
+;; Taken from https://stackoverflow.com/a/40351851
+(add-to-list 'display-buffer-alist
+             `(,(regexp-quote "*shell") display-buffer-same-window))
+
 (defun open-shell-buffer-by-number (shell-buffer-number)
   "Switch to or create a shell in the buffer named *shell*<shell-buffer-number>"
   (interactive "P")
