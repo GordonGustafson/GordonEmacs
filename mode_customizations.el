@@ -559,9 +559,8 @@ Terminate when move-to-start-form returns nil."
                           magit-refs-mode magit-revision-mode
                           magit-stash-mode magit-stashes-mode
                           magit-status-mode git-rebase-mode)))
-  (setq evil-emacs-state-modes (remove-if (lambda (mode)
-                                            (memq mode evil-magit-modes))
-                                          evil-emacs-state-modes)))
+  (loop for mode in evil-magit-modes do
+        (evil-set-initial-state mode 'normal)))
 
 (define-key magit-mode-map (kbd "1") nil)
 (define-key magit-mode-map (kbd "2") nil)
