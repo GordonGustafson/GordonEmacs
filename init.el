@@ -163,7 +163,7 @@ override all others.")
 
 (package-initialize)
 
-(defvar gordon-packages '(color-theme org frame-cmds frame-fns
+(defvar gordon-packages '(color-theme-modern org frame-cmds frame-fns
                           openwith magit auto-complete smex
                           ggtags goto-chg undo-tree
                           find-file-in-project evil-anzu dtrt-indent)
@@ -179,10 +179,7 @@ override all others.")
   (message "Don't forget to remove the evil package and remove it from \
 other packages' dependencies!"))
 
-
-(require 'color-theme)
-(color-theme-initialize)
-(color-theme-dark-blue)
+(load-theme 'dark-blue t)
 
 (require 'ispell)
 (setq ispell-program-name "aspell")
