@@ -170,6 +170,9 @@ Terminate when move-to-start-form returns nil."
 
 (global-set-key (kbd "C-|") 'org-table-create-or-convert-from-region)
 
+(define-key org-mode-map (kbd "M-p") 'org-metaup)
+(define-key org-mode-map (kbd "M-n") 'org-metadown)
+
 ;; Gold provides a nice contrast with everything but level-1 headings, which are
 ;; already hard to confuse with level-3 headings.
 (set-face-attribute 'org-level-3 nil ':foreground "gold")
