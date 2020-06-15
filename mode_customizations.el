@@ -2,6 +2,15 @@
 (require 'evil)
 (require 'cl)
 
+;; EMACS-IPYTHON-NOTEBOOK CUSTOMIZATIONS
+
+(require 'ein)
+(require 'ein-notebook)
+;; Avoid the "ein:notebook-close: Symbol’s value as variable is void: ob-ein-anonymous-path"
+;; error whenever a notebook buffer is closed. The error prevents closing the buffer.
+(require 'ob-ein)
+
+
 ;; LATEX CUSTOMIZATIONS
 
 (setq-default TeX-PDF-mode t)  ;use .pdf for previews instead of .dvi
