@@ -62,8 +62,9 @@ override all others.")
 (define-key gordon-global-mode-map (kbd "M-L") (lambda (prefix-arg) (interactive "p") (move-vertical-edge-horizontally    prefix-arg)))
 (define-key gordon-global-mode-map (kbd "M-H") (lambda (prefix-arg) (interactive "p") (move-vertical-edge-horizontally (- prefix-arg))))
 
-
-(set-face-attribute 'default nil :family "Consolas" :height 105)
+;; scale up font a little. Note: emacs appears to take whatever was
+;; set with `xrandr --dpi xxx` into account (it influences emacs' scaling)
+(set-face-attribute 'default nil :family "Consolas" :height 130)
 ;; Remove fringes on windows to avoid wasting space
 (set-fringe-mode 0)
 
@@ -157,17 +158,19 @@ override all others.")
 ;; settings loaded last because they could cause problems
 (require 'package)
 
-(add-to-list 'package-archives '("elpa" . "http://tromey.com/elpa/"))
-(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+;(add-to-list 'package-archives '("elpa" . "http://tromey.com/elpa/"))
+;(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
 
 (package-initialize)
 
-(defvar gordon-packages '(color-theme-modern org frame-cmds frame-fns
+(defvar gordon-packages '(color-theme-modern org ;frame-cmds frame-fns
                           openwith magit auto-complete smex
                           ggtags goto-chg undo-tree
                           find-file-in-project evil-anzu dtrt-indent)
   "Packages that will be installed/updated to the latest version on startup")
+
+(setq package-check-signature nil)
 
 (defun install-gordon-packages ()
   (interactive)
@@ -181,16 +184,22 @@ other packages' dependencies!"))
 
 (load-theme 'dark-blue t)
 
+;; From https://emacs.stackexchange.com/questions/17866
+;; Not sure if this is needed?
+(require 'exec-path-from-shell)
+(exec-path-from-shell-copy-env "SSH_AGENT_PID")
+(exec-path-from-shell-copy-env "SSH_AUTH_SOCK")
+
 (require 'ispell)
 (setq ispell-program-name "aspell")
 
-(require 'frame-cmds)
-(define-key gordon-global-mode-map (kbd "C-S-J") 'enlarge-frame)
-(define-key gordon-global-mode-map (kbd "C-S-K") 'shrink-frame)
-(define-key gordon-global-mode-map (kbd "C-S-L") 'enlarge-frame-horizontally)
-(define-key gordon-global-mode-map (kbd "C-S-H") 'shrink-frame-horizontally)
+;; (require 'frame-cmds)
+;; (define-key gordon-global-mode-map (kbd "C-S-J") 'enlarge-frame)
+;; (define-key gordon-global-mode-map (kbd "C-S-K") 'shrink-frame)
+;; (define-key gordon-global-mode-map (kbd "C-S-L") 'enlarge-frame-horizontally)
+;; (define-key gordon-global-mode-map (kbd "C-S-H") 'shrink-frame-horizontally)
 
-(require 'server)
+;; (require 'server)
 
 ;; called with -funcall argument to emacs
 (defun start-a-server ()
@@ -219,3 +228,18 @@ other packages' dependencies!"))
 
 (evil-make-overriding-map gordon-global-mode-map 'normal t)
 (gordon-global-mode 1)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(org-agenda-files (quote ("~/Documents/notes.org" "~/Dropbox/org")))
+ '(package-selected-packages
+   (quote
+    (go-mode yaml-mode ein jupyter groovy-mode jenkins json-mode exec-path-from-shell markdown-mode smex openwith magit ggtags find-file-in-project evil-anzu dtrt-indent color-theme-modern auto-complete))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

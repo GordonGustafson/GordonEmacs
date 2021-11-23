@@ -2,6 +2,13 @@
 (require 'evil)
 (require 'cl)
 
+;; PCD FILE CUSTOMIZATIONS
+
+; By default Emacs thinks .pcd files are some sort of image files, and tries to
+; display them. For me they're point cloud files.
+(add-to-list 'auto-mode-alist '("\\.pcd$" . fundamental-mode))
+
+
 ;; EMACS-IPYTHON-NOTEBOOK CUSTOMIZATIONS
 
 (require 'ein)
@@ -9,7 +16,7 @@
 ;; Avoid the "ein:notebook-close: Symbol’s value as variable is void: ob-ein-anonymous-path"
 ;; error whenever a notebook buffer is closed. The error prevents closing the buffer.
 (require 'ob-ein)
-
+(setq ein:output-area-inlined-images t)
 
 ;; LATEX CUSTOMIZATIONS
 
@@ -182,9 +189,14 @@ Terminate when move-to-start-form returns nil."
 (define-key org-mode-map (kbd "M-p") 'org-metaup)
 (define-key org-mode-map (kbd "M-n") 'org-metadown)
 
+(setq org-todo-keywords '((sequence "TODO" "IN-PROGRESS" "|" "DONE")))
+(setq org-todo-keyword-faces '(("IN-PROGRESS" . "cyan")))
+
 ;; Gold provides a nice contrast with everything but level-1 headings, which are
 ;; already hard to confuse with level-3 headings.
 (set-face-attribute 'org-level-3 nil ':foreground "gold")
+(set-face-attribute 'org-level-4 nil ':foreground "white")
+(set-face-attribute 'org-level-4 nil ':weight 'bold)
 
 (setq org-support-shift-select t)
 (setq org-startup-folded 'showall) ;show everything on startup
@@ -299,7 +311,7 @@ Terminate when move-to-start-form returns nil."
         (list
          (list (openwith-make-extension-regexp '("mpg" "mpeg" "mp3" "flac" "m4a" "mp4" "avi" "wmv"
                                                  "wav" "mov" "flv" "ogm" "ogg" "mkv")) "vlc" '(file))
-         (list (openwith-make-extension-regexp '("png" "gif" "jpeg" "jpg"))  "chromium" '(file))
+         (list (openwith-make-extension-regexp '("png" "gif" "jpeg" "jpg"))  "google-chrome" '(file))
          (list (openwith-make-extension-regexp '("pdf")) "mupdf" '(file))
          (list (openwith-make-extension-regexp '("doc" "docx" "rtf" "odt")) "libreoffice" '(file))))
   (openwith-mode t))
@@ -699,7 +711,8 @@ Terminate when move-to-start-form returns nil."
         "*.html" "*.css" "*.js"
         "*.java" "*.scala" "*.clj"
         "*.c" "*.h" "*.hpp" "*.cpp"
-        "*.sh" "*.py" "*.rb" "*.cs" "*.hs"))
+        "*.sh" "*.py" "*.rb" "*.cs" "*.hs"
+        "*.prototxt"))
 
 (add-to-list 'ffip-prune-patterns "*/ENV/*") ; don't find files in any ENV directory
 

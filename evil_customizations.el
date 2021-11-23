@@ -2,7 +2,7 @@
 
 (setq evil-want-C-u-scroll t) ; can usually use "4 X" instead of "C-u X"
 
-(add-to-list 'load-path "~/.emacs.d/evil")
+;; (add-to-list 'load-path "~/.emacs.d/evil")
 (require 'evil)
 (require 'evil-anzu)
 (evil-mode 1)
