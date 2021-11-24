@@ -1,6 +1,8 @@
 ;; Gordon's Mac OSX-specific customizations for Emacs
 
 (when (memq window-system '(mac ns))
+  (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
+
   ;; the screen is shorter on a Macbook
   (add-to-list 'default-frame-alist '(height . 52))
 
@@ -13,7 +15,7 @@
 
   ;; fonts appear smaller on Mac, so make the default bigger
   (set-face-attribute 'default nil
-                      :family "Consolas" :height 135)
+                      :family "Consolas" :height 145)
 
   ;; Assumes you've installed GNU coreutils with brew
   ;; (When you get into advanced usage you start finding incompatibilities,

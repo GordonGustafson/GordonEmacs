@@ -11,12 +11,13 @@
 
 ;; EMACS-IPYTHON-NOTEBOOK CUSTOMIZATIONS
 
-(require 'ein)
-(require 'ein-notebook)
+;(require 'ein)
+;(require 'ein-notebook)
 ;; Avoid the "ein:notebook-close: Symbol’s value as variable is void: ob-ein-anonymous-path"
 ;; error whenever a notebook buffer is closed. The error prevents closing the buffer.
-(require 'ob-ein)
-(setq ein:output-area-inlined-images t)
+;(require 'ob-ein)
+;(setq ein:output-area-inlined-images t)
+;(require 'ob-ein)
 
 ;; LATEX CUSTOMIZATIONS
 
@@ -475,6 +476,7 @@ Terminate when move-to-start-form returns nil."
 ;; use the same binding as bash. C-? is bound to redo if you need it.
 (define-key shell-mode-map (kbd "C-r") 'comint-history-isearch-backward-regexp)
 (define-key shell-mode-map (kbd "M-r") nil)
+(evil-define-key 'insert shell-mode-map (kbd "C-r") 'comint-history-isearch-backward-regexp)
 
 (define-key shell-mode-map (kbd "C-p") 'comint-previous-input)
 (define-key shell-mode-map (kbd "C-n") 'comint-next-input)
@@ -491,6 +493,7 @@ Terminate when move-to-start-form returns nil."
 (setq comint-input-ignoredups t)              ; no duplicates in command history
 
 (evil-define-key 'normal shell-mode-map (kbd "<return>") 'comint-send-input)
+(evil-define-key 'insert shell-mode-map (kbd "<return>") 'comint-send-input)
 (evil-define-key 'normal shell-mode-map (kbd "C-d")
   (lookup-key evil-motion-state-map (kbd "C-d"))) ; fix shell's stupid binding
 
