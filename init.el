@@ -233,10 +233,9 @@ other packages' dependencies!"))
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(org-agenda-files (quote ("~/Documents/notes.org" "~/Dropbox/org")))
+ '(org-agenda-files '("~/Documents/notes.org" "~/Dropbox/org"))
  '(package-selected-packages
-   (quote
-    (go-mode yaml-mode ein jupyter groovy-mode jenkins json-mode exec-path-from-shell markdown-mode smex openwith magit ggtags find-file-in-project evil-anzu dtrt-indent color-theme-modern auto-complete))))
+   '(undo-fu csv-mode find-file-in-repository go-mode yaml-mode ein jupyter groovy-mode jenkins json-mode exec-path-from-shell markdown-mode smex openwith magit ggtags find-file-in-project evil-anzu dtrt-indent color-theme-modern auto-complete)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

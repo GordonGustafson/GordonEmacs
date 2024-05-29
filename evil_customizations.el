@@ -258,5 +258,15 @@ Do not save it in any register."
 
 ;; UNDO-TREE CUSTOMIZATIONS
 
-(setq undo-tree-auto-save-history t)
-(setq undo-tree-history-directory-alist backup-directory-alist)
+;; Commenting this out because it causes "Re-entering top level after C stack overflow" for my large org-mode files
+;; (require 'undo-tree)
+;; (global-undo-tree-mode)
+;; (evil-set-undo-system 'undo-tree)
+;; (setq undo-tree-auto-save-history t)
+;; (setq undo-tree-history-directory-alist backup-directory-alist)
+
+
+;; UNDO-FU CUSTOMIZATIONS
+
+(require 'undo-fu)
+(evil-set-undo-system 'undo-fu)

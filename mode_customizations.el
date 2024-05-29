@@ -482,6 +482,10 @@ Terminate when move-to-start-form returns nil."
 (define-key shell-mode-map (kbd "C-n") 'comint-next-input)
 (define-key shell-mode-map (kbd "M-p") nil)
 (define-key shell-mode-map (kbd "M-n") nil)
+(evil-define-key 'insert shell-mode-map (kbd "C-p") 'comint-previous-input)
+(evil-define-key 'insert shell-mode-map (kbd "C-n") 'comint-next-input)
+(evil-define-key 'normal shell-mode-map (kbd "C-p") 'comint-previous-input)
+(evil-define-key 'normal shell-mode-map (kbd "C-n") 'comint-next-input)
 
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 
@@ -498,6 +502,7 @@ Terminate when move-to-start-form returns nil."
   (lookup-key evil-motion-state-map (kbd "C-d"))) ; fix shell's stupid binding
 
 ;; execute my .bashrc in *shell*
+(setq explicit-shell-file-name "/bin/bash")
 (setq explicit-bash-args (append '("--login" "--init-file" "~/.bashrc") explicit-bash-args))
 
 
